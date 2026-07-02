@@ -754,7 +754,7 @@ export function parseVelaLoginAttribution(input: unknown): AmrEntryAttribution |
   ) {
     return null;
   }
-  const odDeviceId = sanitizeOpenDesignDeviceId(value.odDeviceId);
+  const odDeviceId = sanitizeOpenDocsDeviceId(value.odDeviceId);
   return {
     entryId: value.entryId,
     sourceProduct: value.sourceProduct,
@@ -839,7 +839,7 @@ export function parseAmrOnboardingProfileAnalyticsPayload(
   const sourceDetail = raw.sourceDetail;
   const entryOccurredAt = raw.entryOccurredAt;
   const profileOccurredAt = raw.profileOccurredAt;
-  const odDeviceId = sanitizeOpenDesignDeviceId(raw.odDeviceId);
+  const odDeviceId = sanitizeOpenDocsDeviceId(raw.odDeviceId);
   const odRole = sanitizeOptionalProfileValue(raw.odRole);
   const odOrgSize = sanitizeOptionalProfileValue(raw.odOrgSize);
   const odSource = sanitizeOptionalProfileValue(raw.odSource);
@@ -921,7 +921,7 @@ function sanitizeOptionalProfileList(
   return cleaned.length > 0 ? cleaned : undefined;
 }
 
-function sanitizeOpenDesignDeviceId(value: unknown): string | null {
+function sanitizeOpenDocsDeviceId(value: unknown): string | null {
   if (typeof value !== 'string') return null;
   const trimmed = value.trim();
   if (!trimmed || trimmed.length > OD_DEVICE_ID_MAX_LENGTH) return null;

@@ -64,12 +64,34 @@ function networkErrorToKind(err: unknown): ConnectionTestKind {
       code === 'EHOSTUNREACH' ||
       code === 'ENETUNREACH' ||
       code === 'CERT_HAS_EXPIRED' ||
+      code === 'DEPTH_ZERO_SELF_SIGNED_CERT' ||
+      code === 'ERR_TLS_CERT_ALTNAME_INVALID' ||
+      code === 'SELF_SIGNED_CERT_IN_CHAIN' ||
+      code === 'UNABLE_TO_GET_ISSUER_CERT_LOCALLY' ||
       code === 'UNABLE_TO_VERIFY_LEAF_SIGNATURE'
     ) {
       return 'invalid_base_url';
     }
   }
   return 'unknown';
+}
+
+function networkErrorDetail(err: unknown): string {
+  const message = err instanceof Error ? err.message : String(err);
+  const cause = err instanceof Error ? (err as { cause?: unknown }).cause : null;
+  if (!cause || typeof cause !== 'object') return message;
+
+  const code = (cause as { code?: unknown }).code;
+  const causeMessage =
+    cause instanceof Error
+      ? cause.message
+      : (cause as { message?: unknown }).message;
+  const parts = [
+    typeof code === 'string' && code.trim() ? code.trim() : null,
+    typeof causeMessage === 'string' && causeMessage.trim() ? causeMessage.trim() : null,
+  ].filter((part): part is string => Boolean(part));
+
+  return parts.length > 0 ? `${message} (${parts.join(': ')})` : message;
 }
 
 function uniqueModels(models: ProviderModelOption[]): ProviderModelOption[] {
@@ -316,7 +338,7 @@ export async function listProviderModels(
   } catch (err) {
     const latencyMs = Date.now() - start;
     const kind = networkErrorToKind(err);
-    const message = err instanceof Error ? err.message : String(err);
+    const message = networkErrorDetail(err);
     const host = validated.parsed.hostname;
     const scope = isLoopbackApiHost(host) ? 'local' : 'remote';
     console.warn(

@@ -119,7 +119,7 @@ function normalizeDesignCanvasWheelHandling(source: string): {
   if (!wheelMatched) {
     return { result: source, wheelMatched, gestureMatched };
   }
-  const normalizedWheel = source.replace(wheelBlock, `    // Plain wheel input should pan the infinite canvas. Claude Design exports
+  const normalizedWheel = source.replace(wheelBlock, `    // Plain wheel input should pan the infinite canvas. Imported exports
     // previously guessed that large integer vertical deltas were mouse-wheel
     // zoom clicks, but macOS trackpads can emit the same shape during ordinary
     // two-finger scrolling. Keep zoom explicit via Cmd+wheel or the host

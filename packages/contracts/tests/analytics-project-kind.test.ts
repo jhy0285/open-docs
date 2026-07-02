@@ -6,6 +6,7 @@ describe('projectKindToTracking', () => {
   it('maps the base project kinds to their tracking enum', () => {
     expect(projectKindToTracking('prototype')).toBe('prototype');
     expect(projectKindToTracking('deck')).toBe('slide_deck');
+    expect(projectKindToTracking('screen-spec')).toBe('screen_spec');
     expect(projectKindToTracking('template')).toBe('template');
     expect(projectKindToTracking('image')).toBe('image');
     expect(projectKindToTracking('video')).toBe('video');

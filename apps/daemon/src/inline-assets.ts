@@ -2,9 +2,9 @@
 // apps/web/src/components/FileViewer.tsx:5248-5354 (@ base SHA 5bd97631).
 // Powers the GET /api/projects/:id/export/*?inline=1 endpoint that
 // inlines TOP-LEVEL relative `<link rel=stylesheet>` and
-// `<script src=...>` tags into the response HTML — the viewer itself
+// `<script src=...>` tags into the response HTML; the viewer itself
 // stays URL-load by default since PR #384 (Part 1 of
-// nexu-io/open-design#368).
+// jhy0285/open-docs#368).
 //
 // Scope: this helper handles two tag families only. The following are
 // NOT rewritten and remain external in the response:
@@ -27,7 +27,7 @@
 // Memory profile: the helper holds one Buffer-as-string copy of the
 // owner HTML plus one string copy of each sibling asset body, plus the
 // concatenated output. The daemon is local-first (single-user, on the
-// developer's machine — see open_design_architecture.md), so the
+// developer's machine; see open_design_architecture.md), so the
 // effective ceiling is the size of the user's own project; no hard
 // cap is enforced. If you're surfacing this endpoint to non-trusted
 // callers later, you'll want a bounded-concurrency reader and an
@@ -53,13 +53,13 @@ export interface InlineAssetReader {
 }
 
 export interface InlineOptions {
-  /** Max byte length of the owner HTML; exceeds → throw InlineAssetsLimitError("owner"). */
+  /** Max byte length of the owner HTML; exceeds -> throw InlineAssetsLimitError("owner"). */
   maxOwnerBytes?: number;
-  /** Max byte length of a single inlined asset body; exceeds → tag stays as URL ref. */
+  /** Max byte length of a single inlined asset body; exceeds -> tag stays as URL ref. */
   maxAssetBytes?: number;
-  /** Max number of `<link>`/`<script>` matches in the owner HTML; exceeds → throw "candidates". */
+  /** Max number of `<link>`/`<script>` matches in the owner HTML; exceeds -> throw "candidates". */
   maxCandidates?: number;
-  /** Max byte length of the assembled output; exceeds → throw InlineAssetsLimitError("total"). */
+  /** Max byte length of the assembled output; exceeds -> throw InlineAssetsLimitError("total"). */
   maxTotalBytes?: number;
   /** Max concurrent fileReader invocations; defaults to MAX_INLINE_READ_CONCURRENCY. */
   maxReadConcurrency?: number;
@@ -195,7 +195,7 @@ export async function inlineRelativeAssets(
   // pre-buffer reservation is the early-abort that bounds peak memory
   // (PR #1312 round-4, lefarcen P2). Reservation is approximate
   // (counts the original tag bytes that get replaced, doesn't count
-  // wrapper overhead) — close enough for resource bounding, and the
+  // wrapper overhead); close enough for resource bounding, and the
   // concat-time guard catches any remaining drift.
   let runningBytes = ownerBytes;
   let totalAborted = false;
@@ -207,11 +207,11 @@ export async function inlineRelativeAssets(
       if (totalAborted) return null;
       const handle = await fileReader(p.resolved);
       if (handle == null) return null;
-      // Per-asset cap, pre-buffer (stat-based — no read yet).
+      // Per-asset cap, pre-buffer (stat-based; no read yet).
       if (handle.size > maxAssetBytes) return null;
       // Total cap, pre-buffer. The check + write below has no `await`
       // between them, so under Node's single-threaded event loop the
-      // pair is atomic with respect to other workers — no race.
+      // pair is atomic with respect to other workers; no race.
       if (runningBytes + handle.size > maxTotalBytes) {
         totalAborted = true;
         return null;
@@ -219,7 +219,7 @@ export async function inlineRelativeAssets(
       runningBytes += handle.size;
       const content = await handle.read();
       if (content == null) {
-        // Read failed/returned null AFTER stat said it was OK — refund
+        // Read failed/returned null AFTER stat said it was OK; refund
         // the reservation so the total stays honest for any in-flight
         // siblings still racing the cap check.
         runningBytes -= handle.size;
@@ -244,7 +244,7 @@ export async function inlineRelativeAssets(
         // Drop this asset's inlining (tag stays as URL ref), set the
         // abort flag so subsequent workers skip their read(), let
         // Promise.all settle, then throw 'total' below. No throw-
-        // before-settle race — matches the round-2/3/4 graceful-
+        // before-settle race; matches the round-2/3/4 graceful-
         // fallback pattern.
         totalAborted = true;
         return null;
@@ -324,10 +324,10 @@ async function runWithConcurrency<T, R>(
 // Attrs that affect <style> semantics and must be carried across from
 // the source <link rel=stylesheet> so the inlined output matches the
 // behavior of the original URL-loaded stylesheet:
-//   - media        — media query (e.g. `media="print"` for print-only)
-//   - title        — alternate stylesheet sets
-//   - disabled     — boolean: initial disabled state
-//   - nonce        — CSP nonce passthrough
+//   - media        - media query (e.g. `media="print"` for print-only)
+//   - title        - alternate stylesheet sets
+//   - disabled     - boolean: initial disabled state
+//   - nonce        - CSP nonce passthrough
 // All four are valid on both <link rel=stylesheet> and <style>. Other
 // <link> attrs (rel, href, type, crossorigin, integrity, referrerpolicy)
 // don't apply to <style> and are intentionally dropped.
@@ -383,16 +383,16 @@ export function readHtmlAttr(tag: string, name: string): string | null {
   return match?.[2] ?? null;
 }
 
-// HTML boolean attribute presence test — matches `<tag … name>` or
-// `<tag … name=""…>` without requiring a value, but does NOT match a
+// HTML boolean attribute presence test; matches `<tag ... name>` or
+// `<tag ... name="" ...>` without requiring a value, but does NOT match a
 // substring inside another attribute's value (e.g. `data-note="content
 // disabled stuff"` must NOT count as `disabled` being set).
 //
 // Implementation: strip quoted attribute values out of the tag first
-// (replace `"…"` and `'…'` with empty quotes), then run the lookahead
+// (replace `"..."` and `'...'` with empty quotes), then run the lookahead
 // regex over the remaining structural-attr-only string. The lookahead
 // requires `\s|=|/?>` after the attr name, so a bare `name`,
-// `name=""`, `name="…"`, or `name/>` all match — but a substring of
+// `name=""`, `name="..."`, or `name/>` all match, but a substring of
 // any value cannot match because values have been stripped.
 const ATTR_VALUE_QUOTE_DOUBLE_RE = /=\s*"[^"]*"/g;
 const ATTR_VALUE_QUOTE_SINGLE_RE = /=\s*'[^']*'/g;

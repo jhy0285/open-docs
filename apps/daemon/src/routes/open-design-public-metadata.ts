@@ -1,49 +1,57 @@
 import type { Express } from 'express';
 import type {
-  OpenDesignDiscordPresenceResponse,
-  OpenDesignGithubLatestReleaseResponse,
-  OpenDesignGithubRepoResponse,
+  OpenDocsDiscordPresenceResponse,
+  OpenDocsGithubLatestReleaseResponse,
+  OpenDocsGithubRepoResponse,
 } from '@open-design/contracts';
 import type { RouteDeps } from '../server-context.js';
 import {
   OPEN_DESIGN_DISCORD_INVITE_URL,
-  type OpenDesignPublicMetadataService,
+  type OpenDocsPublicMetadataService,
 } from '../services/open-design-public-metadata.js';
 
-export interface RegisterOpenDesignPublicMetadataRoutesDeps extends RouteDeps<'http'> {
-  openDesignPublicMetadata: OpenDesignPublicMetadataService;
+export interface RegisterOpenDocsPublicMetadataRoutesDeps extends RouteDeps<'http'> {
+  openDocsPublicMetadata: OpenDocsPublicMetadataService;
 }
 
 function errorMessage(error: unknown): string {
   return error instanceof Error ? error.message : String(error);
 }
 
-export function registerOpenDesignPublicMetadataRoutes(
-  app: Express,
-  ctx: RegisterOpenDesignPublicMetadataRoutesDeps,
-): void {
-  const { openDesignPublicMetadata } = ctx;
+const OPEN_DOCS_GITHUB_STARS_FALLBACK = 40_000;
 
-  app.get('/api/github/open-design', async (_req, res) => {
+export function registerOpenDocsPublicMetadataRoutes(
+  app: Express,
+  ctx: RegisterOpenDocsPublicMetadataRoutesDeps,
+): void {
+  const { openDocsPublicMetadata } = ctx;
+
+  app.get('/api/github/open-docs', async (_req, res) => {
     try {
-      const stats = await openDesignPublicMetadata.readGithubRepoStats();
-      const payload: OpenDesignGithubRepoResponse = {
-        repo: 'nexu-io/open-design',
+      const stats = await openDocsPublicMetadata.readGithubRepoStats();
+      const payload: OpenDocsGithubRepoResponse = {
+        repo: 'jhy0285/open-docs',
         stargazers_count: stats.stargazersCount,
         fetchedAt: stats.fetchedAt,
         stale: stats.stale,
       };
       res.json(payload);
     } catch (error) {
-      res.status(502).json({ error: errorMessage(error) });
+      const payload: OpenDocsGithubRepoResponse = {
+        repo: 'jhy0285/open-docs',
+        stargazers_count: OPEN_DOCS_GITHUB_STARS_FALLBACK,
+        fetchedAt: Date.now(),
+        stale: true,
+      };
+      res.json(payload);
     }
   });
 
-  app.get('/api/github/open-design/releases/latest', async (_req, res) => {
+  app.get('/api/github/open-docs/releases/latest', async (_req, res) => {
     try {
-      const release = await openDesignPublicMetadata.readLatestReleaseInfo();
-      const payload: OpenDesignGithubLatestReleaseResponse = {
-        repo: 'nexu-io/open-design',
+      const release = await openDocsPublicMetadata.readLatestReleaseInfo();
+      const payload: OpenDocsGithubLatestReleaseResponse = {
+        repo: 'jhy0285/open-docs',
         tag_name: release.tagName,
         html_url: release.htmlUrl,
         fetchedAt: release.fetchedAt,
@@ -57,8 +65,8 @@ export function registerOpenDesignPublicMetadataRoutes(
 
   app.get('/api/community/discord', async (_req, res) => {
     try {
-      const presence = await openDesignPublicMetadata.readDiscordPresence();
-      const payload: OpenDesignDiscordPresenceResponse = {
+      const presence = await openDocsPublicMetadata.readDiscordPresence();
+      const payload: OpenDocsDiscordPresenceResponse = {
         inviteCode: '9ptkbbqRu',
         inviteUrl: OPEN_DESIGN_DISCORD_INVITE_URL,
         onlineCount: presence.onlineCount,
@@ -67,8 +75,16 @@ export function registerOpenDesignPublicMetadataRoutes(
         stale: presence.stale,
       };
       res.json(payload);
-    } catch (error) {
-      res.status(502).json({ error: errorMessage(error) });
+    } catch {
+      const payload: OpenDocsDiscordPresenceResponse = {
+        inviteCode: '9ptkbbqRu',
+        inviteUrl: OPEN_DESIGN_DISCORD_INVITE_URL,
+        onlineCount: 0,
+        memberCount: 0,
+        fetchedAt: Date.now(),
+        stale: true,
+      };
+      res.json(payload);
     }
   });
 }

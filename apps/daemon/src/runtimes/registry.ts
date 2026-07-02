@@ -26,8 +26,10 @@ import { mimoAgentDef } from './defs/mimo.js';
 import { readLocalAgentProfileDefs as readLocalAgentProfileDefsFromFile } from './local-profiles.js';
 import type { RuntimeAgentDef } from './types.js';
 
+const ENABLE_AMR_AGENT = process.env.OD_ENABLE_AMR === '1';
+
 const BASE_AGENT_DEFS: RuntimeAgentDef[] = [
-  amrAgentDef,
+  ...(ENABLE_AMR_AGENT ? [amrAgentDef] : []),
   claudeAgentDef,
   codexAgentDef,
   devinAgentDef,

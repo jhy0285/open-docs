@@ -701,6 +701,43 @@ describe("wellKnownUserToolchainBins Windows fnm node discovery", () => {
       rmSync(localAppData, { recursive: true, force: true });
     }
   });
+
+  it("surfaces all nvm-windows version dirs under %LOCALAPPDATA%\\nvm", () => {
+    const home = mkdtempSync(join(tmpdir(), "od-nvm-home-"));
+    const localAppData = mkdtempSync(join(tmpdir(), "od-nvm-localappdata-"));
+    const newestDir = join(localAppData, "nvm", "v24.18.0");
+    const installedCodexDir = join(localAppData, "nvm", "v22.22.1");
+    mkdirSync(newestDir, { recursive: true });
+    mkdirSync(installedCodexDir, { recursive: true });
+    setPlatform("win32");
+    try {
+      const dirs = wellKnownUserToolchainBins({ home, env: { LOCALAPPDATA: localAppData } });
+      expect(dirs).toContain(newestDir);
+      expect(dirs).toContain(installedCodexDir);
+    } finally {
+      rmSync(home, { recursive: true, force: true });
+      rmSync(localAppData, { recursive: true, force: true });
+    }
+  });
+
+  it("honors NVM_HOME over %LOCALAPPDATA% for nvm-windows", () => {
+    const home = mkdtempSync(join(tmpdir(), "od-nvm-home-"));
+    const nvmHome = mkdtempSync(join(tmpdir(), "od-nvm-home-env-"));
+    const installDir = join(nvmHome, "v22.22.1");
+    mkdirSync(installDir, { recursive: true });
+    setPlatform("win32");
+    try {
+      const dirs = wellKnownUserToolchainBins({
+        home,
+        env: { LOCALAPPDATA: join(home, "AppData", "Local"), NVM_HOME: nvmHome },
+      });
+      expect(dirs).toContain(installDir);
+      expect(dirs).not.toContain(join(home, "AppData", "Local", "nvm", "v22.22.1"));
+    } finally {
+      rmSync(home, { recursive: true, force: true });
+      rmSync(nvmHome, { recursive: true, force: true });
+    }
+  });
 });
 
 describe("createPackageManagerInvocation", () => {

@@ -60,6 +60,9 @@ export const DEFAULT_SCENARIO_PLUGIN_BY_KIND: Record<ProjectKind, DefaultScenari
   // closing, plus an overflow checklist that catches the
   // "headline + subtitle + absolute footer" collision).
   deck:      'example-simple-deck',
+  // Screen specification projects use the generic generation router until the
+  // dedicated Screen Spec editor/renderer is ported into the Open Docs shell.
+  'screen-spec': 'od-new-generation',
   template:  'od-new-generation',
   brand:     'od-new-generation',
   image:     'od-media-generation',

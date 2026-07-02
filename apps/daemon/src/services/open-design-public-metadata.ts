@@ -1,27 +1,27 @@
-export interface OpenDesignGithubRepoStats {
+export interface OpenDocsGithubRepoStats {
   stargazersCount: number;
   fetchedAt: number;
   stale: boolean;
 }
 
-export interface OpenDesignGithubLatestReleaseInfo {
+export interface OpenDocsGithubLatestReleaseInfo {
   tagName: string;
   htmlUrl: string;
   fetchedAt: number;
   stale: boolean;
 }
 
-export interface OpenDesignDiscordPresence {
+export interface OpenDocsDiscordPresence {
   onlineCount: number;
   memberCount: number;
   fetchedAt: number;
   stale: boolean;
 }
 
-export interface OpenDesignPublicMetadataService {
-  readGithubRepoStats(): Promise<OpenDesignGithubRepoStats>;
-  readLatestReleaseInfo(): Promise<OpenDesignGithubLatestReleaseInfo>;
-  readDiscordPresence(): Promise<OpenDesignDiscordPresence>;
+export interface OpenDocsPublicMetadataService {
+  readGithubRepoStats(): Promise<OpenDocsGithubRepoStats>;
+  readLatestReleaseInfo(): Promise<OpenDocsGithubLatestReleaseInfo>;
+  readDiscordPresence(): Promise<OpenDocsDiscordPresence>;
 }
 
 interface CachedGithubRepoStats {
@@ -61,13 +61,13 @@ interface DiscordInvitePayload {
   profile?: unknown;
 }
 
-export interface OpenDesignPublicMetadataServiceOptions {
+export interface OpenDocsPublicMetadataServiceOptions {
   fetchImpl?: typeof fetch;
   now?: () => number;
 }
 
-const OPEN_DESIGN_GITHUB_REPO_API = 'https://api.github.com/repos/nexu-io/open-design';
-const OPEN_DESIGN_GITHUB_RELEASE_LATEST_API = 'https://api.github.com/repos/nexu-io/open-design/releases/latest';
+const OPEN_DESIGN_GITHUB_REPO_API = 'https://api.github.com/repos/jhy0285/open-docs';
+const OPEN_DESIGN_GITHUB_RELEASE_LATEST_API = 'https://api.github.com/repos/jhy0285/open-docs/releases/latest';
 const OPEN_DESIGN_GITHUB_CACHE_TTL_MS = 60 * 60 * 1000;
 const OPEN_DESIGN_GITHUB_TIMEOUT_MS = 4_000;
 const OPEN_DESIGN_DISCORD_INVITE_CODE = '9ptkbbqRu';
@@ -93,18 +93,18 @@ function withFreshness<T extends { fetchedAt: number }>(
   return { ...value, stale };
 }
 
-export function createOpenDesignPublicMetadataService({
+export function createOpenDocsPublicMetadataService({
   fetchImpl = fetch,
   now = () => Date.now(),
-}: OpenDesignPublicMetadataServiceOptions = {}): OpenDesignPublicMetadataService {
+}: OpenDocsPublicMetadataServiceOptions = {}): OpenDocsPublicMetadataService {
   let githubRepoCache: CachedGithubRepoStats | null = null;
-  let githubRepoInflight: Promise<OpenDesignGithubRepoStats> | null = null;
+  let githubRepoInflight: Promise<OpenDocsGithubRepoStats> | null = null;
   let githubLatestReleaseCache: CachedGithubLatestReleaseInfo | null = null;
-  let githubLatestReleaseInflight: Promise<OpenDesignGithubLatestReleaseInfo> | null = null;
+  let githubLatestReleaseInflight: Promise<OpenDocsGithubLatestReleaseInfo> | null = null;
   let discordPresenceCache: CachedDiscordPresence | null = null;
-  let discordPresenceInflight: Promise<OpenDesignDiscordPresence> | null = null;
+  let discordPresenceInflight: Promise<OpenDocsDiscordPresence> | null = null;
 
-  async function readGithubRepoStats(): Promise<OpenDesignGithubRepoStats> {
+  async function readGithubRepoStats(): Promise<OpenDocsGithubRepoStats> {
     const currentTime = now();
     if (
       githubRepoCache &&
@@ -148,7 +148,7 @@ export function createOpenDesignPublicMetadataService({
     return githubRepoInflight;
   }
 
-  async function readLatestReleaseInfo(): Promise<OpenDesignGithubLatestReleaseInfo> {
+  async function readLatestReleaseInfo(): Promise<OpenDocsGithubLatestReleaseInfo> {
     const currentTime = now();
     if (
       githubLatestReleaseCache &&
@@ -193,7 +193,7 @@ export function createOpenDesignPublicMetadataService({
     return githubLatestReleaseInflight;
   }
 
-  async function readDiscordPresence(): Promise<OpenDesignDiscordPresence> {
+  async function readDiscordPresence(): Promise<OpenDocsDiscordPresence> {
     const currentTime = now();
     if (
       discordPresenceCache &&

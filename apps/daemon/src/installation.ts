@@ -23,9 +23,9 @@
 //
 // Locations:
 //
-//   packaged (mac):    ~/Library/Application Support/Open Design Prerelease/installation.json
-//   packaged (win):    %APPDATA%/Open Design Prerelease/installation.json
-//   packaged (linux):  $XDG_CONFIG_HOME/Open Design Prerelease/installation.json
+//   packaged (mac):    ~/Library/Application Support/Open Docs Prerelease/installation.json
+//   packaged (win):    %APPDATA%/Open Docs Prerelease/installation.json
+//   packaged (linux):  $XDG_CONFIG_HOME/Open Docs Prerelease/installation.json
 //   tools-dev / OSS:   <dataDir>/installation.json  (no namespace concept; fall back to dataDir)
 //
 // `OD_INSTALLATION_DIR` is the env override. Packaged sidecars.ts sets it

@@ -1,4 +1,4 @@
-// Marketplace registry — plan §3.B4 / spec §6 / §7 / §11.5 / §16 Phase 3
+// Marketplace registry - plan section 3.B4 / spec sections 6, 7, 11.5, 16 Phase 3
 // (entry slice).
 //
 // Stores user-configured federated catalog indexes in
@@ -7,9 +7,9 @@
 // module is the storage + refresh half so the desktop / CLI can already
 // register and inspect catalogs.
 //
-// We intentionally treat the catalog body as opaque JSON in v1 — Zod
+// We intentionally treat the catalog body as opaque JSON in v1. Zod
 // validation lives in `@open-design/plugin-runtime`'s parser and we only
-// store what the parser returns. Trust default mirrors §9: a freshly
+// store what the parser returns. Trust default mirrors section 9: a freshly
 // added user-supplied marketplace is `restricted` (discovery only)
 // unless `--trust` is passed.
 
@@ -73,7 +73,7 @@ export interface EnsureMarketplaceManifestInput {
 }
 
 const HTTPS_RE = /^https:\/\//i;
-const DEFAULT_MARKETPLACE_REPO = 'nexu-io/open-design';
+const DEFAULT_MARKETPLACE_REPO = 'jhy0285/open-docs';
 const DEFAULT_MARKETPLACE_REPO_REF = 'main';
 const DEFAULT_MARKETPLACE_REGISTRY_PATH = 'plugins/registry';
 const PUBLIC_MARKETPLACE_BASE_URL = 'https://open-design.ai/marketplace';
@@ -460,16 +460,16 @@ function safeParseManifest(raw: string): MarketplaceManifest {
   } as MarketplaceManifest;
 }
 
-// Plan §3.F3 / spec §7.2 + §6 — resolve a bare plugin name through
+// Plan section 3.F3 / spec sections 7.2 and 6 - resolve a bare plugin name through
 // every configured marketplace. Returns the first match (marketplace
 // scan order matches `listMarketplaces` output, which is sorted by
 // `added_at` ASC). The match carries the marketplace id (so audit
 // trails record which catalog the install came from) and the resolved
 // `source` string the installer can re-feed into `installPlugin()`.
 //
-// `restricted` marketplaces still resolve names — the plugin install
+// `restricted` marketplaces still resolve names; the plugin install
 // path does NOT auto-trust the resulting plugin (it stays
-// `restricted` per spec §9 unless the marketplace was explicitly
+// `restricted` per spec section 9 unless the marketplace was explicitly
 // `trusted` at add-time).
 export interface ResolvedPluginEntry {
   marketplaceId: string;

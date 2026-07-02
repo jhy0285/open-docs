@@ -2,7 +2,7 @@ import type { Express } from 'express';
 import type { SkillInfo } from './skills.js';
 import type { DesignSystemSummary } from './design-systems/index.js';
 import type { RoutineRoutesService } from './routes/routine.js';
-import type { OpenDesignPublicMetadataService } from './services/open-design-public-metadata.js';
+import type { OpenDocsPublicMetadataService } from './services/open-design-public-metadata.js';
 
 export interface HttpDeps {
   createSseResponse: (...args: any[]) => any;
@@ -137,7 +137,7 @@ export interface ServerContext {
   messages: any;
   agents: any;
   critique: any;
-  openDesignPublicMetadata: OpenDesignPublicMetadataService;
+  openDocsPublicMetadata: OpenDocsPublicMetadataService;
   lifecycle: {
     isDaemonShuttingDown: () => boolean;
   };

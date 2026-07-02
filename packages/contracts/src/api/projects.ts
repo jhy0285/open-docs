@@ -9,6 +9,7 @@ import type {
 export type ProjectKind =
   | 'prototype'
   | 'deck'
+  | 'screen-spec'
   | 'template'
   | 'other'
   | 'brand'

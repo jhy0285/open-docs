@@ -1048,6 +1048,23 @@ export function wellKnownUserToolchainBins(
     for (const fnmRoot of fnmRoots) {
       nodeInstallRoots.push({ root: join(fnmRoot, "node-versions"), segments: ["installation"] });
     }
+
+    // nvm-windows keeps each Node version under <nvm-root>\vX.Y.Z, and global
+    // npm shims such as codex.cmd live directly in that version directory. A
+    // GUI-launched app may run on a different active Node version than the one
+    // where the CLI was installed, so scan all installed nvm versions.
+    const nvmHomeOverride = typeof env.NVM_HOME === "string" ? env.NVM_HOME.trim() : "";
+    const nvmRoots: string[] = [];
+    if (nvmHomeOverride.length > 0) {
+      nvmRoots.push(nvmHomeOverride);
+    } else {
+      const localAppData = typeof env.LOCALAPPDATA === "string" ? env.LOCALAPPDATA.trim() : "";
+      if (localAppData.length > 0) nvmRoots.push(join(localAppData, "nvm"));
+      nvmRoots.push(join(home, "AppData", "Local", "nvm"));
+    }
+    for (const nvmRoot of nvmRoots) {
+      nodeInstallRoots.push({ root: nvmRoot, segments: [] });
+    }
   }
   for (const installRoot of nodeInstallRoots) {
     for (const dir of existingChildBinDirs(installRoot.root, installRoot.segments)) {

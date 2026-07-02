@@ -36,7 +36,7 @@ import {
 // in Phase 5. Centralized here to keep daemon modules from sprinkling magic
 // numbers across the codebase.
 export interface PluginEnvKnobs {
-  // Hard ceiling on devloop iterations per stage (spec §10.2).
+  // Hard ceiling on devloop iterations per stage (spec section 10.2).
   maxDevloopIterations: number;
   // Days before an unreferenced applied_plugin_snapshots row expires. A
   // value of 0 means "keep forever" (operators can opt out of GC entirely).
@@ -601,20 +601,13 @@ function filterAllowedKeys(obj: Record<string, unknown>): AppConfigPrefs {
 }
 
 // Fill in telemetry defaults when the saved config has no `telemetry`
-// field at all (fresh install, pre-disclosure). `metrics` / `content`
-// default to true so onboarding-funnel events emit from the first
-// render — without these defaults the gate at
-// `analytics.ts` (`if (cfg.telemetry?.metrics !== true) return`)
-// dropped every event a user fired before the post-onboarding
-// disclosure modal had a chance to set them. An EXPLICIT `false`
-// the user previously saved is preserved (only `undefined` gets
-// the new default), so opt-out users stay opted out across the
-// 0.7.x → 0.8.0 upgrade.
+// field at all. Open Docs is local-first, so product telemetry is opt-in and
+// defaults to off until the user explicitly enables it.
 function applyTelemetryDefaults(prefs: AppConfigPrefs): AppConfigPrefs {
   if (prefs.telemetry === undefined) {
     return {
       ...prefs,
-      telemetry: { metrics: true, content: true },
+      telemetry: { metrics: false, content: false, artifactManifest: false },
     };
   }
   return prefs;
@@ -631,7 +624,7 @@ export async function readAppConfig(dataDir: string): Promise<AppConfigPrefs> {
   // Migration: when this daemon is the first to boot with installation.json
   // support and finds an existing installationId in the legacy app-config
   // path, mirror it forward exactly once so PostHog continues to see the
-  // same person across the 0.7.x → 0.8.0 upgrade. Without this mirror, the
+  // same person across the 0.7.x to 0.8.0 upgrade. Without this mirror, the
   // user count would double when 0.8.0 ships.
   const installationDir = resolveInstallationDir(dataDir);
   const installation = await readInstallationFile(installationDir);
@@ -639,25 +632,25 @@ export async function readAppConfig(dataDir: string): Promise<AppConfigPrefs> {
     return applyTelemetryDefaults({ ...base, installationId: installation.installationId });
   }
   if (typeof base.installationId === 'string' && base.installationId.length > 0) {
-    // Best-effort migration. A write failure here doesn't break the read —
+    // Best-effort migration. A write failure here doesn't break the read;
     // we still serve the legacy id. The next write through writeAppConfig
     // will retry the mirror.
     try {
       await writeInstallationFile(installationDir, { installationId: base.installationId });
     } catch {
-      // swallow — observability beats correctness on this path
+      // swallow; observability beats correctness on this path
     }
   }
   return applyTelemetryDefaults(base);
 }
 
-// Synchronous mirror of readAppConfig for callers that cannot await — e.g.
+// Synchronous mirror of readAppConfig for callers that cannot await, e.g.
 // building the spawn env for the vela CLI inside the synchronous
 // spawnEnvForAgent. It reuses the exact same parsing, validation and telemetry
 // defaulting as the async path, so the consent decision and installationId can
 // never drift from what the rest of the daemon (and the web analytics config)
 // sees. The only intentional difference is that it skips the best-effort
-// legacy→channel-root migration *write*, which is a side effect rather than
+// legacy to channel-root migration *write*, which is a side effect rather than
 // part of the read result.
 export function readAppConfigSync(dataDir: string): AppConfigPrefs {
   const base = readAppConfigFileOnlySync(dataDir);
@@ -752,10 +745,10 @@ async function doWrite(
   // survive a namespace-scoped data-dir wipe. Only fires when the caller
   // explicitly touched `installationId` (avoiding noisy writes on every
   // unrelated app-config update). A write failure here doesn't roll back
-  // the app-config write — the next read merges them transparently.
+  // the app-config write; the next read merges them transparently.
   if (Object.prototype.hasOwnProperty.call(partial, 'installationId')) {
     const id = normalizedNext.installationId;
-    // Caller explicitly touched installationId — mirror the outcome
+    // Caller explicitly touched installationId; mirror the outcome
     // (including the clear case) to installation.json so a future read
     // doesn't keep serving the old value out of the channel-root file.
     // "Delete my data" relies on this clear path.
@@ -765,7 +758,7 @@ async function doWrite(
     try {
       await writeInstallationFile(resolveInstallationDir(dataDir), installPatch);
     } catch {
-      // swallow — install file mirroring is best-effort; the canonical
+      // swallow; install file mirroring is best-effort; the canonical
       // app-config write already succeeded.
     }
   }

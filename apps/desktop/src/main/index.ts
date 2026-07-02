@@ -457,20 +457,20 @@ function installDesktopMenu(
           {
             label: "Documentation",
             click() {
-              void shell.openExternal("https://github.com/nexu-io/open-design#readme");
+              void shell.openExternal("https://github.com/jhy0285/open-docs#readme");
             },
           },
           { type: "separator" },
           {
             label: "Contact Us",
             click() {
-              void shell.openExternal("https://x.com/OpenDesignHQ");
+              void shell.openExternal("https://github.com/jhy0285/open-docs");
             },
           },
           {
             label: "Report Issue",
             click() {
-              void shell.openExternal("https://github.com/nexu-io/open-design/issues/new");
+              void shell.openExternal("https://github.com/jhy0285/open-docs/issues/new");
             },
           },
           {
@@ -480,7 +480,7 @@ function installDesktopMenu(
             },
           },
           { type: "separator" },
-          { label: "Export Diagnostics…", click: exportDiagnostics },
+          { label: "Export Diagnostics", click: exportDiagnostics },
         ],
       },
     ];

@@ -42,7 +42,7 @@ export function registerImportRoutes(app: Express, ctx: RegisterImportRoutesDeps
         if (!req.file)
           return res.status(400).json({ error: 'zip file required' });
         const originalName =
-          req.file.originalname || 'Claude Design export.zip';
+          req.file.originalname || 'Open Docs export.zip';
         if (!/\.zip$/i.test(originalName)) {
           fs.promises.unlink(req.file.path).catch(() => {});
           return res.status(400).json({ error: 'expected a .zip file' });
@@ -50,7 +50,7 @@ export function registerImportRoutes(app: Express, ctx: RegisterImportRoutesDeps
         const id = randomId();
         const now = Date.now();
         const baseName =
-          originalName.replace(/\.zip$/i, '').trim() || 'Claude Design import';
+          originalName.replace(/\.zip$/i, '').trim() || 'Open Docs import';
         const imported = await importClaudeDesignZip(
           req.file.path,
           projectDir(PROJECTS_DIR, id),
@@ -62,7 +62,7 @@ export function registerImportRoutes(app: Express, ctx: RegisterImportRoutesDeps
           name: baseName,
           skillId: null,
           designSystemId: null,
-          pendingPrompt: `Imported from Claude Design ZIP: ${originalName}. Continue editing ${imported.entryFile}.`,
+          pendingPrompt: `Imported from Open Docs ZIP: ${originalName}. Continue editing ${imported.entryFile}.`,
           metadata: {
             kind: 'prototype',
             importedFrom: 'claude-design',
@@ -76,7 +76,7 @@ export function registerImportRoutes(app: Express, ctx: RegisterImportRoutesDeps
         insertConversation(db, {
           id: cid,
           projectId: id,
-          title: 'Imported Claude Design project',
+          title: 'Imported Open Docs project',
           createdAt: now,
           updatedAt: now,
         });
@@ -96,7 +96,7 @@ export function registerImportRoutes(app: Express, ctx: RegisterImportRoutesDeps
 
   // Import an existing local folder as a project. The user picks a folder
   // and OD works inside it directly: every write goes to metadata.baseDir.
-  // No copy, no shadow tree — the user owns the workspace and is
+  // No copy, no shadow tree; the user owns the workspace and is
   // responsible for their own version control (git, time machine, etc.),
   // mirroring how Cursor / Claude Code / Aider behave.
   // Replace an existing project's working directory in-place. Mirrors
@@ -289,7 +289,7 @@ export function registerImportRoutes(app: Express, ctx: RegisterImportRoutesDeps
         return sendApiError(res, 400, 'BAD_REQUEST', 'baseDir must be absolute');
       }
       // Resolve symlinks once at import and persist the canonical path.
-      // Without this, a user-controlled symlink (e.g. ~/sneaky → /etc) at
+      // Without this, a user-controlled symlink (e.g. ~/sneaky -> /etc) at
       // baseDir would let writeProjectFile escape the project sandbox at
       // every later call: resolveSafe checks the *literal* baseDir, but
       // the OS follows the symlink at write time. realpath() collapses
@@ -300,7 +300,7 @@ export function registerImportRoutes(app: Express, ctx: RegisterImportRoutesDeps
       } catch {
         return sendApiError(res, 400, 'BAD_REQUEST', 'folder not found');
       }
-      // realpath resolved → lstat the canonical path to ensure it's a
+      // realpath resolved; lstat the canonical path to ensure it's a
       // real directory, not another symlink (defense-in-depth).
       let dirStat;
       try {
@@ -387,7 +387,6 @@ export function registerImportRoutes(app: Express, ctx: RegisterImportRoutesDeps
       sendApiError(res, 400, 'BAD_REQUEST', String(err?.message || err));
     }
   });
-
 }
 
 export interface RegisterProjectExportRoutesDeps extends RouteDeps<'db' | 'http' | 'paths' | 'projectStore' | 'exports' | 'projectFiles' | 'validation'> {}
@@ -410,8 +409,8 @@ export function registerProjectExportRoutes(app: Express, ctx: RegisterProjectEx
     sanitizeArchiveFilename,
   } = ctx.exports;
   // Streams a ZIP of the project's on-disk tree so the "Download as .zip"
-  // share menu can hand the user the actual files they uploaded — e.g. the
-  // imported `ui-design/` folder — instead of a one-file snapshot of the
+  // share menu can hand the user the actual files they uploaded, e.g. the
+  // imported `ui-design/` folder, instead of a one-file snapshot of the
   // rendered HTML. `root` scopes the archive to a subdirectory; without
   // it, the whole project is packed.
   app.get('/api/projects/:id/archive', async (req, res) => {
@@ -428,7 +427,7 @@ export function registerProjectExportRoutes(app: Express, ctx: RegisterProjectEx
       const fileSlug = sanitizeArchiveFilename(baseName || fallbackName) || 'project';
       const filename = `${fileSlug}.zip`;
       // RFC 5987 dance: legacy `filename=` carries an ASCII fallback, while
-      // `filename*=UTF-8''…` lets modern browsers pick up project names
+      // `filename*=UTF-8''...` lets modern browsers pick up project names
       // with non-ASCII characters (accents, CJK, etc.) without mojibake.
       const asciiFallback =
         filename.replace(/[^\x20-\x7e]/g, '_').replace(/"/g, '_') || 'project.zip';
@@ -548,7 +547,7 @@ export function registerProjectExportRoutes(app: Express, ctx: RegisterProjectEx
   });
 
   // Generic programmatic export (PDF / image) for the `od export` CLI.
-  // The web Download menu rasterizes client-side; this is the daemon → desktop
+  // The web Download menu rasterizes client-side; this is the daemon to desktop
   // Electron path. The desktop renderer writes the result to a temp file and
   // returns its path; we stream those bytes back and remove the temp file.
   app.post('/api/projects/:id/export', async (req, res) => {
@@ -617,7 +616,7 @@ export function registerProjectExportRoutes(app: Express, ctx: RegisterProjectEx
 
   // Export endpoint: serves an HTML body with every same-project
   // top-level `<link rel=stylesheet>` / `<script src>` inlined.
-  // Counterpart to GET /api/projects/:id/raw/* — that route stays
+  // Counterpart to GET /api/projects/:id/raw/*; that route stays
   // URL-load (one request per asset; FileViewer's default since
   // PR #384). This route exists for explicit "Inline top-level
   // CSS/JS" exports + the screenshot path where the headless browser
@@ -626,21 +625,21 @@ export function registerProjectExportRoutes(app: Express, ctx: RegisterProjectEx
   // Scope is intentionally narrow: only `<link rel=stylesheet>` and
   // `<script src>` are rewritten. `<img src>`, CSS `url(...)` refs,
   // `@import`, ES module imports, font sources, and similar remain
-  // external in the response — see the docstring on
+  // external in the response; see the docstring on
   // `apps/daemon/src/inline-assets.ts` for the full not-rewritten list
   // and rationale. A fully offline "self-contained" export with image
   // and font bundling would be a follow-up issue.
   //
   // Null-origin (sandboxed iframe srcdoc) callers are intentionally
-  // NOT supported — the only consumers are the daemon UI (same-origin)
+  // NOT supported; the only consumers are the daemon UI (same-origin)
   // and server-side screenshot tooling (no Origin header). The
   // response also carries `Content-Security-Policy: sandbox
   // allow-scripts` so top-level browser navigation (no Origin header,
   // would otherwise pass the daemon middleware) cannot escalate to
   // daemon-origin privileges through script execution.
   //
-  // See nexu-io/open-design#368 and the architecture lock at
-  // https://github.com/nexu-io/open-design/issues/368#issuecomment-4366243218.
+  // See jhy0285/open-docs#368 and the architecture lock at
+  // https://github.com/jhy0285/open-docs/issues/368#issuecomment-4366243218.
   app.get('/api/projects/:id/export/*splat', async (req, res) => {
     try {
       if (!isSafeId(req.params.id)) {
@@ -668,8 +667,8 @@ export function registerProjectExportRoutes(app: Express, ctx: RegisterProjectEx
       // The size check + mime check both run pre-buffer here, mirroring
       // the sibling-asset stat-then-read contract round 4 already
       // applied via AssetHandle. Size fires before mime so an oversize
-      // non-HTML file returns 413 (not 415) — that ordering is the
-      // observable Red→Green for this round.
+      // non-HTML file returns 413 (not 415); that ordering is the
+      // observable Red to Green for this round.
       //
       // The helper's ownerBytes check (inline-assets.ts:127-133) stays
       // as defense-in-depth: it still catches direct in-process callers
@@ -778,7 +777,7 @@ export function registerProjectExportRoutes(app: Express, ctx: RegisterProjectEx
       // through. Without a CSP, any JS in the exported document would
       // run at daemon origin with access to /api/, cookies, localStorage,
       // etc. `sandbox allow-scripts` treats the response like a sandboxed
-      // iframe with an opaque origin — scripts execute (that's the point
+      // iframe with an opaque origin; scripts execute (that's the point
       // of inlining JS for screenshot tooling), but cannot read cookies,
       // hit /api/, or escalate to daemon-origin privileges.
       res.setHeader('Content-Security-Policy', 'sandbox allow-scripts');
@@ -795,9 +794,7 @@ export function registerProjectExportRoutes(app: Express, ctx: RegisterProjectEx
       sendApiError(res, 400, 'BAD_REQUEST', String(err));
     }
   });
-
 }
-
 async function resolveHtmlExportSource({
   projectId,
   projectsRoot,
