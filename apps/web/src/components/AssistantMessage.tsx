@@ -82,7 +82,7 @@ export type QuestionFormOpenRequest = {
   submittedAnswers?: Record<string, string | string[]>;
 };
 
-const DISCORD_INVITE_URL = "https://discord.gg/9ptkbbqRu";
+const CONTACT_EMAIL_URL = "mailto:jhy0285@gmail.com";
 
 interface ActionNotice {
   message: string;
@@ -204,7 +204,7 @@ function SkillPluginCandidateCard({
         { action },
       );
       setNotice({
-        message: `Open Design contribution task started for ${data?.path ?? "the draft"}.`,
+        message: `Open Docs contribution task started for ${data?.path ?? "the draft"}.`,
       });
     } catch (err) {
       setNotice({ message: err instanceof Error ? err.message : String(err) });
@@ -287,11 +287,11 @@ interface Props {
   ) => Promise<{ message?: string; url?: string } | void> | { message?: string; url?: string } | void;
   activePluginActionPaths?: Set<string>;
   hiddenPluginActionPaths?: Set<string>;
-  // Click handler for the post-completion "Share to Open Design" submission
+  // Click handler for the post-completion "Share to Open Docs" submission
   // action. ProjectView wires this to handleSend with the bundled
   // `od-share-to-community` trigger prompt.
-  onShareToOpenDesign?: () => void;
-  shareToOpenDesignBusy?: boolean;
+  onShareToOpenDocs?: () => void;
+  shareToOpenDocsBusy?: boolean;
   // True only for the most recent assistant message.
   isLast?: boolean;
   // Assistant message id whose run-failure error is rendered as ChatPane's
@@ -360,7 +360,7 @@ const ASSISTANT_MESSAGE_COMPARED_PROPS: Array<keyof Props> = [
   'errorCardOwnerId',
   'nextUserContent',
   'forking',
-  'shareToOpenDesignBusy',
+  'shareToOpenDocsBusy',
   'suppressDirectionForms',
   'hasDesignSystemContext',
   // Memoized + stable from ChatPane; compared so a late skill-list load
@@ -415,8 +415,8 @@ function AssistantMessageImpl({
   onRequestPluginFolderAgentAction,
   activePluginActionPaths = new Set(),
   hiddenPluginActionPaths = new Set(),
-  onShareToOpenDesign,
-  shareToOpenDesignBusy = false,
+  onShareToOpenDocs,
+  shareToOpenDocsBusy = false,
   isLast,
   errorCardOwnerId = null,
   nextUserContent,
@@ -598,9 +598,9 @@ function AssistantMessageImpl({
     hasEmptyResponse ||
     !!copyMarkdown ||
     canFork;
-  const canShowOpenDesignSubmission = !!onShareToOpenDesign && showFeedback && runSucceeded;
-  const showOpenDesignSubmission =
-    canShowOpenDesignSubmission && (!!isLast || shareToOpenDesignBusy);
+  const canShowOpenDocsSubmission = !!onShareToOpenDocs && showFeedback && runSucceeded;
+  const showOpenDocsSubmission =
+    canShowOpenDocsSubmission && (!!isLast || shareToOpenDocsBusy);
   // "Next step" only makes sense once there is a deliverable to act on. Anchor
   // the whole card (toolbox cascade + Share + Contribute) on a previewable HTML
   // artifact — produced this turn or earlier in the project. A pure
@@ -611,7 +611,7 @@ function AssistantMessageImpl({
     !!projectId &&
     runSucceeded &&
     !!nextStepArtifactName &&
-    ((!!isLast && !!onToolboxAction) || showOpenDesignSubmission);
+    ((!!isLast && !!onToolboxAction) || showOpenDocsSubmission);
   // Pre-output vs working: before any real content (text / thinking / tools /
   // files) the footer shimmers "Preparing…"; the moment content lands it
   // flips to "Working". The elapsed clock stays anchored to the persisted run
@@ -829,8 +829,8 @@ function AssistantMessageImpl({
             onDownload={isLast && nextStepArtifactName ? onArtifactDownload : undefined}
             skills={isLast ? nextStepSkills : undefined}
             toolboxSkillNames={isLast ? toolboxSkillNames : undefined}
-            onShareToOpenDesign={showOpenDesignSubmission ? onShareToOpenDesign : undefined}
-            shareToOpenDesignBusy={shareToOpenDesignBusy}
+            onShareToOpenDocs={showOpenDocsSubmission ? onShareToOpenDocs : undefined}
+            shareToOpenDocsBusy={shareToOpenDocsBusy}
             variant={nextStepVariant}
           />
         ) : null}
@@ -1521,23 +1521,23 @@ function AssistantFeedback({
           ) : null}
           {reasonRating === "positive" ? (
             <p className="assistant-feedback-discord-note">
-              Share what you made with the{" "}
+              Share what you made by email at{" "}
               <a
-                href={DISCORD_INVITE_URL}
-                data-testid="assistant-feedback-discord-positive"
+                href={CONTACT_EMAIL_URL}
+                data-testid="assistant-feedback-contact-positive"
               >
-                Discord
+                jhy0285@gmail.com
               </a>{" "}
-              community, or drop a screenshot and tell us what worked well.
+              with a screenshot and what worked well.
             </p>
           ) : (
             <p className="assistant-feedback-discord-note">
-              Share more context in{" "}
+              Share more context by email at{" "}
               <a
-                href={DISCORD_INVITE_URL}
-                data-testid="assistant-feedback-discord-negative"
+                href={CONTACT_EMAIL_URL}
+                data-testid="assistant-feedback-contact-negative"
               >
-                Discord
+                jhy0285@gmail.com
               </a>{" "}
               so the team can understand what went wrong and follow up directly.
             </p>
@@ -1814,7 +1814,7 @@ function PluginActionPanel({
                   <span>
                     {actionBusy && busyKey === `contribute:${folder.path}`
                       ? "Sending..."
-                      : "Open Design PR"}
+                      : "Open Docs PR"}
                   </span>
                 </button>
                 {onRequestOpenFile ? (
@@ -1910,7 +1910,7 @@ function pathMatchesFolderFileBasename(
 }
 
 function hasPluginFinalActionHint(content: string): boolean {
-  return /\b(Add to My plugins|Open Design PR|Publish repo|plugin publish|ready to publish|ready to add)\b/i.test(
+  return /\b(Add to My plugins|Open Docs PR|Publish repo|plugin publish|ready to publish|ready to add)\b/i.test(
     content,
   );
 }

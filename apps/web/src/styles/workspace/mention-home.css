@@ -24,7 +24,7 @@
   .caret-floating-layer > * { animation: none; }
 }
 
-/* -------- Mention popover (FLOATING — no order/flex/margin) --------- */
+/* -------- Mention popover (FLOATING ??no order/flex/margin) --------- */
 .mention-popover {
   display: flex;
   flex-direction: column;
@@ -467,7 +467,7 @@
   cursor: not-allowed;
 }
 
-/* Confirm modal — same shell, danger primary */
+/* Confirm modal ??same shell, danger primary */
 .modal-confirm {
   width: 420px;
   gap: 12px;
@@ -570,7 +570,7 @@
 .modal-settings {
   --modal-padding: 24px;
   width: min(920px, calc(100vw - 48px));
-  /* Fixed height regardless of which section is active — short sections
+  /* Fixed height regardless of which section is active ??short sections
      pad out with empty space inside `.settings-content`, long sections
      scroll internally. Keeps the dialog from jumping in size as the user
      switches sidebar items. */
@@ -634,7 +634,7 @@
    * line inside the 920px settings modal while still wrapping cleanly
    * on narrow viewports (the modal width clamps to 100vw - 48px) and
    * for the longest locales (German, French). 50ch was forcing even
-   * the English subtitle onto two lines. See nexu-io/open-design#743. */
+   * the English subtitle onto two lines. See jhy0285/open-docs#743. */
   max-width: 72ch;
 }
 .modal-foot {
@@ -670,7 +670,7 @@
 /* Close button. Minimal circular icon button with a hairline ring
    that warms on hover and snaps to the accent on focus-visible.
    Sized to read as a passive corner control rather than a primary
-   CTA — the autosave indicator next to it carries any system
+   CTA ??the autosave indicator next to it carries any system
    feedback the user might need. */
 .settings-chrome-btn {
   display: inline-flex;
@@ -719,7 +719,7 @@
    close button) instead of a footer. Renders nothing while idle so
    the chrome reads as a single close button until something is
    actually saving; settles to a green check on success and red on
-   failure. The pill never takes focus and never blocks input — it
+   failure. The pill never takes focus and never blocks input ??it
    is a passive system message announced to assistive tech via
    aria-live on the wrapper. */
 .settings-autosave {
@@ -807,7 +807,7 @@
    so opening the dialog doesn't burn 2-3 rows of header height. The
    row uses baseline alignment so the smaller subtitle sits at the
    h2 baseline and wraps to its own line on narrow viewports. The
-   welcome hero variant is unaffected — it keeps the stacked layout. */
+   welcome hero variant is unaffected ??it keeps the stacked layout. */
 .modal-settings .modal-head-line {
   display: flex;
   align-items: baseline;
@@ -944,7 +944,7 @@
   flex-shrink: 0;
   align-self: center;
 }
-/* "Continue" — moves to stage 2. Styled as a quiet outlined button
+/* "Continue" ??moves to stage 2. Styled as a quiet outlined button
    tinted with the red palette so it reads as "destructive but not
    yet committed". */
 .settings-connectors-clear-step {
@@ -1014,7 +1014,7 @@
 .settings-connectors-clear-commit.is-armed:active {
   transform: translateY(1px);
 }
-/* The arming sweep — a translucent fill that races from left to right
+/* The arming sweep ??a translucent fill that races from left to right
    over the disabled window, signaling "almost ready". CSS-only so it
    renders the same in every browser without a second timer. */
 .settings-connectors-clear-commit-arm {
@@ -1149,7 +1149,7 @@
 }
 /* Sidebar items follow the ChatGPT-style settings rhythm: single line,
    icon + label only, gray pill fill on active. The `<small>` description
-   that ships in the JSX is hidden — the label alone is the navigation
+   that ships in the JSX is hidden ??the label alone is the navigation
    handle; the section's own subtitle in the content area carries any
    intro copy. */
 .settings-nav-item {
@@ -1253,9 +1253,9 @@
 /* Segmented control */
 /* Compact single-line segmented control (Local CLI / BYOK and friends).
    Mirrors `.subtab-pill` and `.ds-picker-mode`: gray rounded container,
-   white raised tab for active, just a title — the meta sub-line that used
+   white raised tab for active, just a title ??the meta sub-line that used
    to render here is hidden because the section right below already prints
-   the same context ("Local CLI · Detected by scanning..."). */
+   the same context ("Local CLI - Detected by scanning..."). */
 .seg-control {
   display: grid;
   grid-template-columns: repeat(var(--seg-cols, 2), minmax(0, 1fr));
@@ -1302,7 +1302,7 @@
 .seg-btn:disabled { opacity: 0.55; cursor: not-allowed; }
 /* Inline variant: title and meta sit on a single row instead of
    stacking, which saves a row of vertical space inside the
-   execution-mode tabs (Local CLI · 2 installed / BYOK · API provider). */
+   execution-mode tabs (Local CLI - 2 installed / BYOK - API provider). */
 .seg-btn--inline {
   flex-direction: row;
   align-items: baseline;
@@ -1312,7 +1312,7 @@
 .seg-btn--inline > .seg-title { min-width: 0; flex: 0 0 auto; }
 .seg-btn--inline > .seg-meta { min-width: 0; flex: 1 1 auto; }
 
-/* Secondary protocol selector — pill chips, wraps to multiple rows */
+/* Secondary protocol selector ??pill chips, wraps to multiple rows */
 .protocol-chips {
   display: flex;
   flex-wrap: wrap;
@@ -1465,7 +1465,7 @@
 }
 .settings-section-connectors { gap: 16px; }
 /* Credentials sit above the catalog now; the divider lives under the field
-   so the eye reads "configure key → catalog unlocks below". */
+   so the eye reads "configure key ??catalog unlocks below". */
 .settings-section-connectors > .settings-section-connectors-credentials {
   padding-bottom: 16px;
   border-bottom: 1px solid var(--border-soft);
@@ -1566,8 +1566,8 @@
   gap: 8px;
 }
 /* ============================================================
-   Orbit settings section — redesigned layout
-   Hero · Automation card · Run receipt · Artifact strip
+   Orbit settings section ??redesigned layout
+   Hero - Automation card - Run receipt - Artifact strip
    ============================================================ */
 .orbit-section {
   gap: 16px;
@@ -1756,7 +1756,7 @@
 }
 .orbit-automation.is-locked.is-on {
   /* When the user previously had the schedule on but later removed the
-     last connector we still show the "on" gradient very faintly — but
+     last connector we still show the "on" gradient very faintly ??but
      the locked treatment wins so the panel reads as gated. */
   background:
     repeating-linear-gradient(
@@ -1789,7 +1789,7 @@
   background: color-mix(in srgb, var(--text-soft) 6%, var(--bg-subtle));
 }
 
-/* Lock banner — sits above the configuration rows and names the gate
+/* Lock banner ??sits above the configuration rows and names the gate
    reason in a single line. Compact, low-contrast accent so it reads as
    metadata rather than a second hero. */
 .orbit-automation-lock-banner {
@@ -1860,7 +1860,7 @@
   line-height: 1.45;
 }
 
-/* Custom switch control — rebuilt rather than reusing .toggle-row so the
+/* Custom switch control ??rebuilt rather than reusing .toggle-row so the
    Orbit section owns the pattern and can tune track/thumb proportions. */
 .orbit-switch {
   display: inline-flex;
@@ -1995,7 +1995,7 @@
    reads as one cohesive configuration surface instead of two parallel
    panels competing for attention. The class names below still use the
    `orbit-template-` prefix because they continue to describe template
-   surface elements — they just live inside the automation card now. */
+   surface elements ??they just live inside the automation card now. */
 
 .orbit-automation.has-template {
   border-color: color-mix(in srgb, var(--accent) 30%, var(--border));
@@ -2016,7 +2016,7 @@
 }
 
 /* Inline warning variant of the row sub-copy. Used by the Prompt
-   template row when the saved skill id is no longer in the registry —
+   template row when the saved skill id is no longer in the registry ??
    takes the place of the standard descriptive sub-line and inlines a
    small Reset action that pushes the config back to the default
    (`orbit-general`). The warning lives flush inside the automation
@@ -2316,7 +2316,7 @@
    Surfaces when the user has no connected integrations. We share the
    orbit-themed accent palette of the hero/firstrun panel so the gate
    reads as a first-class part of the panel rather than an inline error
-   banner. Layout mirrors the firstrun composition (glyph · copy · action)
+   banner. Layout mirrors the firstrun composition (glyph - copy - action)
    so the section feels rhythmically consistent regardless of which
    empty-state panel is showing. The decorative ring glyph reuses the
    same dashed-orbit motif as the firstrun glyph but anchors a small
@@ -2338,7 +2338,7 @@
   animation: orbitConfigGateIn 220ms ease-out;
 }
 .orbit-config-gate::after {
-  /* Soft outer ring decoration in the corner — pure visual, mirrors the
+  /* Soft outer ring decoration in the corner ??pure visual, mirrors the
      firstrun panel so the two empty states feel like siblings. */
   content: '';
   position: absolute;

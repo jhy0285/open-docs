@@ -638,7 +638,7 @@
 
 /* Static useful-info footer pinned above the drop zone. */
 /* Footer cluster pinned to the bottom: drag hint above the useful-info. */
-/* Footer band pinned to the bottom, mirroring Claude Design's empty-state
+/* Footer band pinned to the bottom, mirroring Open Docs' empty-state
    hint strip: a faint warm band carrying the drag hint above a typewriter
    "tip" line. */
 .df-footer-info {

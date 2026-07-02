@@ -6,12 +6,12 @@
 // the renderer.
 
 import { useEffect, useState } from 'react';
-import type { OpenDesignGithubRepoResponse } from '@open-design/contracts';
+import type { OpenDocsGithubRepoResponse } from '@open-design/contracts';
 
-const API = '/api/github/open-design';
-const REPO = 'https://github.com/nexu-io/open-design';
-const LS_KEY = 'open-design:gh-stars';
-const FAILURE_LS_KEY = 'open-design:gh-stars:last-failure';
+const API = '/api/github/open-docs';
+const REPO = 'https://github.com/jhy0285/open-docs.git';
+const LS_KEY = 'open-docs:gh-stars';
+const FAILURE_LS_KEY = 'open-docs:gh-stars:last-failure';
 export const GITHUB_STARS_FALLBACK_LABEL = '40K+';
 
 // One-hour soft cache — long enough to dodge GitHub's 60/hr
@@ -99,21 +99,26 @@ export const GITHUB_REPO_URL = REPO;
 
 export function useGithubStars(): number | null {
   const [count, setCount] = useState<number | null>(() => {
-    if (memoryCache) return memoryCache.count;
     const persisted = readPersistedCache();
     if (persisted) memoryCache = persisted;
-    return persisted ? persisted.count : null;
+    if (persisted) return persisted.count;
+    if (typeof window === 'undefined' && memoryCache) return memoryCache.count;
+    return null;
   });
 
   useEffect(() => {
     const now = Date.now();
-    const cached = memoryCache ?? readPersistedCache();
+    const cached = typeof window === 'undefined'
+      ? memoryCache
+      : readPersistedCache();
     if (cached && now - cached.ts < CACHE_TTL_MS) {
       memoryCache = cached;
       setCount(cached.count);
       return;
     }
-    const failedAt = memoryFailureAt ?? readPersistedFailureAt();
+    const failedAt = typeof window === 'undefined'
+      ? memoryFailureAt
+      : readPersistedFailureAt();
     if (failedAt && now - failedAt < FAILURE_COOLDOWN_MS) {
       memoryFailureAt = failedAt;
       return;
@@ -128,7 +133,7 @@ export function useGithubStars(): number | null {
           rememberFetchFailure();
           return;
         }
-        const data = (await res.json()) as Partial<OpenDesignGithubRepoResponse>;
+        const data = (await res.json()) as Partial<OpenDocsGithubRepoResponse>;
         if (typeof data.stargazers_count !== 'number') {
           rememberFetchFailure();
           return;

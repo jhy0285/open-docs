@@ -93,10 +93,6 @@ import { EntryNavRail, type EntryView as EntryViewKind } from './EntryNavRail';
 import { LibrarySection } from './LibrarySection';
 import { UpdaterPopup } from './UpdaterPopup';
 import { GithubStarBadge } from './GithubStarBadge';
-import {
-  formatDiscordPresenceCount,
-  useDiscordPresence,
-} from './useDiscordPresence';
 import { HomeView } from './HomeView';
 import {
   createPluginAuthoringHandoff,
@@ -153,6 +149,7 @@ import {
   providerModelsCacheKey,
   type ProviderModelsCache,
 } from './providerModelsCache';
+import { cleanByokApiKey } from './byok/validation';
 
 // Persist the entry nav-rail open/collapsed state so it survives both a
 // home -> project -> home navigation (EntryShell unmounts on the project
@@ -178,9 +175,8 @@ function writeStoredRailOpen(open: boolean): void {
   }
 }
 
-const DISCORD_URL = 'https://discord.gg/mHAjSMV6gz';
-const X_URL = 'https://x.com/nexudotio';
 const ONBOARDING_DROPDOWN_OPEN_EVENT = 'open-design:onboarding-dropdown-open';
+const ENABLE_AMR_RUNTIME = false;
 
 // The topbar chips (GitHub star, model switcher, Use everywhere)
 // collapse into the settings dropdown when the viewport gets
@@ -199,7 +195,7 @@ const ONBOARDING_DROPDOWN_OPEN_EVENT = 'open-design:onboarding-dropdown-open';
 // client. Overridable at build time via NEXT_PUBLIC_NEWSLETTER_URL — e.g. point
 // it at a local `wrangler pages dev` instance during development.
 const NEWSLETTER_SUBSCRIBE_URL =
-  process.env.NEXT_PUBLIC_NEWSLETTER_URL ?? 'https://open-design.ai/subscribe';
+  process.env.NEXT_PUBLIC_NEWSLETTER_URL ?? '';
 const NEWSLETTER_EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const ONBOARDING_BYOK_AUTO_FETCH_DELAY_MS = 300;
 const ONBOARDING_BYOK_AUTO_TEST_DELAY_MS = 500;
@@ -374,7 +370,7 @@ interface Props {
   // not accept a `renderDesignSystemCreation` renderer. Guided creation stays
   // reachable from the standalone `design-system-create` route and the
   // Design Systems tab; do not re-thread an onboarding renderer here.
-  onOpenDesignSystem?: (id: string) => void;
+  onOpenDocsSystem?: (id: string) => void;
   onDesignSystemsRefresh?: () => Promise<void> | void;
   onPersistComposioKey: (composio: AppConfig['composio']) => Promise<void> | void;
   onOpenSettings: (section?: EntrySettingsSection) => void;
@@ -471,14 +467,13 @@ export function EntryShell({
   onProjectsRefresh,
   onChangeDefaultDesignSystem,
   onCreateDesignSystem,
-  onOpenDesignSystem,
+  onOpenDocsSystem,
   onDesignSystemsRefresh,
   onPersistComposioKey,
   onOpenSettings,
   onCompleteOnboarding,
 }: Props) {
   const t = useT();
-  const discordPresence = useDiscordPresence();
   // Each entry sub-view (home / projects / design-systems) is its own
   // URL now, so the browser back/forward buttons work and a deep link
   // to /design-systems lands on that section. We derive the active
@@ -514,14 +509,6 @@ export function EntryShell({
   const [homePromptHandoff, setHomePromptHandoff] = useState<HomePromptHandoff | null>(null);
   const entryMainScrollRef = useRef<HTMLElement | null>(null);
   const analytics = useAnalytics();
-  const discordOnlineLabel = discordPresence
-    ? t('entry.discordOnlineLabel', {
-        count: formatDiscordPresenceCount(discordPresence.onlineCount),
-      })
-    : null;
-  const discordAriaLabel = discordOnlineLabel
-    ? t('entry.discordAriaWithOnline', { online: discordOnlineLabel })
-    : t('entry.discordAria');
   function changeView(next: EntryViewKind) {
     const navElement = navElementForView(next);
     if (navElement) {
@@ -773,27 +760,6 @@ export function EntryShell({
             </button>
             <div className="entry-main__topbar-chips entry-main__topbar-chips--icon-only">
               <GithubStarBadge />
-              <a
-                className="entry-discord-badge od-tooltip"
-                href={DISCORD_URL}
-                aria-label={discordAriaLabel}
-                data-tooltip={discordAriaLabel}
-                data-tooltip-placement="bottom"
-                data-testid="entry-discord-badge"
-              >
-                <Icon name="discord" size={14} className="entry-discord-badge__icon" />
-                <span className="entry-discord-badge__label">{t('entry.discordLabel')}</span>
-                {discordOnlineLabel ? (
-                  <>
-                    <span className="entry-discord-badge__sep" aria-hidden>
-                      ·
-                    </span>
-                    <span className="entry-discord-badge__online">
-                      {discordOnlineLabel}
-                    </span>
-                  </>
-                ) : null}
-              </a>
               {view === 'home' ? null : executionSwitcher}
               <button
                 type="button"
@@ -904,7 +870,7 @@ export function EntryShell({
                     selectedId={defaultDesignSystemId}
                     onSelect={onChangeDefaultDesignSystem}
                     onCreate={onCreateDesignSystem}
-                    onOpenSystem={onOpenDesignSystem}
+                    onOpenSystem={onOpenDocsSystem}
                     onSystemsRefresh={onDesignSystemsRefresh}
                   />
                 </div>
@@ -919,7 +885,7 @@ export function EntryShell({
                     selectedId={defaultDesignSystemId}
                     onSelect={onChangeDefaultDesignSystem}
                     onCreate={onCreateDesignSystem}
-                    onOpenSystem={onOpenDesignSystem}
+                    onOpenSystem={onOpenDocsSystem}
                     onSystemsRefresh={onDesignSystemsRefresh}
                   />
                 </div>
@@ -1020,12 +986,12 @@ function OnboardingView({
   const t = useT();
   const analytics = useAnalytics();
   const [step, setStep] = useState(0);
-  const [runtime, setRuntime] = useState<'amr' | 'local' | 'byok' | null>(null);
+  const [runtime, setRuntime] = useState<'amr' | 'local' | 'byok' | null>('local');
   // Connect step (step 0) faces: the minimal cloud sign-in landing (null), or
   // a single dedicated setup page for the local CLI or BYOK that the landing's
   // two secondary links open directly. AMR has no card anymore — it signs in
   // straight from the landing's primary button.
-  const [connectExpanded, setConnectExpanded] = useState<'local' | 'byok' | null>(null);
+  const [connectExpanded, setConnectExpanded] = useState<'local' | 'byok' | null>('local');
   const [apiKeyVisible, setApiKeyVisible] = useState(false);
   const [cliScanStatus, setCliScanStatus] = useState<'idle' | 'scanning' | 'done'>('idle');
   const [amrStatus, setAmrStatus] = useState<VelaLoginStatus | null>(null);
@@ -1106,10 +1072,19 @@ function OnboardingView({
     config.apiKey.trim(),
     config.apiVersion?.trim() ?? '',
   ].join('\n');
+  const selectedProvider = KNOWN_PROVIDERS.find(
+    (provider) =>
+      provider.protocol === apiProtocol &&
+      provider.baseUrl === (config.apiProviderBaseUrl ?? config.baseUrl),
+  ) ?? null;
+  const providerModelFetchRequiresApiKey =
+    apiProtocol !== 'aihubmix' && selectedProvider?.requiresApiKey !== false;
+  const providerConnectionRequiresApiKey = selectedProvider?.requiresApiKey !== false;
+  const cleanApiKey = cleanByokApiKey(config.apiKey);
   const providerModelsInputKey = providerModelsCacheKey(
     apiProtocol,
     config.baseUrl,
-    config.apiKey,
+    cleanApiKey,
     config.apiVersion ?? '',
   );
   providerModelAutoSelectRef.current = {
@@ -1119,13 +1094,13 @@ function OnboardingView({
     step,
   };
   const canTestProvider =
-    Boolean(config.apiKey.trim()) &&
+    (!providerConnectionRequiresApiKey || Boolean(cleanApiKey.trim())) &&
     Boolean(config.baseUrl.trim()) &&
     Boolean(config.model.trim());
   const canFetchProviderModels =
     apiProtocol !== 'azure' &&
     apiProtocol !== 'ollama' &&
-    Boolean(config.apiKey.trim()) &&
+    (!providerModelFetchRequiresApiKey || Boolean(cleanApiKey.trim())) &&
     Boolean(config.baseUrl.trim()) &&
     isLikelyHttpUrl(config.baseUrl);
   const visibleProviderTestState =
@@ -1138,11 +1113,6 @@ function OnboardingView({
     providerModelsState.inputKey === providerModelsInputKey
       ? providerModelsState
       : { status: 'idle' as const };
-  const selectedProvider = KNOWN_PROVIDERS.find(
-    (provider) =>
-      provider.protocol === apiProtocol &&
-      provider.baseUrl === (config.apiProviderBaseUrl ?? config.baseUrl),
-  ) ?? null;
   const availableCliAgents = agents.filter((agent) => agent.available && agent.id !== 'amr');
   const visibleAgents = availableCliAgents.filter((agent) => visibleAgentIds.includes(agent.id));
   const amrAgent = agents.find((agent) => agent.id === 'amr' && agent.available) ?? null;
@@ -1200,7 +1170,7 @@ function OnboardingView({
   }, []);
 
   useEffect(() => {
-    if (!amrAgent || runtime !== null) return;
+    if (!ENABLE_AMR_RUNTIME || !amrAgent || runtime !== null) return;
     setRuntime('amr');
     onModeChange('daemon');
     onAgentChange('amr');
@@ -1240,12 +1210,16 @@ function OnboardingView({
     // The cold-start stream finished without AMR. Re-probe once before we
     // conclude AMR is unavailable, so the cloud sign-in stays usable even when
     // AMR was slow to surface in the initial agent list.
-    if (amrAgent || amrAgentRefreshAttemptedRef.current || agentsLoading) return;
+    if (!ENABLE_AMR_RUNTIME || amrAgent || amrAgentRefreshAttemptedRef.current || agentsLoading) return;
     amrAgentRefreshAttemptedRef.current = true;
     void Promise.resolve(onRefreshAgents()).catch(() => undefined);
   }, [amrAgent, agentsLoading, onRefreshAgents]);
 
   useEffect(() => {
+    if (!ENABLE_AMR_RUNTIME) {
+      setAmrStatusResolved(true);
+      return;
+    }
     // Fetch login status on mount in parallel with agent discovery so the
     // landing CTA settles quickly for already-authenticated users.
     let cancelled = false;
@@ -1716,7 +1690,7 @@ function OnboardingView({
   }
 
   // Cloud-landing primary CTA: pick the AMR cloud runtime and kick off the
-  // Open Design Cloud sign-in in one gesture. Mirrors the old AMR card's
+  // Open Docs Cloud sign-in in one gesture. Mirrors the old AMR card's
   // selection side effects (mode/agent) followed by the sign-in path, so a
   // successful login advances to the next onboarding step exactly the same way.
   async function handleCloudSignIn() {
@@ -1943,6 +1917,7 @@ function OnboardingView({
   async function submitNewsletterEmail(rawEmail: string): Promise<void> {
     const email = rawEmail.trim().toLowerCase();
     if (!email || !NEWSLETTER_EMAIL_RE.test(email)) return;
+    if (!NEWSLETTER_SUBSCRIBE_URL) return;
     emitOnboardingClick('newsletter_email', 'subscribe', { newsletter_opt_in: true });
     const controller = new AbortController();
     const timeout = window.setTimeout(() => controller.abort(), 5000);
@@ -2082,7 +2057,8 @@ function OnboardingView({
       const result = await fetchProviderModels({
         protocol: apiProtocol,
         baseUrl: config.baseUrl,
-        apiKey: config.apiKey,
+        apiKey: cleanApiKey,
+        apiVersion: config.apiVersion ?? '',
       });
       if (result.ok && result.models?.length) {
         selectFirstProviderModelWhenEmpty(result.models, inputKey);
@@ -2151,7 +2127,7 @@ function OnboardingView({
       ? t('settings.onboardingFinish')
       : t('settings.onboardingContinue');
 
-  // Connect step, default face: a minimal, centered Open Design Cloud sign-in
+  // Connect step, default face: a minimal, centered Open Docs Cloud sign-in
   // landing. No stepper, no runtime cards — just the cloud CTA, a secondary
   // link into the full runtime chooser, and a top-left language/theme bar.
   if (step === 0 && connectExpanded === null) {
@@ -2186,7 +2162,7 @@ function OnboardingView({
           <span
             className="onboarding-cloud__logo"
             role="img"
-            aria-label="Open Design"
+            aria-label="Open Docs"
           />
           <h1 className="onboarding-cloud__title">{t('settings.onboardingCloudTitle')}</h1>
           <p className="onboarding-cloud__body">{t('settings.onboardingCloudBody')}</p>
@@ -2280,7 +2256,7 @@ function OnboardingView({
           )}
         </div>
         <footer className="onboarding-cloud__footer">
-          © {new Date().getFullYear()} Open Design · {t('settings.onboardingCloudRights')}
+          © {new Date().getFullYear()} Open Docs · {t('settings.onboardingCloudRights')}
         </footer>
       </section>
     );
@@ -2300,14 +2276,6 @@ function OnboardingView({
         <div className="onboarding-view__content">
           {step === 0 ? (
             <div className="onboarding-view__panel">
-              <button
-                type="button"
-                className="onboarding-view__back-to-cloud"
-                onClick={() => setConnectExpanded(null)}
-              >
-                <Icon name="chevron-left" size={14} />
-                <span>{t('settings.onboardingBack')}</span>
-              </button>
               <OnboardingPanelHeader
                 title={
                   connectExpanded === 'byok'
@@ -2317,9 +2285,40 @@ function OnboardingView({
                 body={
                   connectExpanded === 'byok'
                     ? t('settings.onboardingByokBody')
-                    : t('settings.onboardingLocalBody')
+                  : t('settings.onboardingLocalBody')
                 }
               />
+              <div className="onboarding-cloud__alts">
+                <button
+                  type="button"
+                  className="onboarding-cloud__secondary"
+                  aria-pressed={connectExpanded === 'local'}
+                  onClick={() => {
+                    emitOnboardingClick('local_coding_agent', 'select_runtime', {
+                      runtime_type: 'local_cli',
+                    });
+                    setRuntime('local');
+                    onModeChange('daemon');
+                    setConnectExpanded('local');
+                    void scanCliAgents({ preferExisting: true });
+                  }}
+                >
+                  {t('settings.onboardingLocalTitle')}
+                </button>
+                <button
+                  type="button"
+                  className="onboarding-cloud__secondary"
+                  aria-pressed={connectExpanded === 'byok'}
+                  onClick={() => {
+                    emitOnboardingClick('byok', 'select_runtime', { runtime_type: 'byok' });
+                    setRuntime('byok');
+                    onModeChange('api');
+                    setConnectExpanded('byok');
+                  }}
+                >
+                  {t('settings.onboardingByokTitle')}
+                </button>
+              </div>
               <div className="onboarding-view__runtime-stack">
                 {connectExpanded === 'local' ? (
                   <OnboardingCliSetupPanel
@@ -3096,7 +3095,9 @@ function renderOnboardingProviderModelsMessage(
     case 'forbidden':
       return t('settings.testForbidden');
     case 'invalid_base_url':
-      return t('settings.testInvalidBaseUrl');
+      return result.detail
+        ? t('settings.fetchModelsFailed', { detail: result.detail })
+        : t('settings.testInvalidBaseUrl');
     case 'rate_limited':
       return t('settings.testRateLimited');
     case 'upstream_unavailable':

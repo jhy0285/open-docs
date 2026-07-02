@@ -1,5 +1,5 @@
 /* ============================================================
-   Open Design — neutral product workspace
+   Open Docs — neutral document workspace
    ============================================================ */
 :root {
   /* Surface palette — neutral app chrome that does not bias generated artifacts.
@@ -24,7 +24,7 @@
   --text-soft: #989590;
   --text-faint: #b3b0a8;
 
-  /* Accent — Open Design action color for app chrome only. */
+  /* Accent — Open Docs action color for app chrome only. */
   --accent: #c96442;
   --accent-strong: #b45a3b;
   --accent-soft: #f5d8cb;
@@ -146,6 +146,60 @@
 
   --code-header-bg: #1e1e20;
   --code-body-bg: #18181b;
+}
+
+[data-theme="cyberpunk"] {
+  color-scheme: dark;
+  --bg: #0f1320;
+  --bg-app: #0c111d;
+  --bg-panel: #151b2a;
+  --bg-subtle: #192234;
+  --bg-muted: #202c43;
+  --bg-fill-tertiary: rgba(122, 232, 223, 0.07);
+  --bg-fill-secondary: rgba(122, 232, 223, 0.11);
+  --bg-fill: rgba(122, 232, 223, 0.18);
+  --bg-elevated: #1a2336;
+  --border: #27344c;
+  --border-strong: #3b4d6c;
+  --border-soft: #202a3e;
+
+  --text: #e4edf7;
+  --text-strong: #f6fbff;
+  --text-muted: #9ba9bd;
+  --text-soft: #718096;
+  --text-faint: #4f5d73;
+
+  --accent: #29d3c4;
+  --accent-strong: #65eee0;
+  --accent-soft: #12393f;
+  --accent-tint: #102934;
+  --accent-hover: #46e2d4;
+
+  --green: #55d68d;
+  --green-bg: #0d2b22;
+  --green-border: #1f5442;
+  --blue: #7aa7ff;
+  --blue-bg: #0f1d3d;
+  --blue-border: #243d72;
+  --purple: #b29aff;
+  --purple-bg: #22143d;
+  --purple-border: #463179;
+  --red: #ff7b86;
+  --red-bg: #331319;
+  --red-border: #64303a;
+  --amber: #f4b45f;
+  --amber-bg: #33220c;
+
+  --shadow-xs: 0 1px 0 rgba(0, 0, 0, 0.24);
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.34), 0 1px 3px rgba(0, 0, 0, 0.24);
+  --shadow-md: 0 10px 28px rgba(0, 0, 0, 0.42), 0 2px 8px rgba(18, 57, 63, 0.18);
+  --shadow-lg: 0 26px 66px rgba(0, 0, 0, 0.62), 0 10px 22px rgba(18, 57, 63, 0.22);
+
+  --selected: #8b7cff;
+  --selected-soft: rgba(139, 124, 255, 0.18);
+
+  --code-header-bg: #121829;
+  --code-body-bg: #0d1220;
 }
 
 /* System mode: follow OS preference when no explicit data-theme is set. */

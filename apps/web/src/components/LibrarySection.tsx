@@ -4,7 +4,7 @@
 // upload, agent task, design-system staging, AI generation) with a source
 // badge, a kind badge, and back-links. Captures from the browser extension
 // stream in live over the `/api/library/events` SSE feed. The OD Clipper is
-// zero-config — it connects automatically whenever Open Design is running
+// zero-config — it connects automatically whenever Open Docs is running
 // locally, so there is no pairing step here.
 //
 // Each card thumbnail is kind-aware (image / video / html / font / color) and
@@ -1103,17 +1103,17 @@ export function LibrarySection({ active, onOpenProject }: Props) {
         <h1 className="entry-section__title">Library</h1>
         <div className={styles.clipperHint}>
           <p className={styles.headerHint}>
-            Clip any page, design system, screenshot, image, or Figma import JSON into your Library —
+            Clip any page, document style, screenshot, image, or Figma import JSON into your Library —
             local-first, one click, no login.
           </p>
           <a
             className={styles.clipperDownload}
-            href="https://open-design.ai/clipper"
+            href="https://github.com/jhy0285/open-docs"
             target="_blank"
             rel="noreferrer"
           >
             <Icon name="download" size={15} />
-            Get the Open Design Web Clipper
+            Open Docs repository
           </a>
         </div>
       </header>
@@ -1283,7 +1283,7 @@ export function LibrarySection({ active, onOpenProject }: Props) {
         <div className={styles.empty}>
           <p>No assets yet.</p>
           <p className={styles.emptyHint}>
-            Clip from any page with the Open Design Web Clipper, run{' '}
+            Clip from any page with the Open Docs Web Clipper, run{' '}
             <code>od library import &lt;file&gt;</code>, or upload inside a project — everything
             lands here.
           </p>

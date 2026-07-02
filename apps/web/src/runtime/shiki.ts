@@ -25,7 +25,7 @@ function getHighlighter(): Promise<HighlighterGeneric<any, any>> {
 function isDarkMode(): boolean {
   if (typeof document === 'undefined') return false;
   const theme = document.documentElement.getAttribute('data-theme');
-  if (theme === 'dark') return true;
+  if (theme === 'dark' || theme === 'cyberpunk') return true;
   if (theme === 'light') return false;
   return window.matchMedia('(prefers-color-scheme: dark)').matches;
 }

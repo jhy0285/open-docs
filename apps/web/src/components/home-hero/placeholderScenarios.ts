@@ -1,12 +1,12 @@
-// Home composer placeholder carousel — data + pure typewriter state machine.
+// Home composer placeholder carousel ??data + pure typewriter state machine.
 //
 // The empty Home composer rotates a set of scenario placeholders with a
-// typewriter effect (type → hold → delete → next). Each scenario is bound to
+// typewriter effect (type ??hold ??delete ??next). Each scenario is bound to
 // one of the create-rail templates (see `home-hero/chips.ts`): when the user
 // presses Send on an empty composer while a scenario is showing, HomeView
 // seeds the prompt with that scenario's text AND binds its template, so a
-// single click creates a fully-routed project — the low-cost "just start"
-// path mirrored from Claude Design's rotating placeholder.
+// single click creates a fully-routed project ??the low-cost "just start"
+// path mirrored from Open Docs's rotating placeholder.
 //
 // Copy is localised: each scenario carries a `textKey` into the i18n Dict
 // (`homeHero.carousel.*`), resolved with `t()` at render time in HomeHero so
@@ -41,7 +41,7 @@ export interface PlaceholderScenarioDef {
 }
 
 // i18n key for the idle hint shown as the editor's accessible placeholder while
-// the visual carousel animates on top. Not part of the rotation — it is
+// the visual carousel animates on top. Not part of the rotation ??it is
 // instructional copy ("here is what you can do"), not a submittable query, so
 // it never binds a template.
 export const PLACEHOLDER_BASE_HINT_KEY: keyof Dict = 'homeHero.carousel.hint';

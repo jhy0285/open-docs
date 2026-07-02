@@ -11,7 +11,7 @@ import type {
   ImportGitHubDesignSystemResponse,
   ImportShadcnDesignSystemRequest,
   ImportShadcnDesignSystemResponse,
-  OpenDesignGithubLatestReleaseResponse,
+  OpenDocsGithubLatestReleaseResponse,
   ImportLocalDesignSystemRequest,
   ImportLocalDesignSystemResponse,
   ReplaceProjectWorkingDirResponse,
@@ -902,7 +902,7 @@ export interface ConnectorActionResult {
 }
 
 function popupBlockedMessage(): string {
-  return 'Popup blocked. Allow popups for Open Design and try again.';
+  return 'Popup blocked. Allow popups for Open Docs and try again.';
 }
 
 export async function openExternalUrl(url: string): Promise<boolean> {
@@ -1215,9 +1215,9 @@ export type LatestGithubReleaseInfo = {
 
 export async function fetchLatestGithubReleaseInfo(): Promise<LatestGithubReleaseInfo | null> {
   try {
-    const resp = await fetch('/api/github/open-design/releases/latest');
+    const resp = await fetch('/api/github/open-docs/releases/latest');
     if (!resp.ok) return null;
-    const json = (await resp.json()) as Partial<OpenDesignGithubLatestReleaseResponse>;
+    const json = (await resp.json()) as Partial<OpenDocsGithubLatestReleaseResponse>;
     if (typeof json.tag_name !== 'string' || typeof json.html_url !== 'string') return null;
     return {
       tagName: json.tag_name,

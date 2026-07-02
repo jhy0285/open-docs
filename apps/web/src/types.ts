@@ -109,8 +109,8 @@ export type ApiProtocol = 'anthropic' | 'openai' | 'azure' | 'google' | 'ollama'
 
 export type LiveArtifactTabId = `live:${string}`;
 // Tab ids are arbitrary strings; the template-literal members below are
-// conventions FileWorkspace's `.ws-body` switch keys off (`live:` → live
-// artifact viewer, `chat:` → Side Chat tab). See `SideChatTabId` below.
+// conventions FileWorkspace's `.ws-body` switch keys off (`live:` ??live
+// artifact viewer, `chat:` ??Side Chat tab). See `SideChatTabId` below.
 export type ProjectWorkspaceTabId =
   | string
   | LiveArtifactTabId
@@ -238,36 +238,36 @@ export interface ApiProtocolConfig {
   model: string;
   apiVersion?: string;
   apiProviderBaseUrl?: string | null;
-  /** SenseAudio BYOK only — default image model the daemon-side
+  /** SenseAudio BYOK only ??default image model the daemon-side
    *  `generate_image` tool uses when the LLM doesn't pass one. Carries
    *  one of the SenseAudio image model ids (`senseaudio-image-2.0-260319`,
    *  `senseaudio-image-1.0-260319`, `doubao-seedream-5-0-260128`). Stored
    *  per-protocol so flipping between BYOK tabs doesn't reset the
    *  SenseAudio image-model choice. */
   byokImageModel?: string;
-  /** BYOK only — default video model the daemon-side `generate_video` tool
+  /** BYOK only ??default video model the daemon-side `generate_video` tool
    *  uses when the LLM doesn't pass one. Carries an `aihubmix-` prefixed
    *  video model id. Stored per-protocol, like byokImageModel. */
   byokVideoModel?: string;
-  /** BYOK only — default speech (TTS) model for the daemon-side generate_speech
+  /** BYOK only ??default speech (TTS) model for the daemon-side generate_speech
    *  tool (`aihubmix-` prefixed). Stored per-protocol, like byokImageModel. */
   byokSpeechModel?: string;
-  /** BYOK only — default speech voice id for the generate_speech tool. */
+  /** BYOK only ??default speech voice id for the generate_speech tool. */
   byokSpeechVoice?: string;
 }
 
 // Per-CLI model + reasoning the user picked in the model menu. Each agent
 // keeps its own slot so flipping between Codex and Gemini doesn't reset the
 // other one's choice. Missing entries fall back to the agent's first
-// declared model (`'default'` — let the CLI pick).
+// declared model (`'default'` ??let the CLI pick).
 export type AgentModelChoice = AgentModelPrefs;
 export type AgentCliEnvConfig = AgentCliEnvPrefs;
 export type AgentCliEnvIntentConfig = AgentCliEnvIntentPrefs;
 
-export type AppTheme = 'system' | 'light' | 'dark';
+export type AppTheme = 'system' | 'light' | 'dark' | 'cyberpunk';
 
 // One animation row inside a pet's sprite atlas. Mirrors the Codex
-// hatch-pet `animation-rows.md` reference — `id` lets the overlay map
+// hatch-pet `animation-rows.md` reference ??`id` lets the overlay map
 // interaction states (idle / hover / drag direction / waiting) to the
 // correct row regardless of how many rows a particular pet ships.
 export interface PetAtlasRowDef {
@@ -284,8 +284,8 @@ export interface PetAtlasRowDef {
   fps: number;
 }
 
-// Sprite atlas layout — when present on `PetCustom`, `imageUrl` is the
-// full grid (cols × rows) instead of a single horizontal strip. The
+// Sprite atlas layout ??when present on `PetCustom`, `imageUrl` is the
+// full grid (cols 횞 rows) instead of a single horizontal strip. The
 // overlay then picks one row to render based on user interaction.
 export interface PetAtlasLayout {
   cols: number;
@@ -300,7 +300,7 @@ export interface PetAtlasLayout {
 export interface PetCustom {
   // Display name shown in the overlay tooltip and settings card.
   name: string;
-  // Single emoji or 1–2 char glyph rendered as the sprite. We render text,
+  // Single emoji or 1?? char glyph rendered as the sprite. We render text,
   // not an image, so any user keyboard input works without uploads.
   glyph: string;
   // Hex color used as the overlay halo accent.
@@ -312,7 +312,7 @@ export interface PetCustom {
   // present, the overlay / rail / settings render the image instead of
   // the text glyph. Cleared when the user picks "Remove image".
   imageUrl?: string;
-  // Legacy single-row spritesheet config — when `frames > 1` we treat
+  // Legacy single-row spritesheet config ??when `frames > 1` we treat
   // `imageUrl` as a horizontal strip of `frames` equally-sized cells and
   // step through them at `fps` frames per second using a CSS `steps()`
   // animation, matching the codex-pets-react sheet shape (e.g.
@@ -323,12 +323,12 @@ export interface PetCustom {
   fps?: number;
   // Optional sprite atlas layout. When present, `imageUrl` is the full
   // atlas grid and the overlay renders the active row chosen by the
-  // interaction state machine (idle / hover → wave / drag → run / etc.).
+  // interaction state machine (idle / hover ??wave / drag ??run / etc.).
   atlas?: PetAtlasLayout;
 }
 
 export interface NotificationsConfig {
-  // Master switch for the completion sound. Default false — first-run users
+  // Master switch for the completion sound. Default false ??first-run users
   // hear nothing until they opt in.
   soundEnabled: boolean;
   // Sound id played when a turn ends with `runStatus === 'succeeded'`.
@@ -351,7 +351,7 @@ export interface PetConfig {
   // True once the user has explicitly picked a pet (built-in or custom).
   // Until then, the entry view shows an "adopt" callout to drive discovery.
   adopted: boolean;
-  // Floating overlay visibility — the wake/tuck toggle lives in Settings
+  // Floating overlay visibility ??the wake/tuck toggle lives in Settings
   // and on the overlay itself. Defaults to true after adoption.
   enabled: boolean;
   // 'custom' or a built-in id from `BUILT_IN_PETS`. We tolerate unknown ids
@@ -369,15 +369,15 @@ export interface AppConfig {
   model: string;
   apiProtocol?: ApiProtocol;
   apiVersion?: string;
-  /** SenseAudio BYOK only — default image model for the daemon-side
+  /** SenseAudio BYOK only ??default image model for the daemon-side
    *  generate_image tool. Mirrors apiProtocolConfigs.senseaudio.byokImageModel
    *  so the active protocol's value lives at the top level (consistent
    *  with how apiKey / baseUrl / model are projected onto AppConfig). */
   byokImageModel?: string;
-  /** BYOK only — default video model for the daemon-side generate_video tool.
+  /** BYOK only ??default video model for the daemon-side generate_video tool.
    *  Mirrors apiProtocolConfigs.<protocol>.byokVideoModel onto AppConfig. */
   byokVideoModel?: string;
-  /** BYOK only — default speech model + voice for the generate_speech tool. */
+  /** BYOK only ??default speech model + voice for the generate_speech tool. */
   byokSpeechModel?: string;
   byokSpeechVoice?: string;
   apiProtocolConfigs?: Partial<Record<ApiProtocol, ApiProtocolConfig>>;
@@ -422,24 +422,20 @@ export interface AppConfig {
   // IDs of skills/design-systems the user has explicitly disabled.
   disabledSkills?: string[];
   disabledDesignSystems?: string[];
-  // Anonymous install identifier for telemetry. Generated locally the first
-  // time a user opts in via Settings → Privacy. `null` after the user
-  // explicitly opts out (or rotates "Delete my data"); `undefined` when the
-  // daemon has not assigned an anonymous id yet.
+  // Anonymous install identifier for telemetry. Generated locally only after
+  // the user opts in via Settings -> Privacy. `null` after the user explicitly
+  // opts out or rotates "Delete my data"; `undefined` when the daemon has not
+  // assigned an anonymous id yet.
   installationId?: string | null;
   // Unix-millis timestamp recording that the first-run privacy prompt was
   // resolved. This is independent from installationId so Delete my data can
-  // rotate or clear the anonymous id without re-opening the consent banner.
+  // rotate or clear the anonymous id without re-opening the disclosure.
   privacyDecisionAt?: number | null;
   // Privacy preferences governing what (if anything) is shipped to the
-  // PostHog / Langfuse telemetry endpoints. `metrics` and `content`
-  // default ON (set by `DEFAULT_CONFIG.telemetry` in state/config.ts) so
-  // the onboarding funnel actually captures the first-run events. The
-  // post-onboarding disclosure modal explains this and Settings → Privacy is
-  // the one-click opt-out. Complete-context object manifests follow the
-  // content switch. A daemon-stored override always wins over these client
-  // defaults — once the user picks a value the modal / PrivacySection persist
-  // it through `syncConfigToDaemon`.
+  // PostHog / Langfuse telemetry endpoints. Open Docs defaults these off;
+  // Settings -> Privacy is the explicit opt-in surface. Complete-context
+  // object manifests follow the content switch. A daemon-stored override
+  // always wins over these client defaults once persisted.
   telemetry?: TelemetryConfig;
   customInstructions?: string;
   projectLocations?: ProjectLocationPrefs[];

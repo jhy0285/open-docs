@@ -1952,7 +1952,7 @@ describe('SettingsDialog execution settings Local CLI interactions', () => {
     );
 
     fireEvent.click(screen.getByRole('tab', { name: /Local CLI/i }));
-    fireEvent.click(screen.getByRole('button', { name: /^Open Design AMR\b/ }));
+    fireEvent.click(screen.getByRole('button', { name: /^Open Docs AMR\b/ }));
 
     const modelPickers = screen.getAllByRole('combobox', {
       name: en['settings.modelPicker'],
@@ -2249,7 +2249,7 @@ describe('SettingsDialog execution settings Local CLI interactions', () => {
 
     fireEvent.click(screen.getByRole('tab', { name: /Local CLI.*1 installed/i }));
 
-    expect(screen.getByRole('button', { name: /^Open Design AMR\b/ })).toBeTruthy();
+    expect(screen.getByRole('button', { name: /^Open Docs AMR\b/ })).toBeTruthy();
     expect(screen.queryByText('1.0.0')).toBeNull();
     expect(screen.queryByText(/AMR \(vela\)/i)).toBeNull();
     expect(screen.queryByText(/vela/i)).toBeNull();
@@ -2289,10 +2289,10 @@ describe('SettingsDialog execution settings Local CLI interactions', () => {
     );
 
     fireEvent.click(screen.getByRole('tab', { name: /Local CLI.*2 installed/i }));
-    expect(screen.getByRole('button', { name: /^Open Design AMR\b/ })).toBeTruthy();
+    expect(screen.getByRole('button', { name: /^Open Docs AMR\b/ })).toBeTruthy();
     expect(screen.queryByRole('button', { name: 'Authorize' })).toBeNull();
 
-    fireEvent.click(screen.getByRole('button', { name: /^Open Design AMR\b/ }));
+    fireEvent.click(screen.getByRole('button', { name: /^Open Docs AMR\b/ }));
 
     expect(await screen.findByRole('button', { name: 'Authorize' })).toBeTruthy();
   });
@@ -2328,7 +2328,7 @@ describe('SettingsDialog execution settings Local CLI interactions', () => {
     );
 
     fireEvent.click(screen.getByRole('tab', { name: /Local CLI.*1 installed/i }));
-    const amrCardButton = screen.getByRole('button', { name: /^Open Design AMR\b/ });
+    const amrCardButton = screen.getByRole('button', { name: /^Open Docs AMR\b/ });
     const amrCard = amrCardButton.closest('.agent-card') as HTMLElement;
     expect(amrCard).toBeTruthy();
     expect(await screen.findByText('Signing in…')).toBeTruthy();
@@ -2392,7 +2392,7 @@ describe('SettingsDialog execution settings Local CLI interactions', () => {
     );
 
     fireEvent.click(screen.getByRole('tab', { name: /Local CLI.*1 installed/i }));
-    const amrCard = screen.getByRole('button', { name: /^Open Design AMR\b/ }).closest('.agent-card') as HTMLElement;
+    const amrCard = screen.getByRole('button', { name: /^Open Docs AMR\b/ }).closest('.agent-card') as HTMLElement;
     expect(await screen.findByText('Signing in…')).toBeTruthy();
 
     fireEvent.mouseEnter(amrCard);
@@ -2457,7 +2457,7 @@ describe('SettingsDialog execution settings Local CLI interactions', () => {
     );
 
     fireEvent.click(screen.getByRole('tab', { name: /Local CLI.*1 installed/i }));
-    const amrCard = screen.getByRole('button', { name: /^Open Design AMR\b/ }).closest('.agent-card') as HTMLElement;
+    const amrCard = screen.getByRole('button', { name: /^Open Docs AMR\b/ }).closest('.agent-card') as HTMLElement;
     expect(await screen.findByText('Signing in…')).toBeTruthy();
 
     fireEvent.mouseEnter(amrCard);
@@ -2538,7 +2538,7 @@ describe('SettingsDialog execution settings Local CLI interactions', () => {
     );
 
     fireEvent.click(screen.getByRole('tab', { name: /Local CLI.*1 installed/i }));
-    const amrCard = screen.getByRole('button', { name: /^Open Design AMR\b/ }).closest('.agent-card') as HTMLElement;
+    const amrCard = screen.getByRole('button', { name: /^Open Docs AMR\b/ }).closest('.agent-card') as HTMLElement;
     expect(await screen.findByText('Signing in…')).toBeTruthy();
 
     fireEvent.mouseEnter(amrCard);
@@ -2594,7 +2594,7 @@ describe('SettingsDialog execution settings Local CLI interactions', () => {
     fireEvent.click(screen.getByRole('tab', { name: /Local CLI.*1 installed/i }));
 
     expect(await screen.findByRole('button', { name: 'Sign out' })).toBeTruthy();
-    expect(screen.getByRole('button', { name: /^Open Design AMR\b/ })).toBeTruthy();
+    expect(screen.getByRole('button', { name: /^Open Docs AMR\b/ })).toBeTruthy();
     expect(screen.getByText('signed-in@example.com')).toBeTruthy();
     expect(screen.queryByText(/AMR \(vela\)/i)).toBeNull();
     expect(screen.queryByText(/^vela$/i)).toBeNull();
@@ -2632,7 +2632,7 @@ describe('SettingsDialog execution settings Local CLI interactions', () => {
     fireEvent.click(screen.getByRole('tab', { name: /Local CLI.*1 installed/i }));
 
     expect(await screen.findByRole('button', { name: 'Sign out' })).toBeTruthy();
-    expect(screen.getByRole('button', { name: /^Open Design AMR\b/ })).toBeTruthy();
+    expect(screen.getByRole('button', { name: /^Open Docs AMR\b/ })).toBeTruthy();
     expect(screen.queryByText(/@/i)).toBeNull();
     expect(screen.queryByText(/AMR \(vela\)/i)).toBeNull();
   });
@@ -2729,12 +2729,12 @@ describe('SettingsDialog execution settings Local CLI interactions', () => {
 
     fireEvent.click(screen.getByRole('tab', { name: /Local CLI.*1 installed/i }));
     expect(await screen.findByRole('button', { name: 'Sign out' })).toBeTruthy();
-    expect(screen.getByRole('button', { name: /^Open Design AMR\b/ })).toBeTruthy();
+    expect(screen.getByRole('button', { name: /^Open Docs AMR\b/ })).toBeTruthy();
 
     fireEvent.click(screen.getByRole('button', { name: 'Sign out' }));
 
     expect(await screen.findByRole('button', { name: 'Authorize' })).toBeTruthy();
-    expect(screen.getByRole('button', { name: /^Open Design AMR\b/ })).toBeTruthy();
+    expect(screen.getByRole('button', { name: /^Open Docs AMR\b/ })).toBeTruthy();
     expect(
       onPersist.mock.calls.some(
         ([nextConfig]) =>
@@ -3209,10 +3209,10 @@ describe('SettingsDialog MCP server interactions', () => {
     });
     expect(screen.getByText(/Run this in your terminal/i)).toBeTruthy();
     await waitFor(() => {
-      expect(screen.getByText(/claude mcp add-json --scope user open-design/i)).toBeTruthy();
+      expect(screen.getByText(/claude mcp add-json --scope user open-docs/i)).toBeTruthy();
     });
     expect(screen.getByText(/Restart your client to pick up the new server/i)).toBeTruthy();
-    expect(screen.getByText(/Open Design must be running for MCP tool calls to succeed/i)).toBeTruthy();
+    expect(screen.getByText(/Open Docs must be running for MCP tool calls to succeed/i)).toBeTruthy();
   });
 
   it('switches client instructions and snippet content when a different MCP client is selected', async () => {
@@ -3222,7 +3222,7 @@ describe('SettingsDialog MCP server interactions', () => {
     );
 
     await waitFor(() => {
-      expect(screen.getByText(/claude mcp add-json --scope user open-design/i)).toBeTruthy();
+      expect(screen.getByText(/claude mcp add-json --scope user open-docs/i)).toBeTruthy();
     });
 
     fireEvent.click(screen.getByRole('button', { name: /Claude Code/i }));
@@ -3231,7 +3231,7 @@ describe('SettingsDialog MCP server interactions', () => {
     await waitFor(() => {
       expect(screen.getByText(/Append this table to ~\/\.codex\/config\.toml/i)).toBeTruthy();
     });
-    expect(screen.getByText(/\[mcp_servers\.open-design\]/i)).toBeTruthy();
+    expect(screen.getByText(/\[mcp_servers\.open-docs\]/i)).toBeTruthy();
 
     // Scope to the picker trigger ("Codex" + the TOML method chip) so
     // we don't collide with the new one-click "Install in Codex" /
@@ -3253,14 +3253,14 @@ describe('SettingsDialog MCP server interactions', () => {
     );
 
     await waitFor(() => {
-      expect(screen.getByText(/claude mcp add-json --scope user open-design/i)).toBeTruthy();
+      expect(screen.getByText(/claude mcp add-json --scope user open-docs/i)).toBeTruthy();
     });
 
     fireEvent.click(screen.getByRole('button', { name: 'Copy MCP configuration snippet' }));
 
     await waitFor(() => {
       expect(writeTextMock).toHaveBeenCalledWith(
-        expect.stringContaining("claude mcp add-json --scope user open-design"),
+        expect.stringContaining("claude mcp add-json --scope user open-docs"),
       );
     });
     expect(screen.getByText('Copied')).toBeTruthy();
@@ -3473,15 +3473,16 @@ describe('SettingsDialog appearance interactions', () => {
     document.documentElement.style.removeProperty('--accent-hover');
   });
 
-  it('treats System as the selected appearance mode when theme is unset or system', () => {
+  it('treats Light as the selected appearance mode when theme is unset or legacy system', () => {
     renderSettingsDialog(
       { theme: 'system' },
       { initialSection: 'appearance' },
     );
 
-    expect(screen.getByRole('button', { name: 'System' }).getAttribute('aria-pressed')).toBe('true');
-    expect(screen.getByRole('button', { name: 'Light' }).getAttribute('aria-pressed')).toBe('false');
+    expect(screen.queryByRole('button', { name: 'System' })).toBeNull();
+    expect(screen.getByRole('button', { name: 'Light' }).getAttribute('aria-pressed')).toBe('true');
     expect(screen.getByRole('button', { name: 'Dark' }).getAttribute('aria-pressed')).toBe('false');
+    expect(screen.getByRole('button', { name: 'Cyberpunk' }).getAttribute('aria-pressed')).toBe('false');
   });
 
   it('applies the first accent color as the default appearance color', () => {
@@ -3494,7 +3495,7 @@ describe('SettingsDialog appearance interactions', () => {
     expect(document.documentElement.style.getPropertyValue('--accent')).toBe('#c96442');
   });
 
-  it('live previews explicit themes and removes the explicit document theme when switching back to System', () => {
+  it('live previews explicit Light, Dark, and Cyberpunk themes', () => {
     renderSettingsDialog(
       { theme: 'dark' },
       { initialSection: 'appearance' },
@@ -3505,8 +3506,8 @@ describe('SettingsDialog appearance interactions', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Light' }));
     expect(document.documentElement.getAttribute('data-theme')).toBe('light');
 
-    fireEvent.click(screen.getByRole('button', { name: 'System' }));
-    expect(document.documentElement.hasAttribute('data-theme')).toBe(false);
+    fireEvent.click(screen.getByRole('button', { name: 'Cyberpunk' }));
+    expect(document.documentElement.getAttribute('data-theme')).toBe('cyberpunk');
   });
 
   it('reverts an unsaved appearance preview back to the saved theme when the dialog closes', () => {
@@ -3526,20 +3527,20 @@ describe('SettingsDialog appearance interactions', () => {
     expect(document.documentElement.getAttribute('data-theme')).toBe('dark');
   });
 
-  it('persists System mode explicitly and preserves accent variables without an explicit document theme', async () => {
+  it('persists Cyberpunk mode explicitly and preserves accent variables', async () => {
     const { onPersist } = renderSettingsDialog(
       { mode: 'daemon', agentId: 'codex', theme: 'dark', accentColor: '#2563eb' },
       { initialSection: 'appearance' },
     );
 
-    fireEvent.click(screen.getByRole('button', { name: 'System' }));
-    expect(document.documentElement.hasAttribute('data-theme')).toBe(false);
+    fireEvent.click(screen.getByRole('button', { name: 'Cyberpunk' }));
+    expect(document.documentElement.getAttribute('data-theme')).toBe('cyberpunk');
     expect(document.documentElement.style.getPropertyValue('--accent')).toBe('#2563eb');
 
     await waitForPersist(
       onPersist,
       expect.objectContaining({
-        theme: 'system',
+        theme: 'cyberpunk',
         accentColor: '#2563eb',
       }),
       {},
@@ -4091,7 +4092,7 @@ describe('SettingsDialog design systems section', () => {
     expect(screen.getByText('Neutral Modern')).toBeTruthy();
     expect(screen.queryByText('Signal Green')).toBeNull();
 
-    fireEvent.click(screen.getByRole('button', { name: 'Add design system' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Add document style' }));
     fireEvent.change(screen.getByPlaceholderText('/path/to/project'), {
       target: { value: '/tmp/imported-system' },
     });
@@ -4106,7 +4107,7 @@ describe('SettingsDialog design systems section', () => {
       expect(screen.getByText('Imported Imported System')).toBeTruthy();
     });
 
-    fireEvent.click(screen.getByRole('button', { name: 'View imported design system' }));
+    fireEvent.click(screen.getByRole('button', { name: 'View imported document style' }));
 
     await waitFor(() => {
       expect(screen.getByText('Imported System')).toBeTruthy();
@@ -4200,7 +4201,7 @@ describe('SettingsDialog about interactions', () => {
     const openSpy = vi.spyOn(window, 'open').mockImplementation(() => null);
     fetchLatestGithubReleaseInfoMock.mockResolvedValue({
       tagName: 'v0.4.1',
-      htmlUrl: 'https://github.com/nexu-io/open-design/releases/tag/v0.4.1',
+      htmlUrl: 'https://github.com/jhy0285/open-docs/releases/tag/v0.4.1',
       stale: true,
     });
 
@@ -4222,7 +4223,7 @@ describe('SettingsDialog about interactions', () => {
 
     await waitFor(() => {
       expect(openSpy).toHaveBeenCalledWith(
-        'https://github.com/nexu-io/open-design/releases',
+        'https://github.com/jhy0285/open-docs/releases',
         '_blank',
         'noopener,noreferrer',
       );

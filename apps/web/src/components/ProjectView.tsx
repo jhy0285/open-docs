@@ -487,7 +487,7 @@ function historyWithWorkspaceContext(
     '',
     '',
     '<active-workspace-context>',
-    'Open Design selected the currently focused workspace tab as the default context for this turn.',
+    'Open Docs selected the currently focused workspace tab as the default context for this turn.',
     ...items.map((item, index) => {
       const details = [
         item.path ? `path: ${item.path}` : null,
@@ -5246,31 +5246,31 @@ export function ProjectView({
     ],
   );
 
-  // "Share to Open Design" — kicks off the bundled `od-share-to-community`
+  // "Share to Open Docs" — kicks off the bundled `od-share-to-community`
   // scenario in the active conversation. We just inject the trigger prompt
   // through the standard chat-send path; the agent then loads SKILL.md and
   // drives the rest. Keep this preparing state alive for the resulting chat
   // run so the action reads as async packaging instead of instant sharing.
-  const [shareToOpenDesignBusyMessageId, setShareToOpenDesignBusyMessageId] = useState<string | null>(null);
-  const shareToOpenDesignBusyMessageIdRef = useRef<string | null>(null);
+  const [shareToOpenDocsBusyMessageId, setShareToOpenDocsBusyMessageId] = useState<string | null>(null);
+  const shareToOpenDocsBusyMessageIdRef = useRef<string | null>(null);
   useEffect(() => {
-    if (!shareToOpenDesignBusyMessageIdRef.current || currentConversationBusy) return;
-    shareToOpenDesignBusyMessageIdRef.current = null;
-    setShareToOpenDesignBusyMessageId(null);
+    if (!shareToOpenDocsBusyMessageIdRef.current || currentConversationBusy) return;
+    shareToOpenDocsBusyMessageIdRef.current = null;
+    setShareToOpenDocsBusyMessageId(null);
   }, [currentConversationBusy]);
-  const handleShareToOpenDesign = useCallback((assistantMessageId: string) => {
-    if (currentConversationActionDisabled || shareToOpenDesignBusyMessageIdRef.current) return;
-    shareToOpenDesignBusyMessageIdRef.current = assistantMessageId;
-    setShareToOpenDesignBusyMessageId(assistantMessageId);
+  const handleShareToOpenDocs = useCallback((assistantMessageId: string) => {
+    if (currentConversationActionDisabled || shareToOpenDocsBusyMessageIdRef.current) return;
+    shareToOpenDocsBusyMessageIdRef.current = assistantMessageId;
+    setShareToOpenDocsBusyMessageId(assistantMessageId);
     void Promise.resolve(handleSend(SHARE_TO_COMMUNITY_PROMPT, [], []))
       .then((started) => {
         if (started) return;
-        shareToOpenDesignBusyMessageIdRef.current = null;
-        setShareToOpenDesignBusyMessageId(null);
+        shareToOpenDocsBusyMessageIdRef.current = null;
+        setShareToOpenDocsBusyMessageId(null);
       })
       .catch(() => {
-        shareToOpenDesignBusyMessageIdRef.current = null;
-        setShareToOpenDesignBusyMessageId(null);
+        shareToOpenDocsBusyMessageIdRef.current = null;
+        setShareToOpenDocsBusyMessageId(null);
       });
   }, [currentConversationActionDisabled, handleSend]);
 
@@ -6512,8 +6512,8 @@ export function ProjectView({
               onRequestPluginFolderAgentAction={handlePluginFolderAgentAction}
               activePluginActionPaths={activePluginActionPaths}
               hiddenPluginActionPaths={hiddenAssistantPluginActionPaths}
-              onShareToOpenDesign={handleShareToOpenDesign}
-              shareToOpenDesignBusyMessageId={shareToOpenDesignBusyMessageId}
+              onShareToOpenDocs={handleShareToOpenDocs}
+              shareToOpenDocsBusyMessageId={shareToOpenDocsBusyMessageId}
               forceStreamingMessageIds={forceStreamingPluginMessageIds}
               initialDraft={chatInitialDraft}
               onOpenQuestions={openQuestionsTab}
@@ -7158,7 +7158,7 @@ function latestDesignSystemActivityEvents(messages: ChatMessage[]): AgentEvent[]
 }
 
 function pluginWorkflowTitle(action: PluginFolderAgentAction): string {
-  return action === 'publish' ? 'Publish repo' : 'Open Design PR';
+  return action === 'publish' ? 'Publish repo' : 'Open Docs PR';
 }
 
 function pluginWorkflowCliCommand(action: PluginFolderAgentAction, relativePath: string): string {
@@ -7177,7 +7177,7 @@ function pluginWorkflowPlannedSteps(action: PluginFolderAgentAction): string[] {
     ];
   }
   return [
-    'Ensure the Open Design fork exists',
+    'Ensure the Open Docs fork exists',
     'Clone the fork and prepare a branch',
     'Copy the plugin into plugins/community',
     'Push the branch and open the PR form',

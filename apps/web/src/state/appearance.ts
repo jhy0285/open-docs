@@ -9,6 +9,7 @@ const ACCENT_VARS = [
 ] as const;
 
 export const DEFAULT_ACCENT_COLOR = '#c96442';
+export const CYBERPUNK_ACCENT_COLOR = '#29d3c4';
 export const ACCENT_SWATCHES = [
   DEFAULT_ACCENT_COLOR,
   '#2563eb',
@@ -49,13 +50,16 @@ export function applyAppearanceToDocument({
   accentColor?: string;
 }): void {
   const root = document.documentElement;
-  if (theme === 'light' || theme === 'dark') {
+  if (theme === 'light' || theme === 'dark' || theme === 'cyberpunk') {
     root.setAttribute('data-theme', theme);
   } else {
     root.removeAttribute('data-theme');
   }
 
-  const normalized = resolveAccentColor(accentColor);
+  const normalized =
+    theme === 'cyberpunk' && resolveAccentColor(accentColor) === DEFAULT_ACCENT_COLOR
+      ? CYBERPUNK_ACCENT_COLOR
+      : resolveAccentColor(accentColor);
   const vars = accentVars(normalized);
   for (const name of ACCENT_VARS) {
     root.style.setProperty(name, vars[name]);

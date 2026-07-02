@@ -127,7 +127,7 @@ describe('AssistantMessage feedback gate', () => {
         projectId="proj-1"
         isLast
         onFeedback={vi.fn()}
-        onShareToOpenDesign={onShare}
+        onShareToOpenDocs={onShare}
       />,
     );
 
@@ -211,7 +211,7 @@ describe('AssistantMessage feedback gate', () => {
         onFeedback={vi.fn()}
       />,
     );
-    // A failed turn is a settled outcome worth rating — it's exactly the case a
+    // A failed turn is a settled outcome worth rating ??it's exactly the case a
     // user most wants to thumbs-down, so the feedback row must be present.
     expect(screen.getByRole('group', { name: 'Feedback' })).toBeTruthy();
   });
@@ -237,10 +237,10 @@ describe('AssistantMessage feedback gate', () => {
 describe('AssistantMessage status badge updates (Bug A)', () => {
   // Regression coverage for the model-badge stale-detail bug. ACP agents
   // emit two `status: 'model'` events per turn:
-  //   1. After session/new returns — the agent's initial default model
+  //   1. After session/new returns ??the agent's initial default model
   //      (e.g. `swe-1-6-fast` for Devin for Terminal)
   //   2. After session/set_config_option (or legacy session/set_model)
-  //      succeeds — the user-selected model (e.g. `claude-opus-4-7-max`)
+  //      succeeds ??the user-selected model (e.g. `claude-opus-4-7-max`)
   //
   // The previous `buildBlocks` dedupe SKIPPED the second event and the
   // badge stayed stuck on the initial default, even though the running
@@ -266,7 +266,7 @@ describe('AssistantMessage status badge updates (Bug A)', () => {
     // Latest detail should be rendered in the badge.
     expect(screen.getByText('claude-opus-4-7-max')).toBeTruthy();
 
-    // The initial default must not be present — if it is, the stale-detail
+    // The initial default must not be present ??if it is, the stale-detail
     // bug is back.
     expect(screen.queryByText('swe-1-6-fast')).toBeNull();
   });
@@ -359,7 +359,7 @@ describe('AssistantMessage thinking blocks', () => {
 describe('AssistantMessage question forms', () => {
   it('renders repeated question forms as one compact Questions banner in chat', () => {
     const firstForm = [
-      '<question-form id="discovery" title="Quick brief — tailored">',
+      '<question-form id="discovery" title="Quick brief ??tailored">',
       JSON.stringify({
         questions: [
           {
@@ -372,7 +372,7 @@ describe('AssistantMessage question forms', () => {
       '</question-form>',
     ].join('\n');
     const duplicateForm = [
-      '<question-form id="discovery" title="Quick brief — 30 seconds">',
+      '<question-form id="discovery" title="Quick brief ??30 seconds">',
       JSON.stringify({
         questions: [
           {
@@ -408,17 +408,17 @@ describe('AssistantMessage question forms', () => {
     expect(banners).toHaveLength(1);
     fireEvent.click(banners[0]!);
     expect(onOpenQuestions).toHaveBeenCalledWith(expect.objectContaining({
-      form: expect.objectContaining({ id: 'discovery', title: 'Quick brief — tailored' }),
+      form: expect.objectContaining({ id: 'discovery', title: 'Quick brief ??tailored' }),
     }));
-    expect(screen.queryByText('Quick brief — tailored')).toBeNull();
+    expect(screen.queryByText('Quick brief ??tailored')).toBeNull();
     expect(screen.queryByText('Who is this for?')).toBeNull();
-    expect(screen.queryByText('Quick brief — 30 seconds')).toBeNull();
+    expect(screen.queryByText('Quick brief ??30 seconds')).toBeNull();
     expect(screen.queryByText('What are we making?')).toBeNull();
   });
 
   it('renders an answered question banner as a disabled, non-clickable done state', () => {
     const form = [
-      '<question-form id="discovery" title="Quick brief — tailored">',
+      '<question-form id="discovery" title="Quick brief ??tailored">',
       JSON.stringify({
         questions: [
           {
@@ -450,21 +450,21 @@ describe('AssistantMessage question forms', () => {
     );
 
     const banner = screen.getByTestId('questions-banner') as HTMLButtonElement;
-    // Answered: no longer an open affordance — disabled, marked answered, and
+    // Answered: no longer an open affordance ??disabled, marked answered, and
     // clicking it must not re-open the Questions panel.
     expect(banner.disabled).toBe(true);
     expect(banner.getAttribute('data-answered')).toBe('true');
     expect(banner.textContent).toContain('Questions answered');
     fireEvent.click(banner);
     expect(onOpenQuestions).not.toHaveBeenCalled();
-    expect(screen.queryByText('Quick brief — tailored')).toBeNull();
+    expect(screen.queryByText('Quick brief ??tailored')).toBeNull();
     expect(screen.queryByText('Who is this for?')).toBeNull();
     expect(screen.queryByText('Product evaluators')).toBeNull();
   });
 
   it('keeps an unanswered question banner clickable', () => {
     const form = [
-      '<question-form id="discovery" title="Quick brief — tailored">',
+      '<question-form id="discovery" title="Quick brief ??tailored">',
       JSON.stringify({
         questions: [
           {
@@ -499,7 +499,7 @@ describe('AssistantMessage question forms', () => {
     expect(banner.getAttribute('data-answered')).toBeNull();
     fireEvent.click(banner);
     expect(onOpenQuestions).toHaveBeenCalledWith(expect.objectContaining({
-      form: expect.objectContaining({ id: 'discovery', title: 'Quick brief — tailored' }),
+      form: expect.objectContaining({ id: 'discovery', title: 'Quick brief ??tailored' }),
     }));
   });
 });

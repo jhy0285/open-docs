@@ -1075,7 +1075,7 @@ export const HomeHero = forwardRef<HomeHeroHandle, Props>(function HomeHero(
         <span className="home-hero__brand-mark">
           <img src="/app-icon.svg" alt="" draggable={false} />
         </span>
-        <span className="home-hero__brand-name">Open Design</span>
+        <span className="home-hero__brand-name">Open Docs</span>
       </div>
       <h1 className="home-hero__title">{t('homeHero.title')}</h1>
       <p className="home-hero__subtitle">
@@ -3112,6 +3112,7 @@ function homeHeroChipDescription(chipId: string, t: ReturnType<typeof useT>): st
     case 'wireframe': return t('homeHero.chip.wireframeDesc');
     case 'mobile': return t('homeHero.chip.mobileDesc');
     case 'deck': return t('homeHero.chip.deckDesc');
+    case 'screen-spec': return 'SI 화면 문서와 PPTX 명세서';
     case 'document': return t('homeHero.chip.documentDesc');
     case 'image': return t('homeHero.chip.imageDesc');
     case 'video': return t('homeHero.chip.videoDesc');
@@ -3131,6 +3132,7 @@ function homeHeroChipTitle(chip: HomeHeroChip, t: ReturnType<typeof useT>): stri
     case 'wireframe': return t('homeHero.chip.wireframeNext');
     case 'mobile': return t('homeHero.chip.mobileNext');
     case 'deck': return t('homeHero.chip.deckNext');
+    case 'screen-spec': return '화면 캡처, 마커, Description, Check Point를 가진 화면명세서 프로젝트를 엽니다.';
     case 'document': return t('homeHero.chip.documentNext');
     case 'image': return t('homeHero.chip.imageNext');
     case 'video': return t('homeHero.chip.videoNext');

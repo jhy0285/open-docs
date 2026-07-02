@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+﻿import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import type { CSSProperties, Dispatch, SetStateAction } from 'react';
 import { Button, VisuallyHidden } from '@open-design/components';
 import type { AmrWalletSnapshot } from '@open-design/contracts';
@@ -188,7 +188,7 @@ export type SettingsSection =
   | 'projectLocations'
   | 'memory'
   | 'privacy'
-  // 'library' is consumed by the EntryShell library route — App opens it
+  // 'library' is consumed by the EntryShell library route ??App opens it
   // via this same openSettings entry point, so SettingsSection must
   // accept the token even though SettingsDialog itself has no Library
   // section. Reconcile follow-up: route library through a dedicated
@@ -215,8 +215,8 @@ interface Props {
    * Persist the current draft. Invoked by the dialog's autosave loop on
    * every committed edit. Returns a promise that resolves once both
    * localStorage and the daemon have caught up so the footer status
-   * indicator can flip from "Saving…" to "Saved". Should NOT close the
-   * dialog and should NOT mutate onboarding state — it represents an
+   * indicator can flip from "Saving?? to "Saved". Should NOT close the
+   * dialog and should NOT mutate onboarding state ??it represents an
    * incremental save, not a final commit.
    */
   onPersist: (cfg: AppConfig, options?: { forceMediaProviderSync?: boolean }) => Promise<void> | void;
@@ -249,9 +249,9 @@ interface Props {
   onReloadMediaProviders?: () => Promise<AppConfig['mediaProviders'] | null>;
   onProjectsRefresh?: () => Promise<void> | void;
   /**
-   * Notified by Settings → Skills after a successful skill registry
+   * Notified by Settings ??Skills after a successful skill registry
    * mutation (create / edit / delete). App.tsx uses this to drop preview
-   * iframes whose project depends on the affected skill — body-only
+   * iframes whose project depends on the affected skill ??body-only
    * edits do not move SkillSummary fields, so ProjectView's signature
    * path can miss them.
    */
@@ -270,48 +270,12 @@ export interface AgentRefreshOptions {
 // When AMR sign-in completes, vela's live `models` catalog can lag the
 // credential write by a beat (the link backend has to register the freshly
 // authorized device). Re-detect a few times so a momentarily-empty catalog
-// doesn't leave the model picker hidden — the symptom that previously needed
+// doesn't leave the model picker hidden ??the symptom that previously needed
 // an app restart / reinstall to clear.
 const AMR_SIGN_IN_RESCAN_ATTEMPTS = 4;
 const AMR_SIGN_IN_RESCAN_RETRY_MS = 1500;
 
-function codexPathStrings(locale: Locale) {
-  if (locale === 'zh-CN') {
-    return {
-      repairHint: '当前保存的 Codex 路径不适合继续使用。',
-      useDetected: '使用检测到的 Codex',
-      clearCustom: '清空自定义路径',
-      configuredSuccess: (path: string) => `本次测试使用的是已配置的 Codex 路径：${path}。`,
-      invalidFallback: (configuredPath: string, detectedPath: string) =>
-        `已配置的 Codex 路径无效或不可执行：${configuredPath}。本次测试改用 PATH 中的 Codex CLI：${detectedPath}。建议更新 CODEX_BIN 或清空自定义路径。`,
-      failedFallback: (configuredPath: string, detectedPath: string) =>
-        `已配置的 Codex 路径启动失败：${configuredPath}。本次测试改用 PATH 中的 Codex CLI：${detectedPath}。建议更新 CODEX_BIN 或清空自定义路径。`,
-    };
-  }
-  if (locale === 'zh-TW') {
-    return {
-      repairHint: '目前儲存的 Codex 路徑不適合繼續使用。',
-      useDetected: '使用偵測到的 Codex',
-      clearCustom: '清除自訂路徑',
-      configuredSuccess: (path: string) => `本次測試使用的是已設定的 Codex 路徑：${path}。`,
-      invalidFallback: (configuredPath: string, detectedPath: string) =>
-        `已設定的 Codex 路徑無效或不可執行：${configuredPath}。本次測試改用 PATH 中的 Codex CLI：${detectedPath}。建議更新 CODEX_BIN 或清除自訂路徑。`,
-      failedFallback: (configuredPath: string, detectedPath: string) =>
-        `已設定的 Codex 路徑啟動失敗：${configuredPath}。本次測試改用 PATH 中的 Codex CLI：${detectedPath}。建議更新 CODEX_BIN 或清除自訂路徑。`,
-    };
-  }
-  if (locale === 'ja') {
-    return {
-      repairHint: '保存されている Codex のパスは、このテストで使用すべきバイナリではありません。',
-      useDetected: '検出された Codex を使用',
-      clearCustom: 'カスタムパスをクリア',
-      configuredSuccess: (path: string) => `このテストでは設定済みの Codex パスを使用しました：${path}。`,
-      invalidFallback: (configuredPath: string, detectedPath: string) =>
-        `設定された Codex パスが無効か実行できません：${configuredPath}。このテストでは PATH 上の Codex CLI（${detectedPath}）を使用しました。CODEX_BIN を更新するか、カスタムパスをクリアしてください。`,
-      failedFallback: (configuredPath: string, detectedPath: string) =>
-        `設定された Codex パスの起動に失敗しました：${configuredPath}。このテストは PATH 上の Codex CLI（${detectedPath}）で成功しました。CODEX_BIN を更新するか、カスタムパスをクリアしてください。`,
-    };
-  }
+function codexPathStrings(_locale: Locale) {
   return {
     repairHint: 'The saved Codex path is not the binary this test should keep using.',
     useDetected: 'Use detected Codex',
@@ -352,7 +316,7 @@ const GATEWAY_API_PROTOCOLS = new Set<ApiProtocol>([
 
 // Providers whose live model fetch IS their full account catalogue, so the
 // per-option "from your account" badge and the "Loaded N from your account"
-// hint are noise — every option carries the same badge and distinguishes
+// hint are noise ??every option carries the same badge and distinguishes
 // nothing. For these we drop the source label and show a plain count instead.
 // Add a protocol here when the same applies to another provider.
 const ACCOUNT_MODEL_SOURCE_LABEL_HIDDEN = new Set<ApiProtocol>([
@@ -439,10 +403,11 @@ export function canFetchProviderModels(
   config: Pick<AppConfig, 'apiKey' | 'baseUrl'>,
   protocol: ApiProtocol,
 ): boolean {
+  const requiresApiKey = protocol !== 'aihubmix';
   return (
     protocol !== 'azure' &&
     protocol !== 'ollama' &&
-    Boolean(config.apiKey.trim()) &&
+    (!requiresApiKey || Boolean(cleanByokApiKey(config.apiKey).trim())) &&
     Boolean(config.baseUrl.trim()) &&
     isValidApiBaseUrl(config.baseUrl)
   );
@@ -620,7 +585,7 @@ function cleanAgentVersionLabel(
 }
 
 function displayAgentName(agent: Pick<AgentInfo, 'id' | 'name'>): string {
-  return agent.id === 'amr' ? 'Open Design AMR' : agent.name;
+  return agent.id === 'amr' ? 'Open Docs AMR' : agent.name;
 }
 
 const AGENT_CLI_ENV_FIELDS = [
@@ -691,7 +656,7 @@ function defaultApiProtocolConfig(protocol: ApiProtocol): ApiProtocolConfig {
 }
 
 function providerFamilyLabel(provider: KnownProvider): string {
-  return provider.label.replace(/\s+—\s+(Anthropic|OpenAI)$/u, '');
+  return provider.label.replace(/\s+[-–—]\s+(Anthropic|OpenAI)$/u, '');
 }
 
 function siblingProviderForProtocol(
@@ -775,7 +740,7 @@ function applyApiProtocolConfig(
     apiProviderBaseUrl: apiConfig.apiProviderBaseUrl ?? null,
     apiVersion: protocol === 'azure' ? (apiConfig.apiVersion ?? '') : '',
     // byokImageModel applies to the protocols that inject the daemon-side
-    // generate_image tool (SenseAudio, AIHubMix) — flipping to another BYOK
+    // generate_image tool (SenseAudio, AIHubMix) ??flipping to another BYOK
     // tab shouldn't carry an image-model choice into, say, the OpenAI form.
     // Mirrors the apiVersion guarding above.
     byokImageModel:
@@ -1142,19 +1107,19 @@ export function SettingsDialog({
   >(() => new Set());
   const previousInitialRef = useRef(initial);
   const lastSavedAppearanceRef = useRef({
-    theme: initial.theme ?? 'system',
+    theme: initial.theme ?? 'light',
     accentColor: resolveAccentColor(initial.accentColor),
   });
 
-  // settings_view — fire on dialog open and on every section switch so the
+  // settings_view ??fire on dialog open and on every section switch so the
   // configuration funnel can see which section the user spent time in.
-  // The fire is keyed on section so a section bounce (open → switch →
+  // The fire is keyed on section so a section bounce (open ??switch ??
   // close) emits one event per surface.
   const lastViewSectionRef = useRef<string | null>(null);
 
   useEffect(() => {
     lastSavedAppearanceRef.current = {
-      theme: initial.theme ?? 'system',
+      theme: initial.theme ?? 'light',
       accentColor: resolveAccentColor(initial.accentColor),
     };
   }, [initial.theme, initial.accentColor]);
@@ -1214,11 +1179,11 @@ export function SettingsDialog({
   // Card pulse: a brief attention flash that auto-clears after a few seconds.
   const [amrHighlightActive, setAmrHighlightActive] = useState(false);
   // Coachmark: persists (unlike the card pulse) until the real pointer reaches
-  // the authorize button — so it won't vanish while the user is still moving
+  // the authorize button ??so it won't vanish while the user is still moving
   // toward it.
   const [amrCoachmarkArmed, setAmrCoachmarkArmed] = useState(false);
   // The fake-cursor coachmark dismisses as soon as the real pointer reaches the
-  // authorize button — once the user has found it, the hint has done its job.
+  // authorize button ??once the user has found it, the hint has done its job.
   const [amrCoachmarkDismissed, setAmrCoachmarkDismissed] = useState(false);
   const [agentRescanRunning, setAgentRescanRunning] = useState(false);
   const [agentRescanNotice, setAgentRescanNotice] =
@@ -1344,9 +1309,9 @@ export function SettingsDialog({
     // Passive read only. Push the daemon's current status down into the card;
     // the pill mirrors it via `initialStatus` (and clears any stale login error
     // when it sees a signed-in status). Do NOT republish the login-state-change
-    // event here — that restarts the pill's poll/pending machine on every focus
+    // event here ??that restarts the pill's poll/pending machine on every focus
     // and, while the external browser is stealing and returning focus during a
-    // login, ping-pongs the action between "Signing in…" and "Authorize".
+    // login, ping-pongs the action between "Signing in?? and "Authorize".
     const resyncAmrStatus = () => {
       if (document.visibilityState === 'hidden') return;
       void fetchVelaLoginStatus().then((next) => {
@@ -1464,11 +1429,11 @@ export function SettingsDialog({
         return;
       }
     } catch {
-      // network error — fall through to open releases page
+      // network error ??fall through to open releases page
     } finally {
       setVersionChecking(false);
     }
-    window.open('https://github.com/nexu-io/open-design/releases', '_blank', 'noopener,noreferrer');
+    window.open('https://github.com/jhy0285/open-docs/releases', '_blank', 'noopener,noreferrer');
   }, [versionChecking, appVersionInfo, t]);
 
   // Precise inverse of App.handleCompleteOnboarding: flip
@@ -1491,7 +1456,7 @@ export function SettingsDialog({
     setActiveSection(initialSection);
   }, [initialSection]);
 
-  // settings_view — fires whenever the active section changes (and once on
+  // settings_view ??fires whenever the active section changes (and once on
   // mount). Keying the fire on a section+section-string lets us dedupe
   // accidental double-renders while still capturing genuine tab switches.
   useEffect(() => {
@@ -1752,7 +1717,7 @@ export function SettingsDialog({
   // model list hasn't arrived yet. AMR is detected at app start (often while
   // signed out, so it comes back with an empty, fail-closed list), and the
   // live `vela models` catalog only becomes fetchable once the credential
-  // lands — and can lag the credential write by a beat. We must cover every
+  // lands ??and can lag the credential write by a beat. We must cover every
   // way Settings ends up "signed in + empty", not just an in-Settings
   // sign-in edge: onboarding signs in and re-detects exactly once, so if that
   // single call lands during the propagation window Settings later mounts
@@ -1761,7 +1726,7 @@ export function SettingsDialog({
   // (see renderAgentModelConfig) until the catalog fills in.
   //
   // `onRefreshAgents` / `agents` are read through refs so re-detecting (which
-  // changes their identity) can't tear the retry loop down mid-flight — that
+  // changes their identity) can't tear the retry loop down mid-flight ??that
   // is what made the loading row flash and vanish before the catalog arrived.
   // The in-flight ref keeps a single loop running across renders.
   const onRefreshAgentsRef = useRef(onRefreshAgents);
@@ -2161,6 +2126,7 @@ export function SettingsDialog({
           protocol: apiProtocol,
           baseUrl: cfg.baseUrl,
           apiKey: cleanByokApiKey(cfg.apiKey),
+          apiVersion: cfg.apiVersion ?? '',
         },
         controller.signal,
       );
@@ -2412,7 +2378,7 @@ export function SettingsDialog({
   // sync to localStorage + the daemon. We keep a 400ms debounce so rapid
   // typing in text fields doesn't flood the daemon with PUTs while still
   // feeling near-instant for toggles/selects (which fire once and settle).
-  // The Composio API key field is intentionally excluded from this loop —
+  // The Composio API key field is intentionally excluded from this loop ??
   // see ConnectorSection for the explicit "Save key" gesture.
   // The status here drives the footer indicator: 'idle' = no draft to
   // flush, 'pending' = scheduled, 'saving' = request in flight, 'saved'
@@ -2431,7 +2397,7 @@ export function SettingsDialog({
   // recent successful autosave (or the initial cfg on mount). Compared
   // against the current snapshot to decide whether the only edits
   // since last save are intentionally-stripped fields like the
-  // Composio API key — in which case we must NOT flash "All changes
+  // Composio API key ??in which case we must NOT flash "All changes
   // saved", because the draft has not actually been persisted.
   const autosaveLastSavedRef = useRef<AppConfig>(cfg);
   const mediaProvidersChangeVersionRef = useRef(0);
@@ -2487,7 +2453,7 @@ export function SettingsDialog({
           await onPersist(snapshot, persistOptions);
           autosaveLastSavedRef.current = snapshot;
           lastSavedAppearanceRef.current = {
-            theme: snapshot.theme ?? 'system',
+            theme: snapshot.theme ?? 'light',
             accentColor: resolveAccentColor(snapshot.accentColor),
           };
           // If a newer edit landed while the request was in flight,
@@ -2567,7 +2533,7 @@ export function SettingsDialog({
   }, [onPersist]);
 
   // Global Escape closes the dialog. With no footer button anymore the
-  // close affordances are: top-right X · backdrop click · Escape.
+  // close affordances are: top-right X, backdrop click, and Escape.
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
       if (e.key !== 'Escape') return;
@@ -2684,14 +2650,14 @@ export function SettingsDialog({
     // Normalize the stored key on blur so the value that flows into the
     // connection-test / model-fetch requests below (and back to the daemon
     // via autosave) is already free of pasted whitespace / zero-width
-    // characters — otherwise a key like "sk-ant-...\n" would only raise a
+    // characters ??otherwise a key like "sk-ant-...\n" would only raise a
     // non-blocking warning yet still go out malformed over the wire.
     const cleanedApiKey = cleanByokApiKey(cfg.apiKey);
     if (cleanedApiKey !== cfg.apiKey) {
       // Writing the cleaned key changes cfg.apiKey, which re-runs the reset
       // effects above: one nulls providerModelsCommittedKey, the other bumps
       // providerTestRevisionRef / clears providerAutoTestKeyRef. So committing
-      // the model key or starting the auto-test here would be clobbered — the
+      // the model key or starting the auto-test here would be clobbered ??the
       // model commit before the auto-fetch effect reads it, and the auto-test
       // result dropped by the stale-revision guard. Defer both until the
       // cleaned value has landed (effect below), otherwise account models
@@ -2755,7 +2721,7 @@ export function SettingsDialog({
     if (byokFirstPartyBaseUrl?.hostTypo) return;
     if (blockingByokDraftIssues(byokModelFetchDraftValidation).length > 0) return;
     // AIHubMix needs no key and prefills its base URL, so there's nothing to
-    // debounce-commit — fetch as soon as the tab is selected. Every other
+    // debounce-commit ??fetch as soon as the tab is selected. Every other
     // protocol waits until the key/baseUrl inputs are committed (on blur) so we
     // don't fire on each keystroke.
     if (apiProtocol !== 'aihubmix' && providerModelsCommittedKey !== providerModelsKey) return;
@@ -2849,7 +2815,7 @@ export function SettingsDialog({
   useEffect(() => {
     if (cfg.mode !== 'api') return;
     if (apiModelCustomEditing) return;
-    // Respect an explicit user pick — even when it equals the provider preset
+    // Respect an explicit user pick ??even when it equals the provider preset
     // id, the user deliberately chose it and discovery must not rewrite it.
     if (apiModelUserSelectedRef.current) return;
     if (fetchedApiModelOptions.length === 0) return;
@@ -2903,7 +2869,7 @@ export function SettingsDialog({
   // Header title/subtitle follow the active sidebar section so the dialog
   // header always reflects what the user is looking at, instead of being
   // pinned to one section's copy. The execution section's header doubles
-  // as the section heading — there is no inner h3 inside the Local CLI /
+  // as the section heading ??there is no inner h3 inside the Local CLI /
   // BYOK content so "Local CLI" only renders once (in the seg-control tab),
   // not twice (heading + tab).
   const sectionHeader: Record<SettingsSection, { title: string; subtitle: string }> = {
@@ -2940,7 +2906,7 @@ export function SettingsDialog({
       subtitle: t('settings.projectLocationsHint'),
     },
     memory: { title: t('settings.memory'), subtitle: t('settings.memoryHint') },
-    // 'library' is opened via EntryShell route — SettingsDialog doesn't
+    // 'library' is opened via EntryShell route ??SettingsDialog doesn't
     // render it but SettingsSection must accept the token (see type def).
     library: { title: '', subtitle: '' },
     about: { title: t('settings.about'), subtitle: t('settings.aboutHint') },
@@ -2981,7 +2947,7 @@ export function SettingsDialog({
       selected.reasoningOptions.length > 0;
     // AMR's live catalog only lands a beat after sign-in. While the user is
     // signed in but the model list hasn't arrived yet, show the picker in a
-    // loading state instead of hiding it — so the dropdown appears at sign-in
+    // loading state instead of hiding it ??so the dropdown appears at sign-in
     // and simply fills in, rather than popping in seconds later.
     if (selected.id === 'amr' && !hasModels && (amrCardStatus?.loggedIn ?? false)) {
       return (
@@ -3198,7 +3164,7 @@ export function SettingsDialog({
         aria-labelledby="settings-dialog-title"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Top-right chrome strip — anchored to the modal corner so the
+        {/* Top-right chrome strip ??anchored to the modal corner so the
             autosave indicator and the close button float above the
             sidebar/content rhythm without competing with the title.
             We use `position: absolute` instead of putting these inside
@@ -3209,7 +3175,7 @@ export function SettingsDialog({
             renders. */}
         <div className="settings-chrome" aria-hidden={false}>
           {/* Autosave status pill. Only renders something while a save
-              is in flight or has just completed — idle = invisible so
+              is in flight or has just completed ??idle = invisible so
               first-open feels calm. The chrome strip itself stays
               mounted so the close button never shifts when the pill
               appears, and the pill is announced via aria-live for
@@ -4160,7 +4126,7 @@ export function SettingsDialog({
                     working agent picked yet. Older logic surfaced it
                     whenever any agent on the support list was missing,
                     which fired for almost everyone (few people install
-                    all 14 supported CLIs) — the four-step quickstart
+                    all 14 supported CLIs) ??the four-step quickstart
                     then sat between the agent grid and the model picker
                     forever, even after the user had successfully picked
                     Claude Code months ago. Once a working agent is
@@ -4229,7 +4195,7 @@ export function SettingsDialog({
               })()}
               {(() => {
                 /*
-                  Per-agent CLI environment overrides — proxy URLs, custom
+                  Per-agent CLI environment overrides ??proxy URLs, custom
                   config dirs, and a binary path override. The previous
                   layout listed every supported agent's variables in one
                   long always-expanded block; for users on Claude Code
@@ -4238,7 +4204,7 @@ export function SettingsDialog({
                   on every open even though nine in ten users never
                   touch it. Now: filtered to the *currently selected*
                   agent only, and folded into a collapsed disclosure
-                  that opens to "Advanced: proxy & custom paths" — power
+                  that opens to "Advanced: proxy & custom paths" ??power
                   users who route through LiteLLM or installed the
                   binary out-of-PATH still have one click access; new
                   users no longer wonder "are these fields I forgot to
@@ -4307,7 +4273,7 @@ export function SettingsDialog({
             </section>
           ) : (
             /*
-              BYOK panel — wrap the per-protocol form in a bordered card so
+              BYOK panel ??wrap the per-protocol form in a bordered card so
               the chips above (Anthropic / OpenAI / Azure / Gemini / Ollama)
               visually own the content below. Without the card, the chip
               row and the form looked like two unrelated stripes; users
@@ -4780,7 +4746,7 @@ export function SettingsDialog({
                     aria-checked={active}
                     className={`settings-language-tile${active ? ' active' : ''}`}
                     onClick={() => {
-                      // P1 ui_click area=language — record the locale id
+                      // P1 ui_click area=language ??record the locale id
                       // that was picked, regardless of whether it differs
                       // from the current one (user clicked = signal).
                       trackSettingsLanguageClick(analytics.track, {
@@ -5004,7 +4970,7 @@ export function ConnectorSection({
   composioConfigLoading?: boolean;
   /** Persist the freshly typed Composio API key to the daemon. Returns
    *  once both localStorage and the daemon have caught up so the
-   *  section-local Save button can flip from "Saving…" back to idle. */
+   *  section-local Save button can flip from "Saving?? back to idle. */
   onPersistComposioKey: (composio: AppConfig['composio']) => Promise<void> | void;
   /** Optional analytics hook for the integrations surface. The parent
    *  (IntegrationsView) wires this so connectors-tab clicks emit on
@@ -5044,7 +5010,7 @@ export function ConnectorSection({
   const tail = composio.apiKeyTail?.trim();
 
   // Section-local save state. The Composio key bypasses the dialog's
-  // global autosave loop because it is a secret — we don't want
+  // global autosave loop because it is a secret ??we don't want
   // partial-typed keys leaving the browser on every keystroke. The
   // user explicitly clicks "Save key" when they're ready, the request
   // completes, the daemon returns a tail-only echo, and we land in
@@ -5116,7 +5082,7 @@ export function ConnectorSection({
 
   // Two-stage destructive confirmation for "Clear". Clearing the saved
   // Composio API key cascades into disconnecting every connector that
-  // depends on it, which is irreversible from the UI's standpoint —
+  // depends on it, which is irreversible from the UI's standpoint ??
   // accounts, OAuth grants, and tool access all unwind. To stop that
   // from happening on a stray click we gate the existing wipe behind
   //   1. an inline warning panel (must click "Continue"), then
@@ -5141,7 +5107,7 @@ export function ConnectorSection({
   }, [apiKeyConfigured, composioConfigLoading]);
   // Arm the destructive button after a short delay once the user
   // reaches the final stage. Until then the button is visually hot
-  // but inert — this is the "hold on a sec" moment that keeps a
+  // but inert ??this is the "hold on a sec" moment that keeps a
   // reflex Enter / double-click from blowing through both stages.
   useEffect(() => {
     if (clearStage !== 'final') {
@@ -5214,7 +5180,7 @@ export function ConnectorSection({
           <span className="field-label-group">
             <span className="field-label">{t('settings.connectorsComposioApiKey')}</span>
             {composioConfigLoading ? (
-              // Skeleton chip stands in for the "Saved · ••••XXXX" badge
+              // Skeleton chip stands in for the saved timestamp badge
               // while we wait for the daemon. Same footprint as the real
               // chip so the row geometry doesn't jump on resolve.
               <span
@@ -5263,7 +5229,7 @@ export function ConnectorSection({
               onFocus={() => onConnectorsTabClick?.('api_key_input')}
               onChange={(e) => updateComposio({ apiKey: e.target.value })}
               onKeyDown={(e) => {
-                // Enter from the password field commits the key — the
+                // Enter from the password field commits the key ??the
                 // most common save gesture for credential fields, and
                 // it removes the need to mouse over to the button.
                 if (
@@ -5543,14 +5509,14 @@ function OrbitSection({
   // for graceful UX: `null` = still loading, `[]` = loaded with no Orbit
   // templates available, `SkillSummary[]` = ready. If the daemon is offline
   // the call resolves with [] (see fetchDesignTemplates) so the section never
-  // throws — the rest of the Orbit controls keep working.
+  // throws ??the rest of the Orbit controls keep working.
   const [orbitTemplates, setOrbitTemplates] = useState<SkillSummary[] | null>(null);
   // Connector presence drives the configuration gate at the top of the Orbit
   // tab. We track three states: `null` = still loading (skip rendering the
   // gate so it doesn't flash before data arrives), `0` = no connectors
   // present (gate is shown), `>0` = at least one connected integration
   // (gate is hidden). We only count connectors with `status === 'connected'`
-  // because the catalog itself ships hundreds of available rows — what
+  // because the catalog itself ships hundreds of available rows ??what
   // matters for Orbit is whether anything has actually been wired up.
   const [connectedCount, setConnectedCount] = useState<number | null>(null);
   // Once the user clicks Generate we close Settings and navigate away. The ref
@@ -5600,7 +5566,7 @@ function OrbitSection({
   // Fetch the design-template registry once on mount and filter to
   // scenario === 'orbit'. We tolerate fetch failure:
   // fetchDesignTemplates already swallows errors and returns []. The
-  // component then transitions from "loading" → "empty" and the rest of the
+  // component then transitions from "loading" ??"empty" and the rest of the
   // Orbit panel stays fully functional.
   useEffect(() => {
     let alive = true;
@@ -5649,7 +5615,7 @@ function OrbitSection({
     return () => window.removeEventListener('focus', onFocus);
   }, [refreshConnectedCount]);
 
-  // The id used to drive the prompt template — coalesces a null/empty
+  // The id used to drive the prompt template ??coalesces a null/empty
   // saved value to the built-in default (DEFAULT_ORBIT.templateSkillId,
   // currently 'orbit-general'). The select no longer offers a "no template"
   // option, so legacy configs that stored null are presented as if they
@@ -5742,7 +5708,7 @@ function OrbitSection({
 
   // Proportional widths for the run-result meter. We avoid showing 0-width
   // segments by falling back to a tiny sliver when a category has hits but
-  // rounds to 0% — the visual "something happened here" cue matters more
+  // rounds to 0% ??the visual "something happened here" cue matters more
   // than exact proportion at low counts.
   const total = lastRun
     ? Math.max(
@@ -5769,8 +5735,8 @@ function OrbitSection({
   // loading and intentionally hide the gate so the panel doesn't flash an
   // empty-state warning before data arrives. Once resolved, `0` triggers
   // the gate. The gate's copy + CTA branch on whether a Composio API key
-  // has been saved: missing key → push toward configuring Composio first;
-  // key present, no connections → push toward picking an integration.
+  // has been saved: missing key ??push toward configuring Composio first;
+  // key present, no connections ??push toward picking an integration.
   const showConfigGate = connectedCount === 0;
   const gateBodyKey = composioApiKeyConfigured
     ? 'settings.orbit.gateBody'
@@ -5788,7 +5754,7 @@ function OrbitSection({
     : t('settings.orbit.runTitle');
 
   // When the configuration gate is visible (no connector available) we
-  // also lock down every secondary control on the panel — schedule
+  // also lock down every secondary control on the panel ??schedule
   // toggle, time input, prompt template select, and the missing-template
   // Reset button. Touching any of them before a connector exists either
   // produces a no-op or persists state the user can't actually exercise.
@@ -5859,7 +5825,7 @@ function OrbitSection({
           Connectors tab inside the same settings dialog (no navigation
           off the page). The copy/CTA branch on whether a Composio API
           key has been saved already, because the prerequisite chain is:
-          API key → connector connected → Orbit can run. */}
+          API key ??connector connected ??Orbit can run. */}
       {showConfigGate ? (
         <div
           className="orbit-config-gate"
@@ -5998,7 +5964,7 @@ function OrbitSection({
 
         <div className="orbit-automation-divider" aria-hidden="true" />
 
-        {/* Prompt template row — folded into the automation card so users
+        {/* Prompt template row ??folded into the automation card so users
             configure schedule and prompt steering in one place. The select
             picks which scenario === 'orbit' skill template gets injected
             into the Orbit prompt. There is no separate preview slab below
@@ -6006,18 +5972,18 @@ function OrbitSection({
             truth for the active template, and each option carries the
             skill description as a `title` tooltip. The only state that
             still needs explicit surfacing is "saved id no longer in the
-            registry" — that warning replaces the row's normal sub-copy
+            registry" ??that warning replaces the row's normal sub-copy
             and inlines a Reset action when the missing id differs from
             the default. */}
         <div className="orbit-automation-row orbit-automation-template-row">
           <div className="orbit-automation-label">
             {/* Title aligns with the other automation rows ("Daily summary",
-                "Run time") — a single short label. */}
+                "Run time") ??a single short label. */}
             <span className="orbit-automation-title">{t('settings.orbit.templateTitle')}</span>
             {orbitTemplates &&
             effectiveTemplateSkillId &&
             !orbitTemplates.some((s) => s.id === effectiveTemplateSkillId) ? (
-              // The saved skill id is no longer installed — surface a
+              // The saved skill id is no longer installed ??surface a
               // soft warning right under the title, with an inline Reset
               // action that pushes back to DEFAULT_ORBIT (currently
               // `orbit-general`). Reset is hidden when the missing id
@@ -6076,7 +6042,7 @@ function OrbitSection({
                   onChange={(e) => {
                     const next = e.target.value;
                     // Guard against the loading placeholder making it
-                    // through onChange — only persist real skill ids.
+                    // through onChange ??only persist real skill ids.
                     if (!next) return;
                     updateOrbit({ templateSkillId: next });
                   }}
@@ -6084,7 +6050,7 @@ function OrbitSection({
                   {/* While the skill registry is still loading we render a
                       single non-interactive placeholder so the select has
                       a value to display. Once `orbitTemplates` resolves we
-                      drop the placeholder entirely — the dropdown lists
+                      drop the placeholder entirely ??the dropdown lists
                       only real Orbit skill templates, so there is no
                       "no template" / "use built-in" option to pick. */}
                   {orbitTemplates === null ? (
@@ -6111,7 +6077,7 @@ function OrbitSection({
                         <option
                           key={s.id}
                           value={s.id}
-                          // Browser-native tooltip — surfaces the skill
+                          // Browser-native tooltip ??surfaces the skill
                           // description on hover without needing a
                           // dedicated preview panel.
                           title={s.description ?? undefined}
@@ -6134,9 +6100,9 @@ function OrbitSection({
       </div>
 
       {/* ---------- 4. RUN RESULT / RECEIPT ---------- */}
-      {/* When there is no last run yet, the "receipt" metaphor doesn't fit —
+      {/* When there is no last run yet, the "receipt" metaphor doesn't fit ??
           there's nothing to report. We swap to a first-run prompt with its
-          own composed layout (orbit-glyph · copy · inline CTA) so the empty
+          own composed layout (orbit glyph, copy, and inline CTA) so the empty
           state feels intentional and rhythmically balanced with the hero,
           automation card, and (eventual) artifact strip. */}
       {lastRun ? (
@@ -6343,9 +6309,9 @@ function MediaProvidersSection({
     (p) => p.settingsVisible !== false,
   );
   // Split the catalog into two surfaces:
-  //   - "Available" — daemon ships a real client, user can paste a key
+  //   - "Available" ??daemon ships a real client, user can paste a key
   //     and it works. Rendered as full editable cards.
-  //   - "Coming soon" — listed for transparency / roadmap signaling but
+  //   - "Coming soon" ??listed for transparency / roadmap signaling but
   //     the daemon has no client yet, so the form fields would be
   //     disabled placeholders. Hiding them behind a <details> keeps the
   //     primary list focused (was 16 cards, now 8) without dropping the
@@ -6406,9 +6372,9 @@ function MediaProvidersSection({
       setReloadRunning(false);
     }
   };
-  // Successful reload acknowledgement lives on the button (✓ Reloaded)
+  // Successful reload acknowledgement lives on the button (??Reloaded)
   // for ~2s then disappears. Keeping it as a permanent paragraph under
-  // the section header was noise — the user just clicked a button and
+  // the section header was noise ??the user just clicked a button and
   // got a visible state change, an extra "we did the thing" line is
   // redundant. Errors stay sticky because they actually require user
   // attention.
@@ -6436,7 +6402,7 @@ function MediaProvidersSection({
         <p className="hint" role="alert">{mediaProvidersNotice}</p>
       ) : null}
       {reloadNotice && reloadNotice.kind === 'error' ? (
-        // Errors only — successful reload feedback now rides on the
+        // Errors only ??successful reload feedback now rides on the
         // button (see is-success-flash above) and clears itself after
         // 2s, so the section header doesn't get colonised by a
         // permanent "yes I did the thing" paragraph.
@@ -6511,7 +6477,7 @@ function MediaProvidersSection({
                     pushed the model hint two lines down. Inline + a
                     neutral muted treatment keeps the row scannable: green
                     means "we support this", blue means "you configured
-                    it", gray means "your key is persisted" — three
+                    it", gray means "your key is persisted" ??three
                     distinct hues, three distinct meanings.
                   */}
                   <div className="media-provider-name-row">
@@ -6649,7 +6615,7 @@ function MediaProvidersSection({
         // Roadmap drawer. We still want to advertise that we know
         // these providers exist (so users don't ask "where is Fal?"),
         // but disabled placeholder cards in the main list were noise.
-        // Closed by default — opens to a compact name + hint + docs
+        // Closed by default ??opens to a compact name + hint + docs
         // link list, no inputs because there's nothing to wire up yet.
         // TODO(i18n): inline English placeholders; promote to locale
         // keys when we touch this section again.
@@ -6716,7 +6682,7 @@ function MediaProvidersSection({
 // Important: every snippet uses absolute paths to the daemon's current
 // Node-compatible runtime and built cli.js, fetched at runtime. macOS
 // and Linux ship a system /usr/bin/od (octal-dump) that shadows any
-// `od` we might add to PATH, and most Open Design users run from
+// `od` we might add to PATH, and most Open Docs users run from
 // source where `od` is not installed globally. The installer panel
 // must NOT reference bare `od`.
 type McpClientId =
@@ -6755,7 +6721,7 @@ interface McpClient {
   buildMethod: (info: McpInstallInfo) => string;
   // Function so per-OS path hints (~/.cursor on POSIX vs
   // %USERPROFILE%\.cursor on Windows) and shortcut differences
-  // (⌘⇧P vs Ctrl+Shift+P) can be rendered correctly.
+  // (??껊닀P vs Ctrl+Shift+P) can be rendered correctly.
   buildInstruction: (info: McpInstallInfo) => string;
   buildSnippet: (info: McpInstallInfo) => string;
   buildSnippetLang: (info: McpInstallInfo) => 'bash' | 'json' | 'toml';
@@ -6777,16 +6743,16 @@ function homeConfigPath(
 }
 
 function commandPaletteShortcut(platform: McpInstallInfo['platform']): string {
-  return platform === 'darwin' ? '⌘⇧P' : 'Ctrl+Shift+P';
+  return platform === 'darwin' ? '??껊닀P' : 'Ctrl+Shift+P';
 }
 
 function settingsShortcut(platform: McpInstallInfo['platform']): string {
-  return platform === 'darwin' ? '⌘,' : 'Ctrl+,';
+  return platform === 'darwin' ? '??' : 'Ctrl+,';
 }
 
 // btoa() requires every input character be representable in Latin-1
 // (codepoints 0-255). A Mac/Linux home directory like
-// "/Users/Émile/.fnm/.../node" trips that and throws
+// "/Users/?땘ile/.fnm/.../node" trips that and throws
 // InvalidCharacterError. UTF-8-encode the string into bytes first,
 // then map each byte back to a Latin-1 char before base64'ing.
 function utf8Btoa(s: string): string {
@@ -6810,7 +6776,7 @@ function buildCodexEnvToml(info: McpInstallInfo): string {
   if (entries.length === 0) return '';
   return `
 
-[mcp_servers.open-design.env]
+[mcp_servers.open-docs.env]
 ${entries.map(([key, value]) => `${key} = ${JSON.stringify(value)}`).join('\n')}`;
 }
 
@@ -6822,13 +6788,13 @@ function buildSharedMcpJson(info: McpInstallInfo): string {
     .join('\n');
   return `{
   "mcpServers": {
-    "open-design": ${innerJson}
+    "open-docs": ${innerJson}
   }
 }`;
 }
 
 // One-click install toggle for Codex: queries the daemon for whether
-// `codex mcp get open-design` succeeds, and POSTs/DELETEs the install
+// `codex mcp get open-docs` succeeds, and POSTs/DELETEs the install
 // endpoint to call `codex mcp add/remove` on the user's behalf. The
 // copy-snippet path still works for users who prefer to paste manually
 // or whose Codex CLI is not on PATH (button shows a disabled hint in
@@ -6848,7 +6814,7 @@ function CodexInstallToggle(): JSX.Element | null {
       setAvailable(Boolean(data.available));
       setInstalled(Boolean(data.installed));
     } catch {
-      // Daemon unreachable or endpoint missing — hide the toggle
+      // Daemon unreachable or endpoint missing ??hide the toggle
       // entirely rather than spook the user with a permanent error.
       setAvailable(false);
       setInstalled(false);
@@ -6950,7 +6916,7 @@ function IntegrationsSection() {
       buildInstruction: () => t('settings.mcpInstructionCli'),
       buildSnippet: (info) => {
         const inner = JSON.stringify(buildMcpStdioServerConfig(info));
-        return `claude mcp add-json --scope user open-design '${inner}'`;
+        return `claude mcp add-json --scope user open-docs '${inner}'`;
       },
       buildSnippetLang: () => 'bash',
     },
@@ -6966,7 +6932,7 @@ function IntegrationsSection() {
         );
         return t('settings.mcpInstructionCodex', { path });
       },
-      buildSnippet: (info) => `[mcp_servers.open-design]\ncommand = ${JSON.stringify(info.command)}\nargs = ${JSON.stringify(info.args)}${buildCodexEnvToml(info)}`,
+      buildSnippet: (info) => `[mcp_servers.open-docs]\ncommand = ${JSON.stringify(info.command)}\nargs = ${JSON.stringify(info.args)}${buildCodexEnvToml(info)}`,
       buildSnippetLang: () => 'toml',
     },
     {
@@ -6982,7 +6948,7 @@ function IntegrationsSection() {
       buildDeeplink: (info) => {
         const inner = buildMcpStdioServerConfig(info);
         const encoded = utf8Btoa(JSON.stringify(inner));
-        return `cursor://anysphere.cursor-deeplink/mcp/install?name=open-design&config=${encoded}`;
+        return `cursor://anysphere.cursor-deeplink/mcp/install?name=open-docs&config=${encoded}`;
       },
       deeplinkLabel: () => t('settings.mcpDeeplinkInstallCursor'),
     },
@@ -6994,7 +6960,7 @@ function IntegrationsSection() {
         t('settings.mcpInstructionCopilot', {
           shortcut: commandPaletteShortcut(info.platform),
         }),
-      buildSnippet: (info) => `{\n  "servers": {\n    "open-design": {\n      "type": "stdio",\n      "command": ${JSON.stringify(info.command)},\n      "args": ${JSON.stringify(info.args)}${info.env && Object.keys(info.env).length > 0 ? `,\n      "env": ${JSON.stringify(info.env)}` : ''}\n    }\n  }\n}`,
+      buildSnippet: (info) => `{\n  "servers": {\n    "open-docs": {\n      "type": "stdio",\n      "command": ${JSON.stringify(info.command)},\n      "args": ${JSON.stringify(info.args)}${info.env && Object.keys(info.env).length > 0 ? `,\n      "env": ${JSON.stringify(info.env)}` : ''}\n    }\n  }\n}`,
       buildSnippetLang: () => 'json',
     },
     {
@@ -7013,7 +6979,7 @@ function IntegrationsSection() {
         t('settings.mcpInstructionZed', {
           shortcut: settingsShortcut(info.platform),
         }),
-      buildSnippet: (info) => `{\n  "context_servers": {\n    "open-design": {\n      "source": "custom",\n      "command": ${JSON.stringify(info.command)},\n      "args": ${JSON.stringify(info.args)}${info.env && Object.keys(info.env).length > 0 ? `,\n      "env": ${JSON.stringify(info.env)}` : ''}\n    }\n  }\n}`,
+      buildSnippet: (info) => `{\n  "context_servers": {\n    "open-docs": {\n      "source": "custom",\n      "command": ${JSON.stringify(info.command)},\n      "args": ${JSON.stringify(info.args)}${info.env && Object.keys(info.env).length > 0 ? `,\n      "env": ${JSON.stringify(info.env)}` : ''}\n    }\n  }\n}`,
       buildSnippetLang: () => 'json',
     },
     {
@@ -7300,8 +7266,8 @@ function IntegrationsSection() {
           </button>
         </div>
 
-        {/* "Build the daemon first" lives here — next to the code
-            block it explains — rather than at the top of the section
+        {/* "Build the daemon first" lives here ??next to the code
+            block it explains ??rather than at the top of the section
             before the user has seen anything. A dev-mode pre-condition
             warning at the very top reads as "something is broken"
             before the user has even picked their client. */}
@@ -7320,7 +7286,7 @@ function IntegrationsSection() {
         ) : null}
 
         {/* Restart note is a "next step" after running the command,
-            not an error — keep it right after the code block. */}
+            not an error ??keep it right after the code block. */}
         <div
           style={{
             padding: '10px 12px',
@@ -7347,10 +7313,14 @@ function IntegrationsSection() {
   );
 }
 
-const THEMES: Array<{ value: AppTheme; labelKey: 'settings.themeSystem' | 'settings.themeLight' | 'settings.themeDark'; icon?: 'sun' | 'moon' }> = [
-  { value: 'system', labelKey: 'settings.themeSystem' },
+const THEMES: Array<{
+  value: AppTheme;
+  labelKey: 'settings.themeLight' | 'settings.themeDark' | 'settings.themeCyberpunk';
+  icon: 'sun' | 'moon' | 'sparkles';
+}> = [
   { value: 'light', labelKey: 'settings.themeLight', icon: 'sun' },
   { value: 'dark', labelKey: 'settings.themeDark', icon: 'moon' },
+  { value: 'cyberpunk', labelKey: 'settings.themeCyberpunk', icon: 'sparkles' },
 ];
 
 function AppearanceSection({
@@ -7362,7 +7332,10 @@ function AppearanceSection({
 }) {
   const { t } = useI18n();
   const analytics = useAnalytics();
-  const current = cfg.theme ?? 'system';
+  const current =
+    cfg.theme === 'dark' || cfg.theme === 'cyberpunk'
+      ? cfg.theme
+      : 'light';
   const currentAccent = normalizeAccentColor(cfg.accentColor) ?? DEFAULT_ACCENT_COLOR;
   const accentLabel = t('pet.fieldAccent');
   const defaultAccentLabel = t('pet.fieldAccentDefault');
@@ -7391,16 +7364,11 @@ function AppearanceSection({
             className={'seg-btn' + (current === value ? ' active' : '')}
             aria-pressed={current === value}
             onClick={() => {
-              // P1 ui_click area=appearance — `system|light|dark` only
-              // emits from the segmented control; accent swatch picks
-              // use `accent_color` with the swatch hex below.
-              if (value === 'system' || value === 'light' || value === 'dark') {
-                trackSettingsAppearanceClick(analytics.track, {
-                  page_name: 'settings',
-                  area: 'appearance',
-                  element: value,
-                });
-              }
+              trackSettingsAppearanceClick(analytics.track, {
+                page_name: 'settings',
+                area: 'appearance',
+                element: value,
+              });
               setCfg((c) => ({ ...c, theme: value }));
             }}
           >
@@ -7591,7 +7559,7 @@ function NotificationsSection({
 
   const toggleSound = () => {
     const next = !notif.soundEnabled;
-    // P1 ui_click area=notifications element=completion_sound — the toggle
+    // P1 ui_click area=notifications element=completion_sound ??the toggle
     // emits the post-click state on `completion_sound_status` so a single
     // event captures intent + outcome.
     trackSettingsNotificationsClick(analytics.track, {

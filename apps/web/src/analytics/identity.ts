@@ -74,7 +74,7 @@ export function claimRunTurnIndex(): { turnIndex: number; isFirstRun: boolean } 
   }
 }
 
-// Desktop packaged builds install the Open Design host bridge so the
+// Desktop packaged builds install the Open Docs host bridge so the
 // same web bundle can distinguish desktop runs from browser visits.
 // Falls back to 'web' when the host bridge isn't present.
 export function detectClientType(): AnalyticsClientType {

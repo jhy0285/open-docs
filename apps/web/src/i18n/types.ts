@@ -383,6 +383,7 @@ export interface Dict {
   'settings.themeSystem': string;
   'settings.themeLight': string;
   'settings.themeDark': string;
+  'settings.themeCyberpunk': string;
   'settings.agentModelHead': string;
   'settings.modelPicker': string;
   'settings.modelSourceLive': string;
@@ -3222,8 +3223,8 @@ export interface Dict {
   'assistant.copyMarkdown': string;
   'assistant.forkConversation': string;
   'assistant.forkingConversation': string;
-  'assistant.shareToOpenDesign': string;
-  'assistant.shareToOpenDesignBusy': string;
+  'assistant.shareToOpenDocs': string;
+  'assistant.shareToOpenDocsBusy': string;
   'assistant.feedbackPrompt': string;
   'assistant.feedbackPositive': string;
   'assistant.feedbackNegative': string;

@@ -23,10 +23,10 @@ export interface PluginSourceLinks {
   /** Browseable URL for the install source, or null when the source
    *  is a local path / bundled relpath / unknown shape. */
   sourceUrl: string | null;
-  /** Friendly label for the source — github slug, hostname, or path
+  /** Friendly label for the source ??github slug, hostname, or path
    *  basename. Always present, never null. */
   sourceLabel: string;
-  /** Display label for the source kind — "GitHub", "Official",
+  /** Display label for the source kind ??"GitHub", "Official",
    *  "Marketplace", etc. */
   sourceKindLabel: string;
   /** manifest.author.name trimmed, or null. */
@@ -49,8 +49,8 @@ export interface PluginSourceLinks {
   contributeOnGithub: boolean;
 }
 
-const OPEN_DESIGN_REPO_URL = 'https://github.com/nexu-io/open-design';
-const OPEN_DESIGN_REPO_LABEL = 'nexu-io/open-design';
+const OPEN_DESIGN_REPO_URL = 'https://github.com/jhy0285/open-docs';
+const OPEN_DESIGN_REPO_LABEL = 'jhy0285/open-docs';
 
 const GITHUB_SOURCE_RE = /^github:([A-Za-z0-9._-]+)\/([A-Za-z0-9._-]+)(?:@([A-Za-z0-9._/-]+))?(?:\/(.+))?$/;
 const GITHUB_PROFILE_RE = /^https?:\/\/(?:www\.)?github\.com\/([A-Za-z0-9](?:[A-Za-z0-9-]{0,38}[A-Za-z0-9])?)(?:[\/?#].*)?$/;
@@ -71,14 +71,14 @@ function safeHttpUrl(value: unknown): string | null {
   }
 }
 
-/** github.com/owner/repo[/...] → "owner/repo" or null. */
+/** github.com/owner/repo[/...] ??"owner/repo" or null. */
 function githubRepoSlug(url: string): { owner: string; repo: string } | null {
   const match = GITHUB_REPO_RE.exec(url);
   if (!match) return null;
   return { owner: match[1]!, repo: match[2]! };
 }
 
-/** github.com/<user> → "<user>" or null. Distinguishes single-segment
+/** github.com/<user> ??"<user>" or null. Distinguishes single-segment
  *  profile/org URLs from multi-segment repo URLs. */
 function githubUsername(url: string): string | null {
   const match = GITHUB_PROFILE_RE.exec(url);
@@ -112,7 +112,7 @@ const SOURCE_KIND_LABELS: Record<InstalledPluginRecord['sourceKind'], string> = 
 };
 
 /** Derive everything the UI needs about a plugin's source + author
- *  in one call. Pure — safe to call from render. */
+ *  in one call. Pure ??safe to call from render. */
 export function derivePluginSourceLinks(
   record: Pick<
     InstalledPluginRecord,
@@ -144,7 +144,7 @@ export function derivePluginSourceLinks(
       const [, owner, repo, ref, subpath] = match;
       const ref0 = ref || record.pinnedRef;
       // Refs can contain `/` (branches like `release/1.0`, or
-      // installer refs that absorbed a subpath) — encode each
+      // installer refs that absorbed a subpath) ??encode each
       // segment so spaces/special chars are escaped but the
       // separators stay.
       const refSegment = ref0 && ref0 !== 'HEAD'
@@ -175,7 +175,7 @@ export function derivePluginSourceLinks(
     sourceUrl = OPEN_DESIGN_REPO_URL;
     sourceLabel = OPEN_DESIGN_REPO_LABEL;
   } else {
-    // user / project / local — the source string is a filesystem
+    // user / project / local ??the source string is a filesystem
     // path. Show just the basename for compactness; the
     // full path stays available via the existing fsPath dt/dd.
     sourceLabel = basename(record.source) || record.source;
@@ -197,7 +197,7 @@ export function derivePluginSourceLinks(
 
   // Avatar derivation: github.com/<user>.png returns the avatar for
   // both user and organisation accounts without authentication. The
-  // fallback also works when author.url is a repo URL — we extract
+  // fallback also works when author.url is a repo URL ??we extract
   // the owner segment for the avatar.
   let authorAvatarUrl: string | null = null;
   if (authorProfileUrl) {

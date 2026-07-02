@@ -121,6 +121,7 @@ const APP_CONFIG_CHANGED_EVENT = 'open-design:app-config-changed';
 const AMR_AGENT_ID = 'amr';
 const AMR_PROFILE_ENV_KEY = 'OPEN_DESIGN_AMR_PROFILE';
 const AGENT_FOCUS_REFRESH_THROTTLE_MS = 10_000;
+const ENABLE_AMR_RUNTIME = false;
 
 export function shouldSyncMediaProvidersOnSave(
   mediaProviders: AppConfig['mediaProviders'],
@@ -341,7 +342,7 @@ function AppInner() {
   // Observability marker. `apps/web/src/observability/white-screen.ts`
   // keys its "app actually mounted" success condition on this attribute
   // because the dynamic-import loading shell (`<div class="od-loading-shell">
-  // Loading Open Design…</div>`) is itself >MIN_VISIBLE_TEXT and would
+  // Loading Open Docs…</div>`) is itself >MIN_VISIBLE_TEXT and would
   // otherwise be mistaken for a real mount. Survives subsequent render
   // crashes — once App has mounted at least once, it's no longer a white
   // screen (subsequent failures show up as `$exception`).
@@ -633,7 +634,7 @@ function AppInner() {
   // the old theme. Safe here because the component tree is ssr:false.
   useLayoutEffect(() => {
     applyAppearanceToDocument({
-      theme: config.theme ?? 'system',
+      theme: config.theme ?? 'light',
       accentColor: config.accentColor,
     });
   }, [config.theme, config.accentColor]);
@@ -674,7 +675,7 @@ function AppInner() {
   }, [activeProjectId, activeFileName]);
 
   useEffect(() => {
-    if (!daemonLive) return;
+    if (!ENABLE_AMR_RUNTIME || !daemonLive) return;
     let cancelled = false;
     let timer: number | null = null;
     const pollGeneration = amrPollGenerationRef.current + 1;
@@ -723,6 +724,10 @@ function AppInner() {
   // AMR_LOGIN_STATUS_EVENT covers logins finishing in surfaces that
   // unmounted before their poll settled.
   useEffect(() => {
+    if (!ENABLE_AMR_RUNTIME) {
+      setAmrLoginStatus(null);
+      return;
+    }
     let cancelled = false;
     const sync = async () => {
       const status = await fetchVelaLoginStatus();
@@ -1177,7 +1182,7 @@ function AppInner() {
       // React re-render of the whole tree before the layout effect re-applies
       // it — which reads as a perceptible lag after the click.
       applyAppearanceToDocument({
-        theme: theme ?? 'system',
+        theme: theme ?? 'light',
         accentColor: config.accentColor,
       });
       saveConfig(next);
@@ -2249,7 +2254,7 @@ function AppInner() {
         onProjectsRefresh={refreshProjectsStrict}
         onChangeDefaultDesignSystem={handleChangeDefaultDesignSystem}
         onCreateDesignSystem={() => navigate({ kind: 'design-system-create' })}
-        onOpenDesignSystem={(id: string) => navigate({ kind: 'design-system-detail', designSystemId: id })}
+        onOpenDocsSystem={(id: string) => navigate({ kind: 'design-system-detail', designSystemId: id })}
         onDesignSystemsRefresh={refreshDesignSystems}
         onPersistComposioKey={handleConfigPersistComposioKey}
         onOpenSettings={openSettings}
@@ -2359,19 +2364,14 @@ function AppInner() {
         >
         <PrivacyConsentModal
           onAccept={() => {
-            // Default opt-in: clicking "I get it" enables the same telemetry
-            // surface the previous two-button "Share usage data" path opted
-            // into. The banner footer + PrivacySection give the user a
-            // one-click path to flip everything off later.
-            // The banner owns only the privacy decision; it does not drive
-            // navigation. Onboarding is gated by `onboardingCompleted` on
-            // its own and runs in parallel.
-            const installationId = generateInstallationIdSafe();
+            // Acknowledge the disclosure without enabling product telemetry.
+            // Model input is controlled separately by the selected CLI or BYOK
+            // provider when the user explicitly runs an agent.
             void handleConfigPersist({
               ...latestPersistedConfigRef.current,
-              installationId,
+              installationId: null,
               privacyDecisionAt: Date.now(),
-              telemetry: { metrics: true, content: true },
+              telemetry: { metrics: false, content: false, artifactManifest: false },
             });
           }}
         />
@@ -2380,11 +2380,4 @@ function AppInner() {
       </AnimatePresence>
     </>
   );
-}
-
-function generateInstallationIdSafe(): string {
-  if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
-    return crypto.randomUUID();
-  }
-  return `inst-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`;
 }

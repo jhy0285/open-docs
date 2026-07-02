@@ -3,9 +3,9 @@ import type { PromptTemplateSummary } from '../types';
 export const KO_SKILL_COPY: Record<string, { description?: string; examplePrompt?: string }> = {
   '8-bit-orbit-video-template': {
     description:
-      '레트로 픽셀 덱 모션 디자인을 위한 HyperFrames 기반 비디오 템플릿.\n고품질의 멀티 신 HTML-to-video 컴포지션, 고급 트랜지션, 인터랙티브 미리보기 컨트롤,\n바로 렌더링 가능한 기본 스타일이 필요할 때 사용하세요.',
+      '레트로 픽셀 덱 모션 디자인을 위한 하이퍼프레임 기반 비디오 템플릿.\n고품질의 멀티 신 HTML-to-video 컴포지션, 고급 트랜지션, 인터랙티브 미리보기 컨트롤,\n바로 렌더링 가능한 기본 스타일이 필요할 때 사용하세요.',
     examplePrompt:
-      '고급 트랜지션, 풍부한 모션, 페이지당 3초 미만으로 구성된 8비트 레트로 스타일의 3페이지 HyperFrames 비디오 덱을 만들어 주세요.',
+      '고급 트랜지션, 풍부한 모션, 페이지당 3초 미만으로 구성된 8비트 레트로 스타일의 3페이지 하이퍼프레임 비디오 덱을 만들어 주세요.',
   },
   'ad-creative': {
     description:
@@ -15,13 +15,13 @@ export const KO_SKILL_COPY: Record<string, { description?: string; examplePrompt
   },
   'after-hours-editorial-template': {
     description:
-      '오트 쿠튀르 타이틀 카드와 매거진 챕터 스프레드에서 영감을 받은,\n3페이지 시네마틱 스토리보드를 위한 럭셔리 다크 에디토리얼 HyperFrames 템플릿. 사용자가\n프리미엄 패션 스타일 모션 페이지, 무디한 세리프 중심 스토리텔링,\n또는 풍부한 트랜지션을 갖춘 고급 다크 프레젠테이션 미학을 요청할 때 사용하세요.',
+      '오트 쿠튀르 타이틀 카드와 매거진 챕터 스프레드에서 영감을 받은,\n3페이지 시네마틱 스토리보드를 위한 럭셔리 다크 에디토리얼 하이퍼프레임 템플릿. 사용자가\n프리미엄 패션 스타일 모션 페이지, 무디한 세리프 중심 스토리텔링,\n또는 풍부한 트랜지션을 갖춘 고급 다크 프레젠테이션 미학을 요청할 때 사용하세요.',
     examplePrompt:
-      '다크 오트 쿠튀르 스타일의 3페이지 HyperFrames 에디토리얼 시퀀스를 만들어 주세요: 프리미엄 세리프 타이포그래피, 마젠타 강조색, 우아한 챕터 트랜지션, 시네마틱 그레인. 각 페이지는 3초 미만으로 유지하세요.',
+      '다크 오트 쿠튀르 스타일의 3페이지 하이퍼프레임 에디토리얼 시퀀스를 만들어 주세요: 프리미엄 세리프 타이포그래피, 마젠타 강조색, 우아한 챕터 트랜지션, 시네마틱 그레인. 각 페이지는 3초 미만으로 유지하세요.',
   },
   'agent-browser': {
     description:
-      'AI 에이전트를 위한 브라우저 자동화 CLI. 사용자가 브라우저 동작을\n검사, 테스트 또는 자동화해야 할 때 사용하세요: 페이지 탐색, 양식 작성,\n버튼 클릭, 스크린샷 촬영, 페이지 데이터 추출, 선택된\nOpen Design 브라우저 탭 컨텍스트 읽기, 웹 앱 테스트, Open Design\n미리보기 도그푸딩, QA, 버그 헌트, 또는 앱 품질 검토. 사용자가 명시적으로\n외부 브라우징을 요청하지 않는 한 로컬 Open Design 미리보기 URL을 우선하세요.',
+      'AI 에이전트를 위한 브라우저 자동화 CLI. 사용자가 브라우저 동작을\n검사, 테스트 또는 자동화해야 할 때 사용하세요: 페이지 탐색, 양식 작성,\n버튼 클릭, 스크린샷 촬영, 페이지 데이터 추출, 선택된\nOpen Docs 브라우저 탭 컨텍스트 읽기, 웹 앱 테스트, Open Docs\n미리보기 도그푸딩, QA, 버그 헌트, 또는 앱 품질 검토. 사용자가 명시적으로\n외부 브라우징을 요청하지 않는 한 로컬 Open Docs 미리보기 URL을 우선하세요.',
     examplePrompt:
       'AI 에이전트를 위한 브라우저 자동화 CLI.',
   },
@@ -849,7 +849,7 @@ export const KO_SKILL_COPY: Record<string, { description?: string; examplePrompt
   },
   'ui-ux-pro-max': {
     description:
-      '카탈로그 전용 UI/UX Pro Max 항목입니다. 전체 업스트림 템플릿, 데이터, 검색 워크플로는 Open Design에 포함되어 있지 않습니다.',
+      '카탈로그 전용 UI/UX Pro Max 항목입니다. 전체 업스트림 템플릿, 데이터, 검색 워크플로는 Open Docs에 포함되어 있지 않습니다.',
     examplePrompt:
       '카탈로그 전용 UI/UX Pro Max 항목입니다.',
   },
@@ -897,9 +897,9 @@ export const KO_SKILL_COPY: Record<string, { description?: string; examplePrompt
   },
   'video-hyperframes': {
     description:
-      '자동 재생을 지원하는 HyperFrames / Remotion 호환 연속 프레임 애니메이션입니다.',
+      '자동 재생을 지원하는 하이퍼프레임 / Remotion 호환 연속 프레임 애니메이션입니다.',
     examplePrompt:
-      'HyperFrames Video 템플릿을 사용하여 제 콘텐츠를 자동 재생을 지원하는 HyperFrames / Remotion 호환 연속 프레임 애니메이션으로 변환해 주세요. 템플릿의 비주얼 시그니처를 유지하고, 실제 콘텐츠와 데이터를 사용하며, 로렘 입숨이나 플레이스홀더 이미지는 피해 주세요.',
+      '하이퍼프레임 비디오 템플릿을 사용하여 제 콘텐츠를 자동 재생을 지원하는 하이퍼프레임 / Remotion 호환 연속 프레임 애니메이션으로 변환해 주세요. 템플릿의 비주얼 시그니처를 유지하고, 실제 콘텐츠와 데이터를 사용하며, 로렘 입숨이나 플레이스홀더 이미지는 피해 주세요.',
   },
   'web-artifacts-builder': {
     description:
@@ -915,9 +915,9 @@ export const KO_SKILL_COPY: Record<string, { description?: string; examplePrompt
   },
   'weread-year-in-review-video-template': {
     description:
-      '세로형 연간 독서 리포트, 개인 독서 대시보드, 책 노트 요약, 공유 가능한 연말 결산\n스토리를 위한 WeRead에서 영감을 받은 HyperFrames 비디오 템플릿입니다. 따뜻한 종이\n질감, 편집적인 중국어 타이포그래피, 책 페이지 메타포, 데이터 하이라이트,\n결정론적 모션이 담긴 9:16 HTML-to-MP4 독서 리포트를 원할 때 사용하세요.',
+      '세로형 연간 독서 리포트, 개인 독서 대시보드, 책 노트 요약, 공유 가능한 연말 결산\n스토리를 위한 WeRead에서 영감을 받은 하이퍼프레임 비디오 템플릿입니다. 따뜻한 종이\n질감, 편집적인 중국어 타이포그래피, 책 페이지 메타포, 데이터 하이라이트,\n결정론적 모션이 담긴 9:16 HTML-to-MP4 독서 리포트를 원할 때 사용하세요.',
     examplePrompt:
-      '12개 장면, 따뜻한 종이 질감, 책 페이지 전환, 독서 통계, 노트, 키워드, 그리고 마지막 독서 페르소나 카드가 담긴 WeRead 스타일의 9:16 HyperFrames 연간 독서 리포트 비디오를 만들어 주세요.',
+      '12개 장면, 따뜻한 종이 질감, 책 페이지 전환, 독서 통계, 노트, 키워드, 그리고 마지막 독서 페르소나 카드가 담긴 WeRead 스타일의 9:16 하이퍼프레임 연간 독서 리포트 비디오를 만들어 주세요.',
   },
   'wpds': {
     description:
@@ -1187,7 +1187,7 @@ export const KO_PROMPT_TEMPLATE_TAGS: Record<string, string> = {
   'hud': 'HUD',
   'hud-safe': 'HUD 세이프',
   'hype': '하이프',
-  'hyperframes': 'HyperFrames',
+  'hyperframes': '하이퍼프레임',
   'idol': '아이돌',
   'illustration': '일러스트레이션',
   'image-to-image': '이미지-이미지 변환',
@@ -1588,94 +1588,94 @@ export const KO_PROMPT_TEMPLATE_COPY: Record<string, Partial<Pick<PromptTemplate
       '특정 캐릭터 레퍼런스에 대해 제자리 걷기 애니메이션을 만들기 위한 Seedance 2 지시문입니다.',
   },
   'hyperframes-html-in-canvas-iphone-device': {
-    title: 'HyperFrames HTML-in-Canvas: 3D iPhone + MacBook 제품 데모',
+    title: '하이퍼프레임 HTML-in-Canvas: 3D iPhone + MacBook 제품 데모',
     summary:
       '실제 GLTF iPhone 15 Pro Max와 MacBook Pro가 깔끔한 무대 위에 떠 있고, drawElementImage를 통해 실제 앱 UI가 화면에 라이브로 렌더링되는 15초 제품 데모입니다. 모핑하는 글래스 렌즈 플레어 + 360° 턴테이블. vfx-iphone-device 카탈로그 블록을 기반으로 제작되었습니다.',
   },
   'hyperframes-html-in-canvas-text-cursor': {
-    title: 'HyperFrames HTML-in-Canvas: 시네마틱 텍스트 커서 리빌',
+    title: '하이퍼프레임 HTML-in-Canvas: 시네마틱 텍스트 커서 리빌',
     summary:
       '검은 무대 위에서 커서 글로우, 색수차 그림자 광선, 방향성 조명과 함께 펼쳐지는 8초짜리 극적인 텍스트 리빌입니다. 실시간 셰이더 후처리 아래의 실제 DOM 타이포그래피. vfx-text-cursor 카탈로그 블록을 기반으로 제작되었습니다.',
   },
   'hyperframes-html-in-canvas-shatter': {
-    title: 'HyperFrames HTML-in-Canvas: 글래스 셰터 아웃트로',
+    title: '하이퍼프레임 HTML-in-Canvas: 글래스 셰터 아웃트로',
     summary:
       '12초짜리 HTML 셰터 아웃트로 — 실제 제품 페이지나 가격 카드가 잠시 멈춰 있다가, 뎁스 블러와 색수차 분산과 함께 굴절되는 유리 조각으로 폭발합니다. vfx-shatter 카탈로그 블록을 기반으로 제작되었습니다. 더 긴 컴포지션 뒤의 엔드 카드로 어울립니다.',
   },
   'hyperframes-html-in-canvas-liquid-background': {
-    title: 'HyperFrames HTML-in-Canvas: 리퀴드 배경 히어로',
+    title: '하이퍼프레임 HTML-in-Canvas: 리퀴드 배경 히어로',
     summary:
       '유기적인 액체 표면 위에 HTML 콘텐츠가 떠 있는 12초 히어로 영상 — 정점이 변위된 세분화 평면, 실시간 파동 다이내믹스, 캡처된 DOM이 그 위에 선명하고 읽기 좋게 자리합니다. vfx-liquid-background 카탈로그 블록을 기반으로 제작되었습니다.',
   },
   'hyperframes-html-in-canvas-liquid-glass': {
-    title: 'HyperFrames HTML-in-Canvas: 리퀴드 글래스 랜딩 리빌',
+    title: '하이퍼프레임 HTML-in-Canvas: 리퀴드 글래스 랜딩 리빌',
     summary:
       '실제 제품 랜딩 페이지의 20초 보로노이 리퀴드 글래스 리빌 — drawElementImage로 DOM을 실시간 캡처해 굴절되는 유리 셀로 산산이 부순 뒤, 깔끔한 히어로 샷으로 안착합니다. vfx-liquid-glass 카탈로그 블록을 기반으로 제작되었습니다.',
   },
   'hyperframes-html-in-canvas-magnetic': {
-    title: 'HyperFrames HTML-in-Canvas: 자기장 시각화',
+    title: '하이퍼프레임 HTML-in-Canvas: 자기장 시각화',
     summary:
       '실시간 DOM 히트맵이나 차트에 반응하는 15초 자기장 파티클 시각화 — 파티클이 캡처된 HTML 주위로 휘어지는 장선(field line)을 그리며, ML/데이터 제품에 이상적입니다. vfx-magnetic 카탈로그 블록을 기반으로 제작되었습니다.',
   },
   'hyperframes-html-in-canvas-portal-reveal': {
-    title: 'HyperFrames HTML-in-Canvas: 포털 리빌 대시보드',
+    title: '하이퍼프레임 HTML-in-Canvas: 포털 리빌 대시보드',
     summary:
       '실시간 데이터 대시보드로 열리는 10초 차원 포털 — DOM을 실시간으로 캡처하고, 볼류메트릭 라이트가 새어 나오며, 포털 가장자리 파티클이 더해집니다. vfx-portal 카탈로그 블록을 기반으로 제작되었습니다. 키노트 스타일의 데이터 히어로 샷을 위해 설계되었습니다.',
   },
   'hyperframes-money-counter-hype': {
-    title: 'HyperFrames: $0 → $10K 머니 카운터 하입 (9:16)',
+    title: '하이퍼프레임: $0 → $10K 머니 카운터 하입 (9:16)',
     summary:
-      '세로형 1080×1920 6초 HyperFrames 하입 클립 — Apple 스타일의 $0 → $10,000 카운터에 그린 플래시, 머니 버스트 파티클, 현금 더미 아이콘, 키커 헤드라인이 더해집니다. HyperFrames `apple-money-count` 카탈로그 블록을 기반으로 제작되었습니다.',
+      '세로형 1080×1920 6초 하이퍼프레임 하입 클립 — Apple 스타일의 $0 → $10,000 카운터에 그린 플래시, 머니 버스트 파티클, 현금 더미 아이콘, 키커 헤드라인이 더해집니다. 하이퍼프레임 `apple-money-count` 카탈로그 블록을 기반으로 제작되었습니다.',
   },
   'hyperframes-app-showcase-three-phones': {
-    title: 'HyperFrames: 12초 앱 쇼케이스 — 떠 있는 세 대의 폰',
+    title: '하이퍼프레임: 12초 앱 쇼케이스 — 떠 있는 세 대의 폰',
     summary:
-      '12초 16:9 앱 쇼케이스 구성 — 세 대의 떠 있는 iPhone 화면이 3D 공간을 부유하며 차례로 회전해 서로 다른 기능을 드러내고, 비트에 동기화된 라벨 콜아웃과 엔딩 로고 락업으로 마무리합니다. HyperFrames `app-showcase` 카탈로그 블록을 직접 기반으로 제작되었습니다.',
+      '12초 16:9 앱 쇼케이스 구성 — 세 대의 떠 있는 iPhone 화면이 3D 공간을 부유하며 차례로 회전해 서로 다른 기능을 드러내고, 비트에 동기화된 라벨 콜아웃과 엔딩 로고 락업으로 마무리합니다. 하이퍼프레임 `app-showcase` 카탈로그 블록을 직접 기반으로 제작되었습니다.',
   },
   'hyperframes-brand-sizzle-reel': {
-    title: 'HyperFrames: 30초 브랜드 시즐 릴',
+    title: '하이퍼프레임: 30초 브랜드 시즐 릴',
     summary:
-      '30초 16:9 HyperFrames 시즐 릴 — 빠른 컷, 비트에 동기화된 키네틱 타이포그래피, 디스플레이 단어에 오디오 반응형 스케일, 다섯 장면 간 셰이더 전환, 로고 블룸이 들어간 엔드 카드. 학생 키트의 aisoc-hype 아키타입을 모델로 삼았습니다.',
+      '30초 16:9 하이퍼프레임 시즐 릴 — 빠른 컷, 비트에 동기화된 키네틱 타이포그래피, 디스플레이 단어에 오디오 반응형 스케일, 다섯 장면 간 셰이더 전환, 로고 블룸이 들어간 엔드 카드. 학생 키트의 aisoc-hype 아키타입을 모델로 삼았습니다.',
   },
   'hyperframes-saas-product-promo-30s': {
-    title: 'HyperFrames: 30초 SaaS 제품 프로모 (Linear 스타일)',
+    title: '하이퍼프레임: 30초 SaaS 제품 프로모 (Linear 스타일)',
     summary:
-      'Linear/ClickUp 스타일의 제품 영상을 모델로 한 30초 HyperFrames 구성 — UI 3D 리빌, 비트에 동기화된 키네틱 타이포그래피, 애니메이션 UI 스크린샷, 로고 아웃트로가 들어간 엔드 카드. HF 카탈로그 블록(ui-3d-reveal, app-showcase, logo-outro)과 장면 간 셰이더 전환으로 제작되었습니다.',
+      'Linear/ClickUp 스타일의 제품 영상을 모델로 한 30초 하이퍼프레임 구성 — UI 3D 리빌, 비트에 동기화된 키네틱 타이포그래피, 애니메이션 UI 스크린샷, 로고 아웃트로가 들어간 엔드 카드. HF 카탈로그 블록(ui-3d-reveal, app-showcase, logo-outro)과 장면 간 셰이더 전환으로 제작되었습니다.',
   },
   'hyperframes-logo-outro-cinematic': {
-    title: 'HyperFrames: 4초 시네마틱 로고 아웃트로',
+    title: '하이퍼프레임: 4초 시네마틱 로고 아웃트로',
     summary:
-      '4초 16:9 로고 아웃트로 — 워드마크를 한 조각씩 조립하는 블룸 효과, 최종 락업을 가로지르는 시머 스윕, 부드러운 그레인 오버레이, 한 줄 CTA. HyperFrames `logo-outro`, `shimmer-sweep`, `grain-overlay` 블록을 기반으로 제작되었습니다.',
+      '4초 16:9 로고 아웃트로 — 워드마크를 한 조각씩 조립하는 블룸 효과, 최종 락업을 가로지르는 시머 스윕, 부드러운 그레인 오버레이, 한 줄 CTA. 하이퍼프레임 `logo-outro`, `shimmer-sweep`, `grain-overlay` 블록을 기반으로 제작되었습니다.',
   },
   'hyperframes-product-reveal-minimal': {
-    title: 'HyperFrames: 5초 미니멀 제품 리빌',
+    title: '하이퍼프레임: 5초 미니멀 제품 리빌',
     summary:
-      '고급 제품 리빌을 위한 5초 HyperFrames 구성 — 어두운 캔버스, 단일 웜 액센트, 천천히 밀어 들어가는 타이틀 카드, 키네틱 키커 라인, 절제된 모션. 에이전트가 puppeteer를 통해 HTML+GSAP로 MP4를 렌더링하며, 스톡 푸티지는 필요 없습니다.',
+      '고급 제품 리빌을 위한 5초 하이퍼프레임 구성 — 어두운 캔버스, 단일 웜 액센트, 천천히 밀어 들어가는 타이틀 카드, 키네틱 키커 라인, 절제된 모션. 에이전트가 puppeteer를 통해 HTML+GSAP로 MP4를 렌더링하며, 스톡 푸티지는 필요 없습니다.',
   },
   'hyperframes-social-overlay-stack': {
-    title: 'HyperFrames: 9:16 소셜 오버레이 스택 (X · Reddit · Spotify · Instagram)',
+    title: '하이퍼프레임: 9:16 소셜 오버레이 스택 (X · Reddit · Spotify · Instagram)',
     summary:
-      '페이스캠 루프 위에 네 개의 애니메이션 소셜 카드를 쌓는 세로형 1080×1920 15초 HyperFrames 구성 — X 게시물, Reddit 반응, Spotify 재생 중 카드, 그리고 마지막의 Instagram 팔로우 CTA. 각 카드는 HyperFrames 카탈로그 블록이며, 안무가 부가가치입니다.',
+      '페이스캠 루프 위에 네 개의 애니메이션 소셜 카드를 쌓는 세로형 1080×1920 15초 하이퍼프레임 구성 — X 게시물, Reddit 반응, Spotify 재생 중 카드, 그리고 마지막의 Instagram 팔로우 CTA. 각 카드는 하이퍼프레임 카탈로그 블록이며, 안무가 부가가치입니다.',
   },
   'hyperframes-tiktok-karaoke-talking-head': {
-    title: 'HyperFrames: 9:16 TikTok 토킹 헤드 + 가라오케 자막',
+    title: '하이퍼프레임: 9:16 TikTok 토킹 헤드 + 가라오케 자막',
     summary:
-      '세로형 1080×1920 HyperFrames 숏폼 — 페이스캠 루프 위에 TTS 내레이션 토킹 헤드, 단어 동기화 가라오케 스타일 자막, 애니메이션 로워 서드, 마지막의 tiktok-follow 오버레이. HyperFrames 학생 키트의 may-shorts-19 아키타입을 본떴습니다.',
+      '세로형 1080×1920 하이퍼프레임 숏폼 — 페이스캠 루프 위에 TTS 내레이션 토킹 헤드, 단어 동기화 가라오케 스타일 자막, 애니메이션 로워 서드, 마지막의 tiktok-follow 오버레이. 하이퍼프레임 학생 키트의 may-shorts-19 아키타입을 본떴습니다.',
   },
   'hyperframes-data-bar-chart-race': {
-    title: 'HyperFrames: 애니메이션 막대 차트 레이스 (NYT 스타일)',
+    title: '하이퍼프레임: 애니메이션 막대 차트 레이스 (NYT 스타일)',
     summary:
-      '12초 16:9 데이터 인포그래픽 — 카테고리가 시차를 두고 드러나는 애니메이션 막대+선 차트, NYT 스타일 세리프 헤드라인, 출처 각주, 키네틱 값 라벨. HyperFrames `data-chart` 카탈로그 블록을 직접 기반으로 제작되었습니다.',
+      '12초 16:9 데이터 인포그래픽 — 카테고리가 시차를 두고 드러나는 애니메이션 막대+선 차트, NYT 스타일 세리프 헤드라인, 출처 각주, 키네틱 값 라벨. 하이퍼프레임 `data-chart` 카탈로그 블록을 직접 기반으로 제작되었습니다.',
   },
   'hyperframes-flight-map-route': {
-    title: 'HyperFrames: Apple 스타일 항공 노선 지도 (출발지 → 도착지)',
+    title: '하이퍼프레임: Apple 스타일 항공 노선 지도 (출발지 → 도착지)',
     summary:
-      '8초 16:9 시네마틱 항공 노선 지도 — 사실적인 지형 줌, 곡선 경로를 따라 출발지에서 도착지로 활공하는 애니메이션 비행기, 라벨이 붙은 도시들, 키네틱 거리 카운터. HyperFrames `nyc-paris-flight` 카탈로그 블록을 직접 기반으로 제작되었으며, 어떤 도시 쌍에도 재활용할 수 있습니다.',
+      '8초 16:9 시네마틱 항공 노선 지도 — 사실적인 지형 줌, 곡선 경로를 따라 출발지에서 도착지로 활공하는 애니메이션 비행기, 라벨이 붙은 도시들, 키네틱 거리 카운터. 하이퍼프레임 `nyc-paris-flight` 카탈로그 블록을 직접 기반으로 제작되었으며, 어떤 도시 쌍에도 재활용할 수 있습니다.',
   },
   'hyperframes-website-to-video-promo': {
-    title: 'HyperFrames: 웹사이트-투-비디오 파이프라인 (15초 마케팅 컷)',
+    title: '하이퍼프레임: 웹사이트-투-비디오 파이프라인 (15초 마케팅 컷)',
     summary:
-      '실제 웹사이트를 세 가지 뷰포트 크기로 캡처한 뒤, 장면 간 크로매틱 방사형 분할로 그 사이를 애니메이션하는 15초 16:9 HyperFrames 구성. 사이트가 소스 에셋이 되는 hyperframes-sizzle 학생 키트 아키타입을 본떴습니다.',
+      '실제 웹사이트를 세 가지 뷰포트 크기로 캡처한 뒤, 장면 간 크로매틱 방사형 분할로 그 사이를 애니메이션하는 15초 16:9 하이퍼프레임 구성. 사이트가 소스 에셋이 되는 hyperframes-sizzle 학생 키트 아키타입을 본떴습니다.',
   },
   'live-action-anime-adaptation-water-vs-thunder-breathing-duel': {
     title: '실사화 애니메이션 각색: 물의 호흡 vs. 번개의 호흡 결투',

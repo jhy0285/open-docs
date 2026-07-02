@@ -179,6 +179,27 @@ export const HOME_HERO_CHIPS: ReadonlyArray<HomeHeroChip> = [
     },
   },
   {
+    id: 'screen-spec',
+    label: '화면명세서',
+    icon: 'file-text',
+    group: 'create',
+    description: 'Korean enterprise screen specs',
+    hint: 'Document existing screens with metadata, callouts, descriptions, checkpoints, and PPTX export.',
+    action: {
+      kind: 'apply-scenario',
+      pluginId: 'od-new-generation',
+      projectKind: 'screen-spec',
+      inputs: {
+        artifactKind: 'Korean enterprise screen specification document',
+        audience: 'SI project teams, planners, developers, QA, and client reviewers',
+        topic: 'documenting existing screens with metadata, callout markers, descriptions, checkpoints, and PPTX export',
+      },
+      projectMetadata: {
+        kind: 'screen-spec',
+      },
+    },
+  },
+  {
     id: 'document',
     label: 'Document',
     icon: 'file-text',
@@ -288,7 +309,7 @@ export const HOME_HERO_CHIPS: ReadonlyArray<HomeHeroChip> = [
     label: 'Create plugin',
     icon: 'edit',
     group: 'migrate',
-    hint: 'Author a reusable Open Design plugin and add it to My plugins.',
+    hint: 'Author a reusable Open Docs plugin and add it to My plugins.',
     action: { kind: 'create-plugin' },
   },
   {
@@ -330,6 +351,7 @@ export function chipsForGroup(group: ChipGroup): HomeHeroChip[] {
 // catalog order after the explicit entries (see `orderedCreateChips`).
 export const CREATE_RAIL_ORDER = [
   'deck',
+  'screen-spec',
   'prototype',
   'wireframe',
   'mobile',

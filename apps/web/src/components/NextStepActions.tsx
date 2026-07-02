@@ -96,9 +96,9 @@ interface Props {
   skills?: SkillSummary[];
   // Resolved `@skill` names per featured action, shown in the hover detail.
   toolboxSkillNames?: Partial<Record<DesignToolboxActionId, string | null>>;
-  // Contribute the artifact to the Open Design community gallery.
-  onShareToOpenDesign?: () => void;
-  shareToOpenDesignBusy?: boolean;
+  // Contribute the artifact to the Open Docs community gallery.
+  onShareToOpenDocs?: () => void;
+  shareToOpenDocsBusy?: boolean;
   variant?: NextStepActionsVariant;
 }
 
@@ -157,8 +157,8 @@ export function NextStepActions({
   onPickSkill,
   skills = [],
   toolboxSkillNames,
-  onShareToOpenDesign,
-  shareToOpenDesignBusy = false,
+  onShareToOpenDocs,
+  shareToOpenDocsBusy = false,
   variant = 'default',
 }: Props) {
   const { t, locale } = useI18n();
@@ -278,11 +278,11 @@ export function NextStepActions({
   }, [closeAll, fileName, onDownload, track]);
 
   const handleContribute = useCallback(() => {
-    if (!onShareToOpenDesign || shareToOpenDesignBusy) return;
+    if (!onShareToOpenDocs || shareToOpenDocsBusy) return;
     track('share_to_open_design');
-    onShareToOpenDesign();
+    onShareToOpenDocs();
     closeAll();
-  }, [closeAll, onShareToOpenDesign, shareToOpenDesignBusy, track]);
+  }, [closeAll, onShareToOpenDocs, shareToOpenDocsBusy, track]);
 
   const handleToolboxAction = useCallback(
     (id: DesignToolboxActionId) => {
@@ -354,7 +354,7 @@ export function NextStepActions({
   // Share group is available whenever any of its three actions can fire.
   const canShare = !!(fileName && onShare);
   const canDownload = !!(fileName && onDownload);
-  const canContribute = !!onShareToOpenDesign;
+  const canContribute = !!onShareToOpenDocs;
   const hasShareGroup = canShare || canDownload || canContribute;
   const hasMore = !!onToolboxAction || hasShareGroup;
   const showToolbox = !!onToolboxAction;
@@ -658,13 +658,13 @@ export function NextStepActions({
                   type="button"
                   className={styles.flyoutRow}
                   data-testid="next-step-share-contribute"
-                  disabled={shareToOpenDesignBusy}
+                  disabled={shareToOpenDocsBusy}
                   onClick={handleContribute}
                 >
                   <Icon
-                    name={shareToOpenDesignBusy ? 'spinner' : 'globe'}
+                    name={shareToOpenDocsBusy ? 'spinner' : 'globe'}
                     size={14}
-                    className={shareToOpenDesignBusy ? 'icon-spin' : styles.toolboxRowIcon}
+                    className={shareToOpenDocsBusy ? 'icon-spin' : styles.toolboxRowIcon}
                   />
                   <span className={styles.toolboxRowTitle}>{t('nextStep.contribute')}</span>
                 </button>

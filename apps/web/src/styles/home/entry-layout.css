@@ -1,5 +1,5 @@
-/* ============================================================
-   Entry layout — header-less variant
+﻿/* ============================================================
+   Entry layout ??header-less variant
    - Single-row shell (`entry-shell--no-header`)
    - Left icon-only nav rail (`entry-nav-rail`)
    - Center scroll container (`entry-main--scroll`)
@@ -44,11 +44,11 @@
   grid-template-columns: var(--entry-rail-width, 56px) minmax(0, 1fr);
 }
 
-/* Left rail — docked column. Lives in the grid's first track; collapsed the
+/* Left rail ??docked column. Lives in the grid's first track; collapsed the
    track is 0-wide so the rail is clipped away, expanded it occupies the rail
    width. */
 .entry-nav-rail {
-  /* Fill the grid track (0 collapsed → rail width expanded) rather than a
+  /* Fill the grid track (0 collapsed ??rail width expanded) rather than a
      fixed width, so a 0-wide track truly hides the rail instead of letting a
      56px rail overflow it. The inner groups keep the icon column's width.
      Border lives on the `::after` hairline below (from main), not on the box. */
@@ -65,7 +65,7 @@
   position: relative;
   z-index: 30;
   /* Visibility is driven purely by the grid track width (0 collapsed) plus
-     the overflow clip below — no opacity fade, which previously crossed with
+     the overflow clip below ??no opacity fade, which previously crossed with
      the topbar toggle's fade-out and caused a flash on expand. */
   pointer-events: none;
 }
@@ -85,7 +85,7 @@
   overflow: visible;
 }
 
-/* Brand slot — the logo, with a collapse button that fades in on hover so the
+/* Brand slot ??the logo, with a collapse button that fades in on hover so the
    docked rail can be dismissed Manus-style without a separate chrome control. */
 .entry-nav-rail__brand {
   position: relative;
@@ -121,7 +121,7 @@
   pointer-events: auto;
 }
 /* Coarse-pointer / non-hover devices can't reveal the collapse button on
-   hover, and the topbar toggle is display:none once the rail docks — so the
+   hover, and the topbar toggle is display:none once the rail docks ??so the
    rail would strand open. Keep the collapse control permanently visible and
    tappable there so touch users can always fold the rail back. */
 @media (hover: none) {
@@ -146,7 +146,7 @@
   outline-offset: 1px;
 }
 
-/* Topbar panel toggle — the single affordance left visible when the rail
+/* Topbar panel toggle ??the single affordance left visible when the rail
    is collapsed. Sits at the left edge of the sticky topbar and is hidden
    once the rail is docked (the rail's own collapse button takes over). */
 .entry-rail-toggle {
@@ -180,7 +180,7 @@
   outline: 2px solid var(--accent);
   outline-offset: 1px;
 }
-/* Hide the topbar toggle the instant the rail docks — a fade here would
+/* Hide the topbar toggle the instant the rail docks ??a fade here would
    cross with the rail's logo sliding in and read as a flash. */
 .entry--rail-open .entry-rail-toggle {
   display: none;
@@ -257,7 +257,7 @@
   display: none;
 }
 /* RTL: the rail still lives on the left so the tooltip remains on
-   the right of the button — but using `left: calc(100% + 10px)` in
+   the right of the button ??but using `left: calc(100% + 10px)` in
    RTL would flip incorrectly via the parent's `dir="rtl"`. Pin the
    anchor explicitly so the bubble stays where the user expects. */
 [dir='rtl'] .entry-nav-rail [data-tooltip]::after {
@@ -666,7 +666,7 @@
   outline-offset: 1px;
 }
 
-/* Avatar / settings dropdown — language picker section.
+/* Avatar / settings dropdown ??language picker section.
    The cog in the top-right corner opens an `avatar-popover` (shared
    with the project view) and now hosts an inline collapsible
    language list, so users can switch locales without opening the
@@ -759,7 +759,7 @@
   pointer-events: none;
   background: var(--bg);
 }
-/* Chip group — the GitHub star, inline model switcher, and Use
+/* Chip group ??the GitHub star, inline model switcher, and Use
    everywhere chip live inside this wrapper so the responsive
    media query can flip the whole row's visibility in one place. */
 .entry-main__topbar-chips {
@@ -770,11 +770,10 @@
 
 /* ============================================================
    Icon-only topbar chips
-   Collapse the Star / Discord / model-switcher / Use-everywhere
+   Collapse the Star / model-switcher / Use-everywhere
    chips to square icon buttons; the full label surfaces as a
    downward hover tooltip. Keeps the entry topbar quiet and tidy.
    ============================================================ */
-.entry-main__topbar-chips--icon-only .entry-discord-badge,
 .entry-main__topbar-chips--icon-only .use-everywhere-chip,
 .entry-main__topbar-chips--icon-only .inline-switcher__chip {
   width: 32px;
@@ -789,13 +788,7 @@
      collapsed there's no text, so let the downward tooltip escape. */
   overflow: visible;
 }
-/* Hide every text fragment; keep only the leading icon glyph. The Discord
-   badge also carries a "· {n} online" suffix; collapsed it must hide too,
-   otherwise the separator + count leak out of the 32px square and render as
-   clipped text (e.g. "212 在s"). The full label lives in the hover tooltip. */
-.entry-main__topbar-chips--icon-only .entry-discord-badge__label,
-.entry-main__topbar-chips--icon-only .entry-discord-badge__sep,
-.entry-main__topbar-chips--icon-only .entry-discord-badge__online,
+/* Hide every text fragment; keep only the leading icon glyph. */
 .entry-main__topbar-chips--icon-only .use-everywhere-chip__label,
 .entry-main__topbar-chips--icon-only .inline-switcher__chip-text,
 .entry-main__topbar-chips--icon-only .inline-switcher__chip-chevron {
@@ -870,6 +863,36 @@
 }
 .entry-settings-social-share {
   padding: 0 3px;
+}
+.entry-settings-menu__contact-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 3px;
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius);
+  background: var(--bg-subtle);
+}
+.entry-settings-menu__contact-link {
+  min-width: 0;
+  min-height: 30px;
+  display: flex;
+  align-items: center;
+  padding: 0 8px;
+  border: 1px solid transparent;
+  border-radius: 7px;
+  color: var(--text);
+  font-size: 12px;
+  line-height: 1.25;
+  text-decoration: none;
+  overflow-wrap: anywhere;
+  transition: background-color 120ms var(--ease-out), border-color 120ms var(--ease-out),
+    color 120ms var(--ease-out);
+}
+.entry-settings-menu__contact-link:hover {
+  background: var(--bg-panel);
+  border-color: var(--border);
+  color: var(--text-strong);
 }
 .entry-settings-menu__section {
   display: flex;
@@ -1104,7 +1127,7 @@
   text-align: right;
 }
 
-/* Stacked menu-item layout — the collapsed model-switcher row
+/* Stacked menu-item layout ??the collapsed model-switcher row
    shows two lines of text inside a single `.avatar-item` so the
    active mode + agent reads as a header with the active model
    underneath. Mirrors the chip's two-tier hierarchy. */
@@ -1149,7 +1172,7 @@
 }
 
 /* ============================================================
-   Inline CLI / model switcher — sticky-top chip + popover.
+   Inline CLI / model switcher ??sticky-top chip + popover.
 
    Lives in `.entry-main__topbar` next to the settings cog and
    exposes the active execution mode (Local CLI / BYOK), the
@@ -1709,7 +1732,7 @@
   mask: url(/brand-icon.svg) center / contain no-repeat;
 }
 
-/* Compact, icon-only language switcher used in the cloud landing top bar —
+/* Compact, icon-only language switcher used in the cloud landing top bar ??
    matches the round theme toggle next to it instead of the labelled foot-pill. */
 .lang-pill--compact {
   width: 36px;
@@ -1724,6 +1747,19 @@
 
 .lang-pill--compact:hover {
   color: var(--text-strong);
+}
+
+.onboarding-cloud__topbar .lang-menu-wrap {
+  align-self: center;
+}
+
+.onboarding-cloud__topbar .lang-menu-popover {
+  top: calc(100% + 6px);
+  right: 0;
+  bottom: auto;
+  left: auto;
+  max-height: min(420px, calc(100vh - 72px));
+  overflow-y: auto;
 }
 
 .onboarding-cloud__theme {
@@ -1796,7 +1832,7 @@
 }
 
 .onboarding-cloud__primary:hover:not(:disabled) {
-  /* Keep the dark fill on hover — the global `button:hover` rule in
+  /* Keep the dark fill on hover ??the global `button:hover` rule in
      primitives.css would otherwise repaint the background to --bg-subtle and
      wash the white label away. Opacity alone carries the hover feedback. */
   background: var(--text-strong);
@@ -1891,7 +1927,7 @@
   color: var(--text-strong);
 }
 
-/* Brand mark above the welcome heading — the app icon in a soft rounded
+/* Brand mark above the welcome heading ??the app icon in a soft rounded
    chip, mirroring the home-hero brand lockup. */
 .onboarding-view__hero-mark {
   display: inline-flex;
@@ -1956,7 +1992,7 @@
 }
 
 /* Segmented progress indicator: a horizontal bar per step with the label
-   below it. Bars read as progress, not as clickable cards — upcoming steps
+   below it. Bars read as progress, not as clickable cards ??upcoming steps
    are clearly muted and non-interactive. */
 .onboarding-view__steps li {
   position: relative;
@@ -2007,7 +2043,7 @@
   color: var(--text);
 }
 
-/* Upcoming steps are not navigable yet — muted and not-allowed. */
+/* Upcoming steps are not navigable yet ??muted and not-allowed. */
 .onboarding-view__steps li.is-upcoming button,
 .onboarding-view__steps li button:disabled {
   cursor: not-allowed;
@@ -2232,7 +2268,7 @@
 }
 
 /* Connect gate: aria-disabled (not native disabled, so the tooltip still
-   fires on hover) reads as disabled — dimmed, not-allowed, and no hover lift. */
+   fires on hover) reads as disabled ??dimmed, not-allowed, and no hover lift. */
 .onboarding-view__primary[aria-disabled='true'] {
   opacity: 0.5;
   cursor: not-allowed;
@@ -3190,7 +3226,7 @@
   color: var(--accent-strong);
 }
 
-/* Step 2 memory callout — makes it explicit that the answers above are saved
+/* Step 2 memory callout ??makes it explicit that the answers above are saved
    to Memory, and sells the compounding benefit of letting it learn. */
 .onboarding-view__memory-callout {
   display: grid;
@@ -3788,9 +3824,9 @@
 
 
 /* ============================================================
-   GitHub star pill — sticky top-bar CTA.
+   GitHub star pill ??sticky top-bar CTA.
 
-   Mirrors the marketing landing-page "Star · <count>" affordance:
+   Mirrors the marketing landing-page "Star - <count>" affordance:
    small chrome, low-emphasis, sits next to the model switcher and
    settings cog. Hover swaps to the panel-strong palette so the call-
    to-action still reads as clickable when the topbar is otherwise
@@ -3854,71 +3890,11 @@
   opacity: 0.55;
 }
 
-.entry-discord-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  height: 32px;
-  padding: 0 12px;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-pill);
-  background: var(--bg-panel);
-  color: var(--text);
-  font-size: 12px;
-  font-weight: 600;
-  line-height: 1;
-  text-decoration: none;
-  cursor: pointer;
-  box-shadow: var(--shadow-xs);
-  transition: background-color 120ms var(--ease-out), border-color 120ms var(--ease-out),
-    color 120ms var(--ease-out), transform 120ms var(--ease-out);
-  white-space: nowrap;
-}
-.entry-discord-badge:hover {
-  background: var(--bg-subtle);
-  border-color: var(--border-strong);
-  color: var(--text-strong);
-}
-.entry-discord-badge:active {
-  transform: scale(0.98);
-}
-.entry-discord-badge:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 1px;
-}
-.entry-discord-badge__icon {
-  color: #5865f2;
-  flex: 0 0 auto;
-}
-.entry-discord-badge:hover .entry-discord-badge__icon {
-  color: #5865f2;
-}
-.entry-discord-badge__label {
-  white-space: nowrap;
-}
-.entry-discord-badge__sep {
-  color: var(--text-faint);
-}
-.entry-discord-badge__online {
-  color: var(--text-muted);
-  font-variant-numeric: tabular-nums;
-  white-space: nowrap;
-}
-
 @media (max-width: 700px) {
   .entry-star-badge__label {
     display: none;
   }
   .entry-star-badge__sep {
-    display: none;
-  }
-  .entry-discord-badge {
-    padding: 0 9px;
-  }
-  .entry-discord-badge__label {
-    display: none;
-  }
-  .entry-discord-badge__sep {
     display: none;
   }
 }
@@ -4137,15 +4113,15 @@
 }
 
 /* ============================================================
-   AMR cloud card — detecting / skeleton state
+   AMR cloud card ??detecting / skeleton state
    Shown while AMR availability is still being probed. Reuses the
    featured/amr card classes (so min-height: 246px and the responsive
-   grid are inherited — no layout jump when the real card resolves).
+   grid are inherited ??no layout jump when the real card resolves).
    Only the probe-dependent parts shimmer; the brand stays solid.
    ============================================================ */
 .onboarding-view__card--skeleton {
   cursor: default;
-  /* Neutral, un-selected resting surface — the card is not yet actionable,
+  /* Neutral, un-selected resting surface ??the card is not yet actionable,
      so it must not read as the accent-selected state. */
   border-color: var(--border);
   background: var(--bg-panel);
@@ -4159,7 +4135,7 @@
   transform: none;
 }
 
-/* Shared shimmer fill — matches the house skeleton sweep
+/* Shared shimmer fill ??matches the house skeleton sweep
    (recent-projects / plugins-home): a soft highlight passing over a
    muted base. Sheen kept intentionally low-contrast for a precise,
    non-flashy read. */
@@ -4236,7 +4212,7 @@
   height: 40px;
   border-radius: var(--radius);
   /* Slightly stagger the sweep from the label so the two don't pulse in
-     lockstep — reads as one surface loading, not two blinking blocks. */
+     lockstep ??reads as one surface loading, not two blinking blocks. */
   animation-delay: 160ms;
 }
 

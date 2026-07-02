@@ -66,7 +66,7 @@ const handlers = () => ({
 const AUTO_MATCH_TITLE = en['chat.designToolbox.action.auto-match.title'];
 
 describe('AssistantMessage next-step affordance', () => {
-  it('routes Share through the More → Share cascade with the file name', () => {
+  it('routes Share through the More ??Share cascade with the file name', () => {
     const h = handlers();
     render(
       <AssistantMessage
@@ -97,8 +97,8 @@ describe('AssistantMessage next-step affordance', () => {
     expect(screen.queryByTestId('next-step-actions')).toBeNull();
   });
 
-  it('reaches Contribute (share to Open Design) through the More → Share cascade', () => {
-    const onShareToOpenDesign = vi.fn();
+  it('reaches Contribute (share to Open Design) through the More ??Share cascade', () => {
+    const onShareToOpenDocs = vi.fn();
     render(
       <AssistantMessage
         message={baseMessage({ producedFiles: [producedFile('landing.html')] })}
@@ -106,14 +106,14 @@ describe('AssistantMessage next-step affordance', () => {
         projectId="proj-1"
         isLast
         onFeedback={vi.fn()}
-        onShareToOpenDesign={onShareToOpenDesign}
+        onShareToOpenDocs={onShareToOpenDocs}
         {...handlers()}
       />,
     );
     fireEvent.mouseEnter(screen.getByTestId('next-step-toolbox-more'));
     fireEvent.mouseEnter(screen.getByTestId('next-step-more-share'));
     fireEvent.click(screen.getByTestId('next-step-share-contribute'));
-    expect(onShareToOpenDesign).toHaveBeenCalledTimes(1);
+    expect(onShareToOpenDocs).toHaveBeenCalledTimes(1);
   });
 
   it('does not render the card when the turn produced no previewable HTML artifact', () => {

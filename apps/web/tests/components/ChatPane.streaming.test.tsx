@@ -50,16 +50,16 @@ vi.mock('../../src/components/AssistantMessage', () => ({
     streaming,
     message,
     isLast,
-    onShareToOpenDesign,
-    shareToOpenDesignBusy,
+    onShareToOpenDocs,
+    shareToOpenDocsBusy,
     showConversationTodoCard,
     conversationTodoInput,
   }: {
     streaming: boolean;
     message: ChatMessage;
     isLast?: boolean;
-    onShareToOpenDesign?: () => void;
-    shareToOpenDesignBusy?: boolean;
+    onShareToOpenDocs?: () => void;
+    shareToOpenDocsBusy?: boolean;
     showConversationTodoCard?: boolean;
     conversationTodoInput?: {
       todos?: Array<{ content: string; status?: string }>;
@@ -81,14 +81,14 @@ vi.mock('../../src/components/AssistantMessage', () => ({
           })}
         </div>
       ) : null}
-      {onShareToOpenDesign ? (
+      {onShareToOpenDocs ? (
         <button
           type="button"
           data-testid={`share-to-od-${message.id}`}
-          disabled={shareToOpenDesignBusy}
-          onClick={onShareToOpenDesign}
+          disabled={shareToOpenDocsBusy}
+          onClick={onShareToOpenDocs}
         >
-          {shareToOpenDesignBusy ? 'Preparing package…' : 'Share to Open Design'}
+          {shareToOpenDocsBusy ? 'Preparing package…' : 'Share to Open Docs'}
         </button>
       ) : null}
     </>
@@ -684,8 +684,8 @@ Expected output:
     expect(screen.getByTestId('assistant-streaming-assistant-1').textContent).toBe('streaming');
   });
 
-  it('keeps Share to Open Design busy on the assistant turn that started packaging', () => {
-    const onShareToOpenDesign = vi.fn();
+  it('keeps Share to Open Docs busy on the assistant turn that started packaging', () => {
+    const onShareToOpenDocs = vi.fn();
     const completedAssistant: ChatMessage = {
       id: 'assistant-1',
       role: 'assistant',
@@ -713,26 +713,26 @@ Expected output:
       onSelectConversation: vi.fn(),
       onDeleteConversation: vi.fn(),
       projectMetadata,
-      onShareToOpenDesign,
+      onShareToOpenDocs,
     };
 
     const { rerender } = render(
       <ChatPane
         {...commonProps}
         messages={initialMessages}
-        shareToOpenDesignBusyMessageId={null}
+        shareToOpenDocsBusyMessageId={null}
       />,
     );
 
     fireEvent.click(screen.getByTestId('share-to-od-assistant-1'));
-    expect(onShareToOpenDesign).toHaveBeenCalledWith('assistant-1');
+    expect(onShareToOpenDocs).toHaveBeenCalledWith('assistant-1');
 
     rerender(
       <ChatPane
         {...commonProps}
         messages={[
           ...initialMessages,
-          { id: 'user-2', role: 'user', content: 'Share to Open Design', createdAt: 4 },
+          { id: 'user-2', role: 'user', content: 'Share to Open Docs', createdAt: 4 },
           {
             id: 'assistant-2',
             role: 'assistant',
@@ -742,7 +742,7 @@ Expected output:
             runStatus: 'running',
           },
         ]}
-        shareToOpenDesignBusyMessageId="assistant-1"
+        shareToOpenDocsBusyMessageId="assistant-1"
       />,
     );
 
