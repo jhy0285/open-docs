@@ -1,0 +1,16 @@
+Open Docs
+
+Open Docs started from Open Design:
+
+  https://github.com/nexu-io/open-design
+
+Open Design is licensed under the Apache License, Version 2.0.
+The original license text is retained in LICENSE.
+
+This repository contains modifications that shift the product direction from
+agent-native design artifact generation toward local-first document
+specification authoring, including screen specifications, interface
+specifications, API specifications, Excel-style artifacts, and PPTX decks.
+
+Open Docs is an independent project and is not affiliated with, endorsed by, or
+maintained by the Open Design project.
